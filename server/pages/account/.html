@@ -1,0 +1,205 @@
+<div class="online">
+    <div class="loggedIn">
+        <div id="everything" class="hidden">
+            <h1>Your Banana Games Account</h1>
+            <h2>Your Info</h2>
+            <div id="grid">
+                <div class="flex pop-up error hidden" id="popup1">
+                    Could not update your account details.
+                    <i class="material-icons" id="close1">close</i>
+                </div>
+                <div class="flex pop-up error hidden" id="popup2">
+                    Could not update your password.
+                    <i class="material-icons" id="close2">close</i>
+                </div>
+                <div class="flex pop-up error hidden" id="popup3">
+                    Could not delete your account.
+                    <i class="material-icons" id="close3">close</i>
+                </div>
+                <form id="accountForm">
+                    <table id="account">
+                        <tr>
+                            <th>Email Address</th>
+                            <td class="display" id="email">musician@gmail.com</td>
+                            <td class="pop-parent change">
+                                <input name="emailInput" type="text" disabled value="musician@gmail.com" />
+                                <i class="material-icons error">warning</i>
+                                <p class="pop error">You cannot change your email address</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>First Name</th>
+                            <td class="display" id="firstName">Joe</td>
+                            <td class="change">
+                                <input name="firstName" type="text" value="Joe" />
+                                <div class="hidden success pop-parent" id="firstNameOk">
+                                    <p class="pop">Ok</p>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="noFirstName">
+                                    <p class="pop">Required</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="firstNameTooLong">
+                                    <p class="pop">Max 24 Characters</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="firstNameSpacing">
+                                    <p class="pop">Cannot Start Or End With Space</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="badFirstName">
+                                    <p class="pop">Can Only Contain A-Z, 0-9, -, _</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Last Name</th>
+                            <td class="display" id="lastName">Saxopho</td>
+                            <td class="change">
+                                <input name="lastName" type="text" value="Saxopho" />
+                                <div class="hidden success pop-parent" id="lastNameOk">
+                                    <p class="pop">Ok</p>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="noLastName">
+                                    <p class="pop">Required</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="lastNameTooLong">
+                                    <p class="pop">Max 24 Characters</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="lastNameSpacing">
+                                    <p class="pop">Cannot Start Or End With Space</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="badLastName">
+                                    <p class="pop">Can Only Contain A-Z, 0-9, -, _</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td class="display" id="yourUsername">ProPlayer</td>
+                            <td class="change">
+                                <input name="username" type="text" value="ProPlay" />
+                                <div class="hidden success pop-parent" id="usernameOk">
+                                    <p class="pop">Username Available</p>
+                                    <i class="material-icons">check</i>
+                                </div>
+                                <div class="hidden loading pop-parent" id="checkingUsername">
+                                    <p class="pop">Checking Username</p>
+                                    <i class="material-icons w3-spin">toys</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="usernameCooldown">
+                                    <p class="pop">You must wait a while before changing your username again</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="usernameTooLong">
+                                    <p class="pop">Max 24 Characters</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="badUsername">
+                                    <p class="pop">Only A-Z, 0-9, _ Allowed</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="noUsername">
+                                    <p class="pop">Required</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="naughtyUsername">
+                                    <p class="pop">Naughty Username</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="usernameTaken">
+                                    <p class="pop">Username Taken</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                                <div class="hidden error pop-parent" id="usernameError">
+                                    <p class="pop">Couldn't Check Username</p>
+                                    <i class="material-icons">warning</i>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <form id="passwordChangeForm" class="hidden">
+                    <h2>Old Password</h2>
+                    <div class="flex">
+                        <input type="password" name="oldPassword" />
+                        <div class="hidden  pop-parent" id="oldPasswordOk">
+                            <p class="pop">Ok</p>
+                            <i class="material-icons">check</i>
+                        </div>
+                        <div class="loading pop-parent" id="oldPasswordChecking">
+                            <p class="pop">Checking</p>
+                            <i class="material-icons w3-spin">toys</i>
+                        </div>
+                        <div class="hidden error pop-parent" id="oldPasswordBad">
+                            <p class="pop">Incorrect Password</p>
+                            <i class="material-icons">warning</i>
+                        </div>
+                        <div class="hidden error pop-parent" id="oldPasswordFailed">
+                            <p class="pop">Couldn't Check Password</p>
+                            <i class="material-icons">warning</i>
+                        </div>
+                    </div>
+                    <h2>New Password</h2>
+                    <div class="flex">
+                        <input type="password" name="password" />
+                        <div class="success pop-parent" id="passwordOk">
+                            <p class="pop">Ok</p>
+                            <i class="material-icons">check</i>
+                        </div>
+                        <div class="hidden error pop-parent" id="noPassword">
+                            <p class="pop">Required</p>
+                            <i class="material-icons">warning</i>
+                        </div>
+                        <div class="hidden error pop-parent" id="passwordSpacing">
+                            <p class="pop">Password Cannot Start Or End With Space</p>
+                            <i class="material-icons">warning</i>
+                        </div>
+                    </div>
+                    <h2>Confirm New Password</h2>
+                    <div class="flex">
+                        <input type="password" name="confirmPassword" />
+                        <div class="hidden success pop-parent" id="passwordsMatch">
+                            <p class="pop">Passwords Match</p>
+                            <i class="material-icons">check</i>
+                        </div>
+                        <div class="hidden error pop-parent" id="passwordsDoNotMatch">
+                            <p class="pop">Passwords Must Match</p>
+                            <i class="material-icons">warning</i>
+                        </div>
+                    </div>
+                </form>
+                <div id="options">
+                    <button id="edit">Edit <i class="material-icons">edit</i></button>
+                    <button id="change">Change Password <i class="material-icons">security</i></button>
+                    <button id="back" class="hidden">Go Back</button>
+                    <button id="save" class="hidden">Save</button>
+                    <button id="delete">Delete My Account</button>
+                    <button id="permanant" class="hidden">I'm Sure</button>
+                </div>
+            </div>
+        </div>
+        <div class="loading" id="retrieving">
+            <h1>Fetching Your Data</h1>
+            <i class="material-icons w3-spin">toys</i>
+        </div>
+        <div class="error hidden" id="failed">
+            <h1>Couldn't Retrieve Your Info</h1>
+            <button>Try Again</button>
+        </div>
+    </div>
+    <div class="notLoggedIn">
+        <h1>You Must Be Logged In To View Your Account</h1>
+        <h1><a href="/account/create">Create An Account</a></h1>
+    </div>
+</div>
+<div class="offline">
+    <h1 class="error">You Are Offline <i class="material-icons">warning</i></h1>
+</div>

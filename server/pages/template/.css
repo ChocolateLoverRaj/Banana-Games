@@ -1,0 +1,262 @@
+/*Header CSS*/
+
+:root {
+    --siderbar-width: 200px;
+    --login-bar-height: 40px;
+}
+
+/*Don't scroll!*/
+html{
+    overflow: hidden;
+}
+
+#sidebar{
+    /*Positioning*/
+    height: 100%;
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: var(--siderbar-width);
+
+    /*Scroll*/
+    overflow: auto;
+
+    background-color: goldenrod;
+    color: white;
+}
+
+/*All contents of sidebar*/
+.sidebar {
+    /*Positioning*/
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0;
+    text-align: center;
+    align-items: center;
+}
+
+/*Sidebar hover effect*/
+.sidebar:hover{
+    background-color: dodgerblue;
+}
+
+/*Ping*/
+#status {
+    background-color: lawngreen;
+    color: white;
+    border-color: aqua;
+}
+
+/*Reconnect Button*/
+#reconnect{
+    background-color: transparent;
+    color: white;
+    border-radius: 500px;
+    border-width: medium;
+    border-color: white;
+}
+
+/*Main Content*/
+#content {
+    /*Positioning*/
+    margin-left: var(--siderbar-width);
+
+    text-align: center;
+}
+
+#main{
+    overflow: auto;
+    position: fixed;
+    width: calc(100% - var(--siderbar-width));
+}
+
+/*Login Bar*/
+.loginBar {
+    /*Positioning*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: var(--login-bar-height);
+    margin: 0;
+    width: 100%;
+    background-color: black;
+}
+.loginBar *{
+    display: inline-block;
+    margin: 0;
+}
+
+#loginLoading {
+    color: yellow;
+}
+
+#loggingIn {
+    color: yellow;
+}
+
+#loginFailed {
+    color: red;
+}
+
+#loggedOut{
+    color: red;
+}
+
+#logoutSuccess{
+    color: lawngreen;
+}
+#ok {
+    border-width: medium;
+    border-color: green;
+    border-radius: 500px;
+    background-color: black;
+    color: lawngreen;
+    height: 80%;
+}
+#ok:hover {
+    background-color: lawngreen;
+    color: black;
+    transition-duration: 1s;
+}
+
+#retryLogin, #expired{
+    border-width: medium;
+    border-color: red;
+    border-radius: 500px;
+    background-color: black;
+    color: red;
+    height: 80%;
+}
+#retryLogin:hover{
+    background-color: red;
+    color: black;
+    transition-duration: 1s;
+}
+
+/*Login Button*/
+#loginButton{
+    background-color: blueviolet;
+    border: none;
+    text-align: center;
+    border-radius: 500px;
+    color: white;
+}
+#loginButton:hover{
+    background-color: deepskyblue;
+    transition-duration: 1s;
+}
+
+/*Header*/
+#header{
+    margin: 0;
+    background-color: aquamarine;
+    color: yellow;
+}
+
+/*Animate the alternating colors 1*/
+@keyframes color1{
+    0%{
+        color: darkolivegreen;
+    }
+    25%{
+        color: yellow;
+    }
+    50%{
+        color: yellow;
+    }
+    75%{
+        color: darkolivegreen;
+    }
+    100% {
+        color: darkolivegreen;
+    }
+}
+
+/*Animate the alternating colors 2*/
+@keyframes color2 {
+    0% {
+        color: yellow;
+    }
+    25% {
+        color: yellow;
+    }
+    50% {
+        color: darkolivegreen;
+    }
+    75% {
+        color: darkolivegreen;
+    }
+    100% {
+        color: yellow;
+    }
+}
+
+/*Banana Games alternating colors*/
+.color1{
+    color: darkolivegreen;
+    animation-name: color1;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+.color2{
+    color: yellow;
+    animation-name: color2;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+/*Rainbow Text*/
+@keyframes rainbow{
+    0%{
+        color: rgb(255, 0, 0);
+    }
+    17% {
+        color: rgb(255, 255, 0);
+    }
+    34% {
+        color: rgb(0, 255, 0);
+    }
+    50% {
+        color: rgb(0, 255, 255);
+    }
+    67% {
+        color: rgb(0, 0, 255);
+    }
+    84% {
+        color: rgb(255, 0, 255);
+    }
+    100%{
+        color: rgb(255, 0, 0);
+    }
+}
+
+.rainbow{
+    animation-name: rainbow;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+}
+
+.flex {
+    display: inline-flex;
+}
+
+.loading {
+    color: #FFD166;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+/*Main CSS*/
+
+/*Hidden - Needs to ovveride almost everything*/
+.hidden {
+    display: none !important;
+}
