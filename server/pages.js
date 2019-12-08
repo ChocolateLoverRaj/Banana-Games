@@ -37,6 +37,9 @@ const costomizations = {
     },
     "account": {
         title: "My Account"
+    },
+    "terms": {
+        title: "Banana Games Terms Of Service"
     }
 };
 
@@ -51,6 +54,7 @@ const router = {
     "verify/success": "/verify/success",
     "account/create": "/account/create",
     "account": "/account",
+    "terms": "/terms"
 };
 
 //Process Function
