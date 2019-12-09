@@ -501,10 +501,10 @@ const connect = () => {
 
     //Create a websocket
     if (window.location.protocol == "https:") {
-        ws = new WebSocket("wss://banana-games.herokuapp.com");
+        ws = new WebSocket("wss://" + window.location.host);
     }
     else {
-        ws = new WebSocket("ws://localhost:3000");
+        ws = new WebSocket("ws://" + window.location.host);
     }
 
     //Bind to the connect event
