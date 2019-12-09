@@ -237,8 +237,12 @@ users.post = (data, callback) => {
                                                                 //Create a account verification code
                                                                 const verificationCode = randomString(20);
 
+                                                                //Create a random id
+                                                                const randomId = randomString(50);
+
                                                                 //Create the user object
                                                                 const userObject = {
+                                                                    id: randomId,
                                                                     firstName: firstName,
                                                                     lastName: lastName,
                                                                     username: username,
@@ -506,8 +510,7 @@ users.put = (data, callback) => {
                                                         email: res.email,
                                                         username: res.username,
                                                         firstName: res.firstName,
-                                                        lastName: res.lastName,
-                                                        validated: res.validated
+                                                        lastName: res.lastName
                                                     };
 
                                                     //New user content

@@ -13,29 +13,27 @@ workers.tokens = {};
 
 //Check the tokens, deleting the expired ones
 workers.tokens.check = () => {
-    //Connect to the database
-    mongodb.edit("BananaGames", "Tokens", collection => {
-        if (typeof (collection) == "object" && collection != null) {
-            //Find accounts to delete
-            //Create a filter
-            const queryFilter = {
-                $cond: {
-                    if: {
-                        $gt: [Date.now(), "$expires"] 
-                    },
-                    then: true,
-                    else: false
-                }
-            };
-            //Delete accounts based on filter
-            collection.deleteMany({ $expr: { $eq: [queryFilter, true] } }, (err, res) => {
-                if (!err && res.result.ok) {
-                    console.log("Deleted " + res.result.n + " tokens");
-                }
-                else {
-                    console.warn("Couldn't delete expired tokens");
-                }
-            });
+    console.log(mongodb);
+    //Tokens collection
+    const collection = mongodb.database.db("BananaGames").collection("Tokens");
+    //Find accounts to delete
+    //Create a filter
+    const queryFilter = {
+        $cond: {
+            if: {
+                $gt: [Date.now(), "$expires"] 
+            },
+            then: true,
+            else: false
+        }
+    };
+    //Delete accounts based on filter
+    collection.deleteMany({ $expr: { $eq: [queryFilter, true] } }, (err, res) => {
+        if (!err && res.result.ok) {
+            console.log("Deleted " + res.result.n + " tokens");
+        }
+        else {
+            console.warn("Couldn't delete expired tokens");
         }
     });
 };

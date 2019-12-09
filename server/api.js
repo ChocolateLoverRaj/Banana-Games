@@ -4,6 +4,7 @@
 const users = require("./api/users");
 const tokens = require("./api/tokens");
 const ping = require("./api/ping");
+const friends = require("./api/friends");
 
 //Api container
 const api = {};
@@ -12,7 +13,8 @@ const api = {};
 api.router = {
     users: users,
     tokens: tokens,
-    ping: ping
+    ping: ping,
+    friends: friends
 };
 
 //Process Function
