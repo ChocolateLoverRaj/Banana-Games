@@ -13,9 +13,8 @@ workers.tokens = {};
 
 //Check the tokens, deleting the expired ones
 workers.tokens.check = () => {
-    console.log(mongodb);
     //Tokens collection
-    const collection = mongodb.database.db("BananaGames").collection("Tokens");
+    const collection = mongodb.collection("BananaGames", "Tokens");
     //Find accounts to delete
     //Create a filter
     const queryFilter = {
@@ -50,32 +49,29 @@ workers.accounts = {};
 
 //Check the accounts, deleting the ones that weren't verified for the past 24 hours
 workers.accounts.check = () => {
-    //Connect to the database
-    mongodb.edit("BananaGames", "Users", collection => {
-        if (typeof (collection) == "object" && collection != null) {
-            //Find accounts to delete
-            //Create a filter
-            const queryFilter = {
-                $cond: {
-                    if: {
-                        $and: [
-                            { $eq: [{ $type: "$notValid" }, "string"] },
-                            { $gt: [Date.now(), { $add: ["$created", config.users.expiryTime] }] }
-                        ]
-                    },
-                    then: true,
-                    else: false
-                }
-            };
-            //Delete accounts based on filter
-            collection.deleteMany({ $expr: { $eq: [queryFilter, true] } }, (err, res) => {
-                if (!err && res.result.ok) {
-                    console.log("Deleted " + res.result.n + " accounts");
-                }
-                else {
-                    console.warn("Couldn't delete old, unverified accounts");
-                }
-            });
+    //Users collection
+    let collection = mongodb.collection("BananaGames", "Users");
+    //Find accounts to delete
+    //Create a filter
+    const queryFilter = {
+        $cond: {
+            if: {
+                $and: [
+                    { $eq: [{ $type: "$notValid" }, "string"] },
+                    { $gt: [Date.now(), { $add: ["$created", config.users.expiryTime] }] }
+                ]
+            },
+            then: true,
+            else: false
+        }
+    };
+    //Delete accounts based on filter
+    collection.deleteMany({ $expr: { $eq: [queryFilter, true] } }, (err, res) => {
+        if (!err && res.result.ok) {
+            console.log("Deleted " + res.result.n + " accounts");
+        }
+        else {
+            console.warn("Couldn't delete old, unverified accounts");
         }
     });
 };
