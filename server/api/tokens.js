@@ -58,12 +58,14 @@ tokens.check = (id, callback) => {
 
                     if (valid) {
                         //Find the email of the person with the token
-                        tokens.getUsername(token.email, (err, res) => {
-                            if (!err && res) {
-                                token.username = res;
+                        tokens.getUserInfo(token.email, (err, user) => {
+                            if (!err && user) {
+                                token.username = user.username;
                                 callback(false, token);
                             }
-                            callback("Error finding username");
+                            else {
+                                callback("Error finding username");
+                            }
                         });
                     }
                     else {
@@ -168,25 +170,26 @@ tokens.get = (data, callback) => {
         //Connect to the database
         let collection = mongodb.collection("BananaGames", "Tokens");
         //Find the token
-        collection.findOne({ id: id }, (err, res) => {
+        collection.findOne({ id: id }, (err, token) => {
             if (!err) {
-                if (res) {
-                    //Get the username
-                    tokens.getUsername(res.email, (err, username) => {
-                        if (!err && username) {
-                            //Token object
-                            const token = {
-                                expires: res.expires,
-                                id: res.id,
-                                email: res.email,
-                                username: username,
-                                valid: Date.now() <= res.expires
+                if (token) {
+                    //Get more info
+                    tokens.getUserInfo(token.userId, (err, user) => {
+                        if (!err && user) {
+                            //Create the token object
+                            let tokenObject = {
+                                id: token.id,
+                                userId: token.userId,
+                                expires: token.expires,
+                                valid: Date.now() < token.expires,
+                                email: user.email,
+                                username: user.username
                             };
 
-                            callback(200, token);
+                            callback(200, tokenObject);
                         }
                         else {
-                            callback(500, { "Error": "Could not get username" });
+                            callback(500, { "Error": "Could not get additional info" });
                         }
                     });
                 }
@@ -212,51 +215,53 @@ tokens.put = (data, callback) => {
 
     if (id) {
         //Connect to database
-        let collection = mongodb.collection("BananaGames", "Tokens");
-        //Find the token
-        collection.findOne({ id: id }, (err, res) => {
+        let tokensCollection = mongodb.collection("BananaGames", "Tokens");
+        //Filter
+        let filter = {
+            $expr: {
+                $and: [
+                    {
+                        $eq: [
+                            "$id",
+                            id
+                        ]
+                    },
+                    {
+                        $gt: [
+                            "$expires",
+                            Date.now()
+                        ]
+                    }
+                ]
+            },
+        };
+        //Value
+        let expires = Date.now() + config.tokens.expiryTime;
+        let value = {
+            $set: {
+                "expires": expires
+            }
+        };
+        //Actuall update it
+        tokensCollection.findOneAndUpdate(filter, value, (err, res) => {
             if (!err) {
-                if (res) {
-                    //Figure out if the token has expired
-                    if (Date.now() <= res.expires) {
-                        //Calculate the new expiry time
-                        const expires = Date.now() + config.tokens.expiryTime;
+                if (res && res.value) {
+                    //Payload has expires
+                    let payload = {
+                        expires: expires
+                    };
 
-                        //Token object
-                        const token = {
-                            expires: expires,
-                            id: res.id,
-                            email: res.email,
-                            valid: Date.now() <= res.expires
-                        };
-
-                        //Update the token
-                        collection.updateOne({ id: id }, { $set: { expires: expires } }, (err, res) => {
-                            if (!err && res) {
-                                if (res.result.nModified) {
-                                    callback(200, token);
-                                }
-                                else {
-                                    callback(500, { "Error": "Failed to update token" });
-                                }
-                            }
-                            else {
-                                callback(500, { "Error": "Could not update token" });
-                            }
-                        });
-                    }
-                    else {
-                        callback(410, { "Error": "The token you requested has expired" });
-                    }
+                    callback(200, payload);
                 }
                 else {
-                    callback(404, { "Error": "Token with that id does not exist" });
+                    callback(404);
                 }
             }
             else {
-                callback(500, { "Error": "Could not search for token" });
+                callback(500, { "Error": "Could not renew token" });
             }
         });
+        
     }
     else {
         callback(400, { "Error": "Missing token id" });
@@ -270,41 +275,19 @@ tokens.delete = (data, callback) => {
     const id = typeof (data.queryStringObject.id) == 'string' && data.queryStringObject.id.trim().length > 0 ? data.queryStringObject.id.trim() : false;
 
     if (id) {
-        //Connect to database
-        mongodb.edit("BananaGames", "Tokens", collection => {
-            if (typeof (collection) == 'object') {
-                //Find the token
-                collection.findOne({ id: id }, (err, res) => {
-                    if (!err) {
-                        if (res) {
-                            //Delete the token
-                            mongodb.edit("BananaGames", "Tokens", collection => {
-                                if (typeof (collection) == 'object') {
-                                    collection.deleteOne({ id: id }, (err, res) => {
-                                        if (!err && res) {
-                                            callback(200);
-                                        }
-                                        else {
-                                            callback(500, { "Error": "Could not delete token" });
-                                        }
-                                    });
-                                }
-                                else {
-                                    callback(500, { "Error": "Could not connect to database" });
-                                }
-                            });
-                        }
-                        else {
-                            callback(404, { "Error": "Token with that id does not exist" });
-                        }
-                    }
-                    else {
-                        callback(500, { "Error": "Could not search for token" });
-                    }
-                });
+        //Delete the token
+        const tokensCollection = mongodb.collection("BananaGames", "Tokens");
+        tokensCollection.findOneAndDelete({ id: id }, (err, res) => {
+            if (!err) {
+                if (res && res.value) {
+                    callback(200);
+                }
+                else {
+                    callback(404);
+                }
             }
             else {
-                callback(500, { "Error": "Couldn't read tokens" });
+                callback(500, { "Error": "Could not delete token" });
             }
         });
     }

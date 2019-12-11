@@ -316,7 +316,10 @@ users.verify = (data, callback) => {
             $expr: {
                 $and: [
                     {
-                        "email": email
+                        $eq: [
+                            "$email",
+                            email
+                        ]
                     },
                     {
                         $lt: [
@@ -422,7 +425,7 @@ users.get = (data, callback) => {
     }
 };
 
-//Put
+//Put @TODO make this better
 //Required data: token
 //Optional data: firstName, lastName, username, password
 users.put = (data, callback) => {

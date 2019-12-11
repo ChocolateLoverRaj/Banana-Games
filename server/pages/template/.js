@@ -400,7 +400,7 @@ app.status.token.on("login", data => {
         //Send the request
         app.client.request(undefined, "/api/tokens", "PUT", { id: app.config.sessionToken.id }, undefined, (statusCode, payload) => {
             //Make sure that token is valid
-            if (statusCode == 200 && payload && payload.valid) {
+            if (statusCode == 200) {
                 //Update the token expiry
                 app.config.sessionToken.expires = payload.expires;
             }
