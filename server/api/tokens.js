@@ -22,35 +22,22 @@ tokens.process = (data, callback) => {
 };
 
 //Get the username of a user based on email
-tokens.getUsername = (email, callback) => {
-    //Validate
-    email = typeof (email) == 'string' && email.trim().length > 0 ? email.trim() : false;
-    callback = typeof (callback) == 'function' ? callback : false;
-
-    if (callback) {
-        if (email) {
-            //Connect to the database
-            mongodb.edit("BananaGames", "Users", collection => {
-                if (typeof (collection) == 'object') {
-                    //Find the user
-                    collection.findOne({ email: email }, (err, res) => {
-                        if (!err && res) {
-                            callback(false, res.username);
-                        }
-                        else {
-                            callback("Couldn't find user");
-                        }
-                    });
-                }
-                else {
-                    callback("Couldn't Connect to database");
-                }
-            });
+tokens.getUserInfo = (userId, callback) => {
+    //Get the user information based on userId
+    const usersCollection = mongodb.collection("BananaGames", "Users");
+    usersCollection.findOne({ "id": userId }, (err, user) => {
+        if (!err) {
+            if (user) {
+                callback(false, user);
+            }
+            else {
+                callback("No user with that id");
+            }
         }
         else {
-            callback("Missing email");
+            callback("Mongodb Error");
         }
-    }
+    });
 };
 
 //Check if a token is valid
@@ -60,35 +47,37 @@ tokens.check = (id, callback) => {
     callback = typeof (callback) == 'function' ? callback : false;
 
     if (id && callback) {
-        //Connect to database
-        mongodb.edit("BananaGames", "Tokens", collection => {
-            if (typeof (collection) == 'object') {
-                //Find the token
-                collection.findOne({ id: id }, (err, token) => {
-                    if (!err) {
-                        if (token) {
-                            //Find out if it has expired
-                            const valid = Date.now() <= token.expires;
+        //Tokens collection
+        let collection = mongodb.collection("BananaGames", "Tokens");
+        //Find the token
+        collection.findOne({ id: id }, (err, token) => {
+            if (!err) {
+                if (token) {
+                    //Find out if it has expired
+                    const valid = Date.now() <= token.expires;
 
-                            //Find the email of the person with the token
-                            tokens.getUsername(token.email, (err, res) => {
-                                if (!err && res) {
-                                    token.username = res;
-                                }
-                                callback(false, valid ? token : false);
-                            });
-                        }
-                        else {
-                            callback(false, false);
-                        }
+                    if (valid) {
+                        //Find the email of the person with the token
+                        tokens.getUserInfo(token.email, (err, user) => {
+                            if (!err && user) {
+                                token.username = user.username;
+                                callback(false, token);
+                            }
+                            else {
+                                callback("Error finding username");
+                            }
+                        });
                     }
                     else {
-                        callback("Error searching for token");
+                        callback(false, false);
                     }
-                });
+                }
+                else {
+                    callback(false, false);
+                }
             }
             else {
-                callback("Could not connect to database");
+                callback("Error searching for token");
             }
         });
     }
@@ -108,83 +97,69 @@ tokens.post = (data, callback) => {
         //Hash the password
         const hashedPassword = hash(password);
 
-        //Find the user based on username
-        mongodb.edit("BananaGames", "Users", collection => {
-            if (typeof (collection) == 'object') {
-                collection.findOne({ username: username, hashedPassword: hashedPassword }, (err, res) => {
-                    if (!err) {
-                        if (res) {
-                            createToken(res);
+        //try to find an account that matches username and password
+        //Create a filter
+        let filter = {
+            $and: [
+                {
+                    $or: [
+                        {
+                            "username": username
+                        },
+                        {
+                            "email": username
                         }
-                        else {
-                            //Find the user based on email
-                            mongodb.edit("BananaGames", "Users", collection => {
-                                if (typeof (collection) == 'object') {
-                                    collection.findOne({ email: username, hashedPassword: hashedPassword }, (err, res) => {
-                                        if (!err) {
-                                            if (res) {
-                                                createToken(res);
-                                            }
-                                            else {
-                                                callback(404, { "Error": "Email / Username and password did not match" });
-                                            }
-                                        }
-                                        else {
-                                            callback(500, { "Error": "Could not look for user" });
-                                        }
-                                    });
-                                }
-                                else {
-                                    callback(500, { "Error": "Could not read users" });
-                                }
-                            });
+                    ]
+                },
+                {
+                    "hashedPassword": hashedPassword
+                }
+            ]
+        }
+        const usersCollection = mongodb.collection("BananaGames", "Users");
+        usersCollection.findOne(filter, (err, user) => {
+            if (!err) {
+                if (user) {
+                    //Make sure user is verified
+                    if (!user.notValid) {
+                        //Create a token object
+                        let token = {
+                            id: randomString(config.tokens.idLength),
+                            userId: user.id,
+                            expires: Date.now() + config.tokens.expiryTime
                         }
-                    }
-                    else {
-                        callback(500, { "Error": "Could not look for user" });
-                    }
-                });
-            }
-            else {
-                callback(500, { "Error": "Could not read users" });
-            }
-        });
 
-        //Create the token
-        const createToken = user => {
-            //Check that the user is verified
-            if (!user.notValid) {
-                //Create token object
-                const token = {
-                    expires: Date.now() + config.tokens.expiryTime,
-                    email: user.email,
-                    username: user.username,
-                    id: randomString(config.tokens.tokenLength)
-                };
+                        //Store it in database
+                        const tokensCollection = mongodb.collection("BananaGames", "Tokens");
+                        tokensCollection.insertOne(token, (err, res) => {
+                            if (!err && res && res.result && res.result.ok) {
+                                //Create a token object to send to user
+                                let clientToken = Object.assign(token, {
+                                    email: user.email,
+                                    username: user.username,
+                                    userId: user.id
+                                });
 
-                const tokenForWriting = Object.assign({}, token);
-
-                //Write to the database
-                mongodb.edit("BananaGames", "Tokens", collection => {
-                    if (typeof (collection) == 'object') {
-                        collection.insertOne(tokenForWriting, (err, res) => {
-                            if (!err && res) {
-                                callback(201, token);
+                                //Send the client token to the client
+                                callback(201, clientToken);
                             }
                             else {
-                                callback(500, { "Error": "Could not create token" });
+                                callback(500, { "Error": "" })
                             }
                         });
                     }
                     else {
-                        callback(500, { "Error": "Could not connect to database" });
+                        callback(606);
                     }
-                });
+                }
+                else {
+                    callback(404, { "Error": "User not found" });
+                }
             }
             else {
-                callback(606, { "Error": "Your account isn\'t verified. Please verify your account" });
+                callback(500, { "Error": "Couldn't search for user" });
             }
-        };
+        });
     }
     else {
         callback(400, { "Error": "Missing required data" });
@@ -198,42 +173,37 @@ tokens.get = (data, callback) => {
 
     if (id) {
         //Connect to the database
-        mongodb.edit("BananaGames", "Tokens", collection => {
-            if (typeof (collection) == 'object') {
-                //Find the token
-                collection.findOne({ id: id }, (err, res) => {
-                    if (!err) {
-                        if (res) {
-                            //Get the username
-                            tokens.getUsername(res.email, (err, username) => {
-                                if (!err && username) {
-                                    //Token object
-                                    const token = {
-                                        expires: res.expires,
-                                        id: res.id,
-                                        email: res.email,
-                                        username: username,
-                                        valid: Date.now() <= res.expires
-                                    };
+        let collection = mongodb.collection("BananaGames", "Tokens");
+        //Find the token
+        collection.findOne({ id: id }, (err, token) => {
+            if (!err) {
+                if (token) {
+                    //Get more info
+                    tokens.getUserInfo(token.userId, (err, user) => {
+                        if (!err && user) {
+                            //Create the token object
+                            let tokenObject = {
+                                id: token.id,
+                                userId: token.userId,
+                                expires: token.expires,
+                                valid: Date.now() < token.expires,
+                                email: user.email,
+                                username: user.username
+                            };
 
-                                    callback(200, token);
-                                }
-                                else {
-                                    callback(500, { "Error": "Could not get username" });
-                                }
-                            });
+                            callback(200, tokenObject);
                         }
                         else {
-                            callback(404, { "Error": "Token with specified id does not exist; Token may have expired" });
+                            callback(500, { "Error": "Could not get additional info" });
                         }
-                    }
-                    else {
-                        callback(500, { "Error": "Could not search for your token" });
-                    }
-                });
+                    });
+                }
+                else {
+                    callback(404, { "Error": "Token with specified id does not exist; Token may have expired" });
+                }
             }
             else {
-                callback(500, { "Error": "Could not connect to database" });
+                callback(500, { "Error": "Could not search for your token" });
             }
         });
     }
@@ -250,64 +220,53 @@ tokens.put = (data, callback) => {
 
     if (id) {
         //Connect to database
-        mongodb.edit("BananaGames", "Tokens", collection => {
-            if (typeof (collection) == 'object') {
-                //Find the token
-                collection.findOne({ id: id }, (err, res) => {
-                    if (!err) {
-                        if (res) {
-                            //Figure out if the token has expired
-                            if (Date.now() <= res.expires) {
-                                //Calculate the new expiry time
-                                const expires = Date.now() + config.tokens.expiryTime;
-
-                                //Token object
-                                const token = {
-                                    expires: expires,
-                                    id: res.id,
-                                    email: res.email,
-                                    valid: Date.now() <= res.expires
-                                };
-
-                                //Update the token
-                                mongodb.edit("BananaGames", "Tokens", collection => {
-                                    if (typeof (collection) == 'object') {
-                                        collection.updateOne({ id: id }, { $set: { expires: expires } }, (err, res) => {
-                                            if (!err && res) {
-                                                if (res.result.nModified) {
-                                                    callback(200, token);
-                                                }
-                                                else {
-                                                    callback(500, { "Error": "Failed to update token" });
-                                                }
-                                            }
-                                            else {
-                                                callback(500, { "Error": "Could not update token" });
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        callback(500, { "Error": "Could not connect to database" });
-                                    }
-                                });
-                            }
-                            else {
-                                callback(410, { "Error": "The token you requested has expired" });
-                            }
-                        }
-                        else {
-                            callback(404, { "Error": "Token with that id does not exist" });
-                        }
+        let tokensCollection = mongodb.collection("BananaGames", "Tokens");
+        //Filter
+        let filter = {
+            $expr: {
+                $and: [
+                    {
+                        $eq: [
+                            "$id",
+                            id
+                        ]
+                    },
+                    {
+                        $gt: [
+                            "$expires",
+                            Date.now()
+                        ]
                     }
-                    else {
-                        callback(500, { "Error": "Could not search for token" });
-                    }
-                });
+                ]
+            },
+        };
+        //Value
+        let expires = Date.now() + config.tokens.expiryTime;
+        let value = {
+            $set: {
+                "expires": expires
+            }
+        };
+        //Actuall update it
+        tokensCollection.findOneAndUpdate(filter, value, (err, res) => {
+            if (!err) {
+                if (res && res.value) {
+                    //Payload has expires
+                    let payload = {
+                        expires: expires
+                    };
+
+                    callback(200, payload);
+                }
+                else {
+                    callback(404);
+                }
             }
             else {
-                callback(500, { "Error": "Couldn't read tokens" });
+                callback(500, { "Error": "Could not renew token" });
             }
         });
+        
     }
     else {
         callback(400, { "Error": "Missing token id" });
@@ -321,41 +280,19 @@ tokens.delete = (data, callback) => {
     const id = typeof (data.queryStringObject.id) == 'string' && data.queryStringObject.id.trim().length > 0 ? data.queryStringObject.id.trim() : false;
 
     if (id) {
-        //Connect to database
-        mongodb.edit("BananaGames", "Tokens", collection => {
-            if (typeof (collection) == 'object') {
-                //Find the token
-                collection.findOne({ id: id }, (err, res) => {
-                    if (!err) {
-                        if (res) {
-                            //Delete the token
-                            mongodb.edit("BananaGames", "Tokens", collection => {
-                                if (typeof (collection) == 'object') {
-                                    collection.deleteOne({ id: id }, (err, res) => {
-                                        if (!err && res) {
-                                            callback(200);
-                                        }
-                                        else {
-                                            callback(500, { "Error": "Could not delete token" });
-                                        }
-                                    });
-                                }
-                                else {
-                                    callback(500, { "Error": "Could not connect to database" });
-                                }
-                            });
-                        }
-                        else {
-                            callback(404, { "Error": "Token with that id does not exist" });
-                        }
-                    }
-                    else {
-                        callback(500, { "Error": "Could not search for token" });
-                    }
-                });
+        //Delete the token
+        const tokensCollection = mongodb.collection("BananaGames", "Tokens");
+        tokensCollection.findOneAndDelete({ id: id }, (err, res) => {
+            if (!err) {
+                if (res && res.value) {
+                    callback(200);
+                }
+                else {
+                    callback(404);
+                }
             }
             else {
-                callback(500, { "Error": "Couldn't read tokens" });
+                callback(500, { "Error": "Could not delete token" });
             }
         });
     }
