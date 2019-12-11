@@ -120,38 +120,43 @@ tokens.post = (data, callback) => {
         usersCollection.findOne(filter, (err, user) => {
             if (!err) {
                 if (user) {
-                    //Create a token object
-                    let token = {
-                        id: randomString(config.tokens.idLength),
-                        userId: user.id,
-                        expires: Date.now() + config.tokens.expiryTime
+                    //Make sure user is verified
+                    if (!user.notValid) {
+                        //Create a token object
+                        let token = {
+                            id: randomString(config.tokens.idLength),
+                            userId: user.id,
+                            expires: Date.now() + config.tokens.expiryTime
+                        }
+
+                        //Store it in database
+                        const tokensCollection = mongodb.collection("BananaGames", "Tokens");
+                        tokensCollection.insertOne(token, (err, res) => {
+                            if (!err && res && res.result && res.result.ok) {
+                                //Create a token object to send to user
+                                let clientToken = Object.assign(token, {
+                                    email: user.email,
+                                    username: user.username,
+                                    userId: user.id
+                                });
+
+                                //Send the client token to the client
+                                callback(201, clientToken);
+                            }
+                            else {
+                                callback(500, { "Error": "" })
+                            }
+                        });
                     }
-
-                    //Store it in database
-                    const tokensCollection = mongodb.collection("BananaGames", "Tokens");
-                    tokensCollection.insertOne(token, (err, res) => {
-                        if (!err && res && res.result && res.result.ok) {
-                            //Create a token object to send to user
-                            let clientToken = Object.assign(token, {
-                                email: user.email,
-                                username: user.username,
-                                userId: user.id
-                            });
-
-                            //Send the client token to the client
-                            callback(201, clientToken);
-                        }
-                        else {
-                            callback(500, {"Error": ""})
-                        }
-                    });
+                    else {
+                        callback(606);
+                    }
                 }
                 else {
                     callback(404, { "Error": "User not found" });
                 }
             }
             else {
-                console.log(err);
                 callback(500, { "Error": "Couldn't search for user" });
             }
         });

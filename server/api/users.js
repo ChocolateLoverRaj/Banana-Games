@@ -53,9 +53,6 @@ users.process = (data, callback) => {
 //Required data: username xor email
 //Optional data: none
 users.check = (data, callback) => {
-    //Users collection
-    const usersCollection = mongodb.collection("BananaGames", "Users");
-
     //Make sure method is get
     if (data.method == "get") {
         //Sanity checking
@@ -71,6 +68,7 @@ users.check = (data, callback) => {
                         if (!profane) {
                             //Check if the username is taken
                             //Look for users
+                            const usersCollection = mongodb.collection("BananaGames", "Users");
                             usersCollection.findOne({ username: username }, (err, res) => {
                                 if (!err) {
                                     if (res == null) {
@@ -129,9 +127,6 @@ users.check = (data, callback) => {
 
 //Check if a password is good
 users.password = (data, callback) => {
-    //Users collection
-    const usersCollection = mongodb.collection("BananaGames", "Users");
-
     //make sure the method is get
     if (data.method == "get") {
         //Sanity checking
@@ -144,21 +139,30 @@ users.password = (data, callback) => {
                 tokens.check(token, (err, token) => {
                     if (!err) {
                         if (token) {
-                            //Hash the password
-                            const hashedPassword = hash(password);
+                            //Get the email from the token
+                            tokens.getUserInfo(token.userId, (err, user) => {
+                                if (!err && user) {
+                                    //Hash the password
+                                    const hashedPassword = hash(password);
 
-                            //Check the users account
-                            usersCollection.findOne({ email: token.email, hashedPassword: hashedPassword }, (err, res) => {
-                                if (!err) {
-                                    if (res) {
-                                        callback(200);
-                                    }
-                                    else {
-                                        callback(404, { "Error": "Wrong Password" });
-                                    }
+                                    //Check the users account
+                                    const usersCollection = mongodb.collection("BananaGames", "Users");
+                                    usersCollection.findOne({ email: user.email, hashedPassword: hashedPassword }, (err, res) => {
+                                        if (!err) {
+                                            if (res) {
+                                                callback(200);
+                                            }
+                                            else {
+                                                callback(404, { "Error": "Wrong Password" });
+                                            }
+                                        }
+                                        else {
+                                            callback(500, { "Error": "Could not find user" });
+                                        }
+                                    });
                                 }
                                 else {
-                                    callback(500, { "Error": "Could not find user" });
+                                    callback(500, { "Error": "Couldn't get user info" });
                                 }
                             });
                         }
@@ -231,6 +235,8 @@ users.post = (data, callback) => {
                                         created: Date.now(),
                                         friends: []
                                     };
+
+                                    console.log(userObject, config.users.idLength);
 
                                     //Insert the user object to the collection
                                     usersCollection.insertOne(userObject, (err, res) => {
@@ -425,7 +431,6 @@ users.get = (data, callback) => {
     }
 };
 
-//Put @TODO make this better
 //Required data: token
 //Optional data: firstName, lastName, username, password
 users.put = (data, callback) => {
@@ -444,100 +449,79 @@ users.put = (data, callback) => {
             tokens.check(token, (err, token) => {
                 if (!err) {
                     if (token) {
-                        if (token.email == email) {
-                            if (firstName || lastName || username || (password && ogPassword)) {
-                                //Connect to database
-                                mongodb.edit("BananaGames", "Users", collection => {
-                                    if (typeof (collection) == 'object') {
-                                        //Find the user
-                                        collection.findOne({ email: email }, (err, res) => {
+                        //Get email
+                        tokens.getUserInfo(token.userId, (err, user) => {
+                            if (!err && user) {
+                                if (user.email == email) {
+                                    if (firstName || lastName || username || (password && ogPassword)) {
+                                        //Hash password if there is
+                                        var hashedPassword;
+                                        if (password) {
+                                            hashedPassword = hash(password);
+                                        }
+                                        var hashedOgPassword;
+                                        if (ogPassword) {
+                                            hashedOgPassword = hash(ogPassword);
+                                        }
+                                        //Get the user based on email
+                                        const usersCollection = mongodb.collection("BananaGames", "Users");
+                                        //Filter
+                                        let filter = {
+                                            "email": email
+                                        };
+                                        if (hashedOgPassword) {
+                                            filter.hashedPassword = hashedOgPassword
+                                        }
+                                        //What to update to
+                                        let value = {
+                                            $set: {}
+                                        };
+                                        if (firstName) {
+                                            value.$set.firstName = firstName;
+                                        }
+                                        if (lastName) {
+                                            value.$set.lastName = lastName;
+                                        }
+                                        if (username) {
+                                            value.$set.username = username;
+                                        }
+                                        if (hashedPassword) {
+                                            value.$set.hashedPassword = hashedPassword;
+                                        }
+                                        usersCollection.findOneAndUpdate(filter, value, {returnOriginal: false},(err, res) => {
                                             if (!err) {
-                                                if (res) {
-                                                    //The object to send back
-                                                    const newUser = {
-                                                        email: res.email,
-                                                        username: res.username,
-                                                        firstName: res.firstName,
-                                                        lastName: res.lastName
+                                                if (res && res.value) {
+                                                    //User object for client
+                                                    let userObject = {
+                                                        firstName: res.value.firstName,
+                                                        lastName: res.value.lastName,
+                                                        username: res.value.username,
+                                                        email: res.value.email
                                                     };
-
-                                                    //New user content
-                                                    const newUserContent = {};
-
-                                                    const continueLogic = () => {
-                                                        if (firstName) {
-                                                            newUserContent.firstName = firstName;
-                                                            newUser.firstName = firstName;
-                                                        }
-                                                        if (lastName) {
-                                                            newUserContent.lastName = lastName;
-                                                            newUser.lastName = lastName;
-                                                        }
-                                                        if (username) {
-                                                            newUserContent.username = username;
-                                                            newUser.username = username;
-                                                        }
-
-                                                        //Connect to database
-                                                        mongodb.edit("BananaGames", "Users", collection => {
-                                                            if (typeof (collection) == 'object') {
-                                                                //Update the user
-                                                                collection.updateOne({ email: email }, { $set: newUserContent }, (err, res) => {
-                                                                    if (!err && res.result.ok) {
-                                                                        callback(200, newUser);
-                                                                    }
-                                                                    else {
-                                                                        callback(500, { "Error": "Could not update user" });
-                                                                        console.log(err, res);
-                                                                    }
-                                                                });
-                                                            }
-                                                            else {
-                                                                callback(500, { "Error": "Could not connect to users" });
-                                                            }
-                                                        });
-                                                    };
-
-                                                    if (password) {
-                                                        //Check that the passwords match
-                                                        const hashedOgPassword = hash(ogPassword);
-
-                                                        if (res.hashedPassword == hashedOgPassword) {
-                                                            //Hash the new password
-                                                            const hashedPassword = hash(password);
-                                                            newUserContent.hashedPassword = hashedPassword;
-
-                                                            continueLogic();
-                                                        }
-                                                        else {
-                                                            callback(401, { "Error": "To update password you must have a valid old password" });
-                                                        }
-                                                    }
-                                                    else {
-                                                        continueLogic();
-                                                    }
+                                                    //Send the user object to the client
+                                                    callback(200, userObject);
                                                 }
                                                 else {
-                                                    callback(404, { "Error": "User with that email does not exist" });
+                                                    callback(404, { "Error": "No user with matching email and password found"});
                                                 }
                                             }
                                             else {
-                                                callback(500, { "Error": "Could not find user" });
+                                                callback(500, { "Error": "Couldn't update user" });
                                             }
                                         });
                                     }
                                     else {
-                                        callback(500, { "Error": "Could not connect to database" });
+                                        callback(421, { "Error": "There is nothing to change" });
                                     }
-                                });
+                                }
+                                else {
+                                    callback(403, { "Error": "Email must match token" });
+                                }
                             }
                             else {
-                                callback(421, { "Error": "There is nothing to change" });
+                                callback(500, { "Error": "Could not get user info" });
                             }
-                        }
-                        else {
-                            callback(403, { "Error": "Email must match token" });
-                        }
+                        });
                     }
                     else {
                         callback(401);
@@ -569,75 +553,39 @@ users.delete = (data, callback) => {
         if (email) {
             //Make sure token is valid
             tokens.check(token, (err, token) => {
-                //Make sure email matches token
-                if (token.email == email) {
-                    if (!err) {
-                        if (token) {
-                            //Connect to database
-                            mongodb.edit("BananaGames", "Users", collection => {
-                                if (typeof (collection) == 'object') {
-                                    //Find the account
-                                    collection.findOne({ email: token.email }, (err, res) => {
-                                        if (!err) {
-                                            if (res) {
-                                                //Connect to database
-                                                mongodb.edit("BananaGames", "Users", collection => {
-                                                    if (typeof (collection) == 'object') {
-                                                        //Delete the account
-                                                        collection.deleteOne({ email: token.email }, (err, res) => {
-                                                            if (!err && res.result.ok) {
-                                                                //Connect to database
-                                                                mongodb.edit("BananaGames", "Tokens", collection => {
-                                                                    if (typeof (collection) == 'object') {
-                                                                        //Delete the tokens
-                                                                        collection.deleteMany({ email: token.email }, (err, res) => {
-                                                                            if (!err && res.result.ok) {
-                                                                                callback(200);
-                                                                            }
-                                                                            else {
-                                                                                callback(206, { "Error": "Could not delete the tokens associated with your account. However, the account itself has been removed" });
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                    else {
-                                                                        callback(206, { "Error": "Could not connect to database to remove the tokens associated with your account. However, the account itself has been removed" });
-                                                                    }
-                                                                });
-                                                            }
-                                                            else {
-                                                                callback(500, { "Error": "Could not delete your account" });
-                                                            }
-                                                        });
-                                                    }
-                                                    else {
-                                                        callback(500, { "Error": "Error connecting to database" });
-                                                    }
-                                                });
-                                            }
-                                            else {
-                                                callback(404, { "Error": "Token not found" });
-                                            }
+                if (!err) {
+                    if (token) {
+                        //Get more info
+                        tokens.getUserInfo(token.userId, (err, user) => {
+                            if (!err && user) {
+                                //Email must match token email
+                                if (user.email == email) {
+                                    //Delete the account
+                                    const userCollection = mongodb.collection("BananaGames", "Users");
+                                    userCollection.findOneAndDelete({ email: email }, (err, res) => {
+                                        if (!err && res && res.value) {
+                                            callback(200);
                                         }
                                         else {
-                                            callback(500, { "Error": "Error searching for user" });
+                                            callback(500, { "Error": "Could not delete account" });
                                         }
                                     });
                                 }
                                 else {
-                                    callback(500, { "Error": "Could not search for your user" });
+                                    callback(401);
                                 }
-                            });
-                        }
-                        else {
-                            callback(401, { "Error": "Invalid token" });
-                        }
+                            }
+                            else {
+                                callback(500, { "Error": "Could not get email" });
+                            }
+                        });
                     }
                     else {
-                        callback(500, { "Error": "Could not validate token" });
+                        callback(401);
                     }
                 }
                 else {
-                    callback(409, { "Error": "Email must match token" });
+                    callback(500, { "Error": "Could not check token" });
                 }
             });
         }
