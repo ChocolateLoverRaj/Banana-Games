@@ -14,7 +14,7 @@ api.router = {
     users: users,
     tokens: tokens,
     ping: ping,
-    //friends: friends
+    friends: friends
 };
 
 //Process Function

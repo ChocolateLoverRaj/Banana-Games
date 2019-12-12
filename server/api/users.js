@@ -456,11 +456,9 @@ users.put = (data, callback) => {
                                     if (firstName || lastName || username || (password && ogPassword)) {
                                         //Hash password if there is
                                         var hashedPassword;
-                                        if (password) {
-                                            hashedPassword = hash(password);
-                                        }
                                         var hashedOgPassword;
-                                        if (ogPassword) {
+                                        if (password && ogPassword) {
+                                            hashedPassword = hash(password);
                                             hashedOgPassword = hash(ogPassword);
                                         }
                                         //Get the user based on email
