@@ -1,0 +1,177 @@
+/*Grid*/
+#holder {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#friendsHolder, #invitesHolder, #requestsHolder {
+    border-left: solid;
+    border-bottom: solid;
+    border-right: solid;
+}
+#topHolder {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+#topHolder [selected] {
+    border-left: solid;
+    border-top: solid;
+    border-right: solid;
+}
+#topHolder :not([selected]) {
+    border-bottom: solid;
+}
+#friends {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+#invites {
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+#requests {
+    grid-column-start: 3;
+    grid-column-end: 3;
+}
+
+/*Loading and Error*/
+#loading, #error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Friends*/
+#friendsHolder > .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#friendsHolder > .grid > :nth-child(odd) {
+    background-color: #f2f2f2;
+}
+.friend {
+    display: grid;
+    grid-template-columns: auto 24px;
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    text-align: left;
+    align-items: center;
+}
+.friend:not([delete]) [delete] {
+    display: none;
+}
+.friend[delete] {
+    grid-template-columns: 60% 30% 10%;
+    text-align: center;
+}
+.friend .areYou {
+    color: orange;
+    border: solid orange;
+    margin-right: 5px;
+}
+.friend .areYou:hover {
+    background-color: orange;
+    color: white;
+}
+.friend .cancel {
+    color: green;
+    border: solid green;
+    margin-left: 5px;
+}
+
+.friend .cancel:hover {
+    background-color: green;
+    color: white;
+}
+.friend .sure {
+    color: red;
+    border: solid red;
+    margin-left: 5px;
+}
+.friend .sure:hover {
+    background-color: red;
+    color: white;
+}
+.friend[delete] :not([delete]) {
+    display: none;
+}
+.friend > .delete {
+    color: red;
+}
+
+/*Invites*/
+#invitesHolder > .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#invitesHolder > .grid > :nth-child(odd) {
+    background-color: #f2f2f2;
+}
+.invite {
+    display: grid;
+    grid-template-columns: auto 24px;
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    text-align: left;
+    align-items: center;
+}
+.invite > .delete {
+    color: red;
+}
+
+/*Requests*/
+#requestsHolder > .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#requestsHolder > .grid > :nth-child(odd) {
+    background-color: #f2f2f2;
+}
+.request {
+    display: grid;
+    grid-template-columns: auto 24px 24px;
+    width: 100%;
+    padding: 5px 10px 5px 10px;
+    text-align: left;
+    align-items: center;
+}
+.request > .accept {
+    color: green;
+}
+.request > .delete {
+    color: red;
+}
+
+/*Add friend*/
+#inputGrid, #resultsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+#input {
+    display: flex;
+    justify-content: center;
+}
+#results {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 25px 50px 25px 50px;
+    border: solid;
+}
+#resultsGrid {
+    text-align: left;
+}
+#resultsGrid > :nth-child(odd) {
+    background-color: #f2f2f2;
+}
+.result {
+    display: grid;
+    grid-template-columns: auto 30px;
+}
+.result:not([scene=alreadyFriends]) > .alreadyFriends {
+    display: none;
+}
+.result:not([scene=alreadyInvited]) > .alreadyInvited {
+    display: none;
+}
+.result:not([scene=add]) > .add {
+    display: none;
+}

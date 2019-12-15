@@ -260,3 +260,7 @@ html{
 .hidden {
     display: none !important;
 }
+/*Anything that is a template is for javascript use only and should always be hidden*/
+.template {
+    display: none !important;
+}

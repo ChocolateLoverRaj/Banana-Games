@@ -57,16 +57,7 @@ tokens.check = (id, callback) => {
                     const valid = Date.now() <= token.expires;
 
                     if (valid) {
-                        //Find the email of the person with the token
-                        tokens.getUserInfo(token.email, (err, user) => {
-                            if (!err && user) {
-                                token.username = user.username;
-                                callback(false, token);
-                            }
-                            else {
-                                callback("Error finding username");
-                            }
-                        });
+                        callback(false, token);
                     }
                     else {
                         callback(false, false);
