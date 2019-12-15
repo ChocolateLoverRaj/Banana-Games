@@ -38,6 +38,9 @@ const costomizations = {
     "account": {
         title: "My Account"
     },
+    "account/friends": {
+        title: "Your Friends"
+    },
     "terms": {
         title: "Banana Games Terms Of Service"
     },
@@ -56,6 +59,7 @@ const router = {
     "verify/failed": "/verify/failed",
     "verify/success": "/verify/success",
     "account/create": "/account/create",
+    "account/friends": "/account/friends",
     "account": "/account",
     "terms": "/terms",
     "games": "/games"

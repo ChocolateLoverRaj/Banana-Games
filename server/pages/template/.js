@@ -42,6 +42,25 @@ class Emitter {
     };
 }
 
+const ElementTemplates = {};
+class ElementTemplate {
+    constructor(name, element) {
+        ElementTemplates[name] = bindings => {
+            var newElement = element.cloneNode(true);
+            //Check if there is are bindings
+            //Bindings are: key = class, value = innerHTMl for element with that class
+            if (bindings) {
+                for (var key in bindings) {
+                    newElement.getElementsByClassName(key)[0].innerHTML = bindings[key];
+                }
+            }
+            //Remove template class
+            newElement.classList.remove("template");
+            return newElement;
+        };
+    };
+}
+
 //Config
 app.config = {
     sessionToken: false,
@@ -422,6 +441,20 @@ app.status.token.on("login", data => {
     app.status.token.on("logout", () => {
         //Stop trying to renew the token
         clearInterval(renewalLoop);
+    });
+
+    //If we go offline, clear the interval, then start it again when back online
+    app.status.connection.on("close", () => {
+        clearInterval(renewalLoop);
+
+        var reconnectOn = app.status.connection.on("connect", () => {
+            renewalLoop = setInterval(renewToken, 1000 * 60);
+            app.status.token.nevermind(cancelReconnectOn);
+        });
+
+        var cancelReconnectOn = app.status.token.on("logout", () => {
+            app.status.socket.nevermind(reconnectOn);
+        });
     });
 });
 //retry button

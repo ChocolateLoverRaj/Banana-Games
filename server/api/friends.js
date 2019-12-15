@@ -10,7 +10,7 @@ friends.process = (data, callback) => {
     //Check for a valid path
     //Acceptable paths
     //List means list of friends, invites means list of outgoing invites
-    const acceptablePaths = ["list", "invites", "requests"];
+    const acceptablePaths = ["list", "invites", "requests", "search"];
     if (acceptablePaths.indexOf(data.path) > -1) {
         friends[data.path].process(data, callback);
     }
@@ -166,12 +166,32 @@ friends.list.delete = (data, callback) => {
                                 friends: id
                             }
                         };
+                        //Remove the user from the list
                         usersCollection.findOneAndUpdate(query, value, { returnOriginal: false }, (err, res) => {
                             if (!err) {
                                 if (res && res.value) {
                                     friends.idToUser(res.value.friends, (err, list) => {
                                         if (!err && list) {
-                                            callback(200, list);
+                                            //Query
+                                            let query = {
+                                                id: id,
+                                                friends: token.userId
+                                            };
+                                            //Value
+                                            let value = {
+                                                $pull: {
+                                                    friends: token.userId
+                                                }
+                                            };
+                                            //Remove the friend from user's list
+                                            usersCollection.findOneAndUpdate(query, value, { returnOriginal: false }, (err, res) => {
+                                                if (!err && res && res.value) {
+                                                    callback(200, list);
+                                                }
+                                                else {
+                                                    callback(500, { "Error": "Couldn't update user" });
+                                                }
+                                            });
                                         }
                                         else {
                                             callback(500, { "Error": "Couldn't get friends\' data" });
@@ -258,7 +278,7 @@ friends.invites.post = (data, callback) => {
                                                                 //Make sure that the friend that the user is trying to friend hasn't already friend requested them. If they have, then automatically friend the two of them and delelete the friend's request.
                                                                 friendsCollection.findOneAndDelete({ from: id, to: token.userId }, (err, res) => {
                                                                     if (!err) {
-                                                                        if (res && res.result) {
+                                                                        if (res && res.value) {
                                                                             //Friendship
                                                                             friends.friendship(id, token.userId, err => {
                                                                                 if (!err) {
@@ -598,6 +618,113 @@ friends.requests.delete = (data, callback) => {
     }
     else {
         callback(400, { "Error": "Missing id in query" });
+    }
+};
+
+//Search
+friends.search = {};
+
+//Search proccess
+friends.search.process = (data, callback) => {
+    //Acceptable methods
+    const acceptableMethods = ["get"];
+    if (acceptableMethods.indexOf(data.method) > -1) {
+        friends.search[data.method](data, callback);
+    }
+    else {
+        callback(405);
+    }
+};
+
+//Search get
+friends.search.get = (data, callback) => {
+    //Validate
+    let token = typeof (data.headers.token) == 'string' && data.headers.token.trim().length > 0 ? data.headers.token.trim() : false;
+    let username = typeof (data.queryStringObject.username) == 'string' && data.queryStringObject.username.trim().length > 0 && data.queryStringObject.username.trim().match(/\w/g) ? data.queryStringObject.username.trim() : false;
+
+    if (username) {
+        //Check for token
+        if (token) {
+            //Make sure token is good
+            tokens.check(token, (err, token) => {
+                if (!err) {
+                    if (token) {
+                        //Search for invites that the user has send
+                        const requestsCollection = mongodb.collection("BananaGames", "FriendRequests");
+                        requestsCollection.find({ from: token.userId }).toArray((err, res) => {
+                            if (!err && res) {
+                                var currentInvites = [];
+                                res.forEach(invite => {
+                                    currentInvites.push(invite.to);
+                                });
+                                //Search for the user
+                                const usersCollection = mongodb.collection("BananaGames", "Users");
+                                usersCollection.findOne({ id: token.userId }, (err, res) => {
+                                    if (!err && res) {
+                                        let currentFriends = res.friends;
+                                        //Filter
+                                        const filter = {
+                                            username: new RegExp(username, "ig")
+                                        };
+                                        //Add user
+                                        let users = [];
+                                        const addUser = user => {
+                                            users.push({
+                                                id: user.id,
+                                                username: user.username,
+                                                alreadyFriends: currentFriends.indexOf(user.id) == -1 ? false : true,
+                                                alreadyInvited: currentInvites.indexOf(user.id) == -1 ? false : true
+                                            })
+                                        };
+                                        usersCollection.find(filter).toArray((err, res) => {
+                                            if (!err && res) {
+                                                res.forEach(user => {
+                                                    addUser(user);
+                                                });
+                                                //Find based on exact email
+                                                usersCollection.findOne({ email: username }, (err, user) => {
+                                                    if (!err) {
+                                                        if (user) {
+                                                            addUser(user);
+                                                        }
+                                                        callback(200, users);
+                                                    }
+                                                    else {
+                                                        callback(500, { "Error": "Could not exact search email" });
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                console.log(err, res);
+                                                callback(500, { "Error": "Could not check for usernames" });
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        callback(500, { "Error": "could not find you" });
+                                    }
+                                });
+                            }
+                            else {
+                                callback(500, { "Error": "Could not read your invites" });
+                            }
+                        });
+                    }
+                    else {
+                        callback(401);
+                    }
+                }
+                else {
+                    callback(500, { "Error": "Could not check token" });
+                }
+            });
+        }
+        else {
+            callback(403);
+        }
+    }
+    else {
+        callback(400, { "Error": "Missing username in query" });
     }
 };
 

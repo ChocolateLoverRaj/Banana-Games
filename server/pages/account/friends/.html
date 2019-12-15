@@ -1,0 +1,101 @@
+<h1>Your Banana Games Friends</h1>
+<div class="online">
+    <div class="loggedIn">
+        <div id="grid">
+            <div id="holder">
+                <div id="topHolder" class="hidden">
+                    <div id="friends" selected>Friends</div>
+                    <div id="invites">Invites (outgoing)</div>
+                    <div id="requests">Requests (incoming)</div>
+                </div>
+                <div id="friendsHolder" class="hidden">
+                    <h2>Your List of Friends</h2>
+                    <!-- Tell them that they have to friends -->
+                    <div id="noFriends">
+                        <h3>Oh no! You don't have any friends.</h3>
+                    </div>
+                    <div id="friendsGrid" class="grid"></div>
+                </div>
+                <div id="invitesHolder" class="hidden">
+                    <h2>Your List of Friend Invites That You Have Sent To Others</h2>
+                    <!-- Tell them that they have no invites -->
+                    <div id="noInvites">
+                        <h3>You haven't sent any invites.</h3>
+                    </div>
+                    <div id="invitesGrid" class="grid"></div>
+                </div>
+                <div id="requestsHolder" class="hidden">
+                    <h2>Your List of Gamers That Have Sent You a Friend Request</h2>
+                    <!-- Tell them that they have no invites -->
+                    <div id="noRequests">
+                        <h3>No one wants to be your friend.</h3>
+                    </div>
+                    <div id="requestsGrid" class="grid"></div>
+                </div>
+                <!-- Loading -->
+                <div id="loading" class="loading">
+                    <h2>Loading</h2>
+                    <i class="material-icons w3-spin">toys</i>
+                </div>
+                <!-- Error -->
+                <div id="error" class="error hidden">
+                    <h2>Error</h2>
+                    <i class="material-icons">error</i>
+                    <button id="retry">Retry</button>
+                </div>
+                <!-- Invite others -->
+                <form id="form" class="hidden">
+                    <h2>Invite A Banana Gamer</h2>
+                    <h3>Search by username or by email.</h3>
+                    <div id="inputGrid">
+                        <div id="input">
+                            <input name="username" type="text" maxlength="24" autocomplete="off" />
+                            <i class="material-icons w3-spin loading hidden" id="loadingResults">toys</i>
+                        </div>
+                        <div id="results" class="hidden">
+                            <h2><span id="numberOfResults">0</span> Results</h2>
+                            <div id="resultsGrid"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="notLoggedIn">
+        <h1>You must be logged in to have friends on Banana Games.</h1>
+        <h2><a href="/account/create">Create a Banana Games Account.</a></h2>
+    </div>
+</div>
+<div class="offline">
+    <h1>You must be online to veiw your friends list.</h1>
+</div>
+<!-- Template Friend -->
+<div id="friend" class="template friend">
+    <!-- Regular display -->
+    <span class="username">Username</span>
+    <span class="delete"><i class="material-icons">delete</i></span>
+    <!-- Delete Display -->
+    <span delete class="areYou">Are you sure that you want to remove <i delete class="deletee">Username</i>?</span>
+    <span delete class="cancel">Cancel</span>
+    <span delete class="sure">I'm Sure</span>
+</div>
+<!-- Template Invite -->
+<div id="invite" class="template invite">
+    <!-- Regular display -->
+    <span class="username">Username</span>
+    <span class="delete"><i class="material-icons">close</i></span>
+</div>
+<!-- Template Request -->
+<div id="request" class="template request">
+    <!-- Regular display -->
+    <span class="username">Username</span>
+    <span class="accept"><i class="material-icons">check</i></span>
+    <span class="delete"><i class="material-icons">close</i></span>
+</div>
+<!-- Template Result -->
+<div id="result" class="template result" scene="add">
+    <h3 class="username">Username</h3>
+    <h3 class="add"><i class="material-icons success">add</i></h3>
+    <h3 class="alreadyFriends"><i class="material-icons success">person</i></h3>
+    <h3 class="alreadyInvited"><i class="material-icons success">check</i></h3>
+</div>
