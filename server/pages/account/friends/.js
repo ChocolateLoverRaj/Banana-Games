@@ -1,3 +1,5 @@
+//Friend list
+let friendTemplate = document.getElementById("friend");
 new ElementTemplate("friend", friendTemplate);
 
 //Invite list
