@@ -61,6 +61,8 @@ users.check = (data, callback) => {
 
         //Make sure ONE of username or email is being checked
         if ((username || email) && !(username && email)) {
+            //Users collection
+            const usersCollection = mongodb.collection("BananaGames", "Users");
             if (username) {
                 //Profanity check the username
                 profanity.check(username, (err, profane) => {
@@ -68,7 +70,6 @@ users.check = (data, callback) => {
                         if (!profane) {
                             //Check if the username is taken
                             //Look for users
-                            const usersCollection = mongodb.collection("BananaGames", "Users");
                             usersCollection.findOne({ username: username }, (err, res) => {
                                 if (!err) {
                                     if (res == null) {
