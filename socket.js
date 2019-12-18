@@ -85,11 +85,11 @@ socket.init = server => {
                 let path = typeof (message.path) == 'string' && message.path.trim().length > 0 ? message.path.trim() : false;
                 let data = typeof (message.data) == 'object' && message.data != null ? message.data : false;
 
-                if (path) {
+                if (path && data) {
                     socket.messages.emit(path, message, client);
                 }
                 else {
-                    client.send("error", { error: "Missing Required data. Must specify path and id" });
+                    client.send("error", { error: "Missing Required data. Must specify path and data" });
                 }
             }
             else {
@@ -103,7 +103,6 @@ socket.init = server => {
 socket.messages.on("pong", (message, client) => {
     //Calculate ping
     client.ping = Date.now() - client.lastPinged;
-    console.log(client.ping);
     //Reply
     client.send("pong", {
         ping: client.ping
@@ -114,6 +113,43 @@ socket.messages.on("pong", (message, client) => {
         client.lastPinged = Date.now();
         client.send("ping", {});
     }, config.socket.pingFrequency);
+});
+
+//Token
+socket.messages.on("token", (message, client) => {
+    //Make sure message is good
+    let id = typeof (message.data.id) == 'string' && message.data.id.trim().length > 0 ? message.data.id.trim() : false;
+    if (id) {
+        //Check the token
+        tokens.check(id, (err, token) => {
+            if (!err && token) {
+                //Get more user info
+                tokens.getUserInfo(token.userId, (err, user) => {
+                    if (!err && user) {
+                        //update the client
+                        client.token = {
+                            id: id,
+                            username: user.username,
+                            userId: user.id,
+                            email: user.email
+                        };
+                        //Add the client to tokens
+                        status.clients.token[id] = client;
+                        console.log(status, client);
+                    }
+                    else {
+                        client.send("token", { error: "Could not get user" }, message.id);
+                    }
+                });
+            }
+            else {
+                client.send("token", { error: "Bad token" }, message.id);
+            }
+        });
+    }
+    else {
+        client.send("token", { error: "No token specified" }, message.id);
+    }
 });
 
 //Export the module
