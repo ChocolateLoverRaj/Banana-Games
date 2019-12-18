@@ -58,6 +58,11 @@ socket.init = server => {
             ws.send(JSON.stringify(messageObject));
         };
 
+        //Send the client the socket id
+        client.send("id", {
+            id: randomId
+        });
+
         //Update lastPinged
         client.lastPinged = Date.now();
         //Ping
@@ -113,43 +118,6 @@ socket.messages.on("pong", (message, client) => {
         client.lastPinged = Date.now();
         client.send("ping", {});
     }, config.socket.pingFrequency);
-});
-
-//Token
-socket.messages.on("token", (message, client) => {
-    //Make sure message is good
-    let id = typeof (message.data.id) == 'string' && message.data.id.trim().length > 0 ? message.data.id.trim() : false;
-    if (id) {
-        //Check the token
-        tokens.check(id, (err, token) => {
-            if (!err && token) {
-                //Get more user info
-                tokens.getUserInfo(token.userId, (err, user) => {
-                    if (!err && user) {
-                        //update the client
-                        client.token = {
-                            id: id,
-                            username: user.username,
-                            userId: user.id,
-                            email: user.email
-                        };
-                        //Add the client to tokens
-                        status.clients.token[id] = client;
-                        console.log(status, client);
-                    }
-                    else {
-                        client.send("token", { error: "Could not get user" }, message.id);
-                    }
-                });
-            }
-            else {
-                client.send("token", { error: "Bad token" }, message.id);
-            }
-        });
-    }
-    else {
-        client.send("token", { error: "No token specified" }, message.id);
-    }
 });
 
 //Export the module

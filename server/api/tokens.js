@@ -5,6 +5,7 @@ const mongodb = require("../../lib/mongodbhelper");
 const hash = require("../../lib/hash");
 const config = require("../../lib/config");
 const randomString = require("../../lib/randomstring");
+const status = require("../../status");
 
 //Create a tokens container
 const tokens = {};
@@ -12,12 +13,69 @@ const tokens = {};
 //Proccess function
 tokens.process = (data, callback) => {
     //Acceptable methods
-    const acceptableMethods = ["post", "get", "put", "delete"];
+    const acceptableMethods = ["post", "get", "put", "delete", "link"];
     if (acceptableMethods.indexOf(data.method) > -1) {
         tokens[data.method](data, callback);
     }
     else {
         callback(405);
+    }
+};
+
+//Link
+//Required data: tokenId, socketId
+tokens.link = (data, callback) => {
+    let tokenId = typeof (data.headers.token) == 'string' && data.headers.token.trim().length > 0 ? data.headers.token.trim() : false;
+    let socketId = typeof (data.queryStringObject.id) == 'string' && data.queryStringObject.id.trim().length > 0 ? data.queryStringObject.id.trim() : false;
+
+    if (tokenId) {
+        if (socketId) {
+            //Check the token
+            tokens.check(tokenId, (err, token) => {
+                if (!err) {
+                    if (token) {
+                        //Check the socketId
+                        let client = status.clients.id[socketId];
+                        if (client && client.connected) {
+                            //Get more info
+                            tokens.getUserInfo(token.userId, (err, user) => {
+                                if (!err && user) {
+                                    //Update the client token
+                                    client.token = {
+                                        id: tokenId,
+                                        userId: user.id,
+                                        username: user.username,
+                                        email: user.email
+                                    };
+                                    //Add token to client by token
+                                    status.clients.token[tokenId] = client;
+                                    //All good
+                                    callback(200);
+                                }
+                                else {
+                                    callback(500, { "Error": "Could not get your user" });
+                                }
+                            });
+                        }
+                        else {
+                            callback(404, { "Error": "Could not find socket" });
+                        }
+                    }
+                    else {
+                        callback(403);
+                    }
+                }
+                else {
+                    callback(500, { "Error": "Could not check token" });
+                }
+            });
+        }
+        else {
+            callback(400, { "Error": "Missing id in query" });
+        }
+    }
+    else {
+        callback(401);
     }
 };
 

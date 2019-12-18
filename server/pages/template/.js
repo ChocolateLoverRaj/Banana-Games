@@ -76,8 +76,7 @@ app.status = {
     connection: new Emitter(),
     message: new Emitter(),
     token: new Emitter(),
-    ping: NaN,
-    lastPinged: NaN,
+    ping: NaN
 }
 
 //AJAX client for REST api
@@ -100,7 +99,7 @@ app.client.request = (headers, path, method, queryStringObject, payload, callbac
     //Set defaults
     headers = typeof (headers) == 'object' && headers != null ? headers : {};
     path = typeof (path) == 'string' ? path : "/";
-    const acceptableMethods = ["POST", "GET", "PUT", "DELETE"];
+    const acceptableMethods = ["POST", "GET", "PUT", "DELETE", "LINK"];
     method = typeof (method) == 'string' && acceptableMethods.indexOf(method) > -1 ? method : "GET";
     queryStringObject = typeof (queryStringObject) == 'object' && queryStringObject != null ? queryStringObject : {};
     payload = typeof (payload) == 'object' && payload != null ? payload : {};
@@ -290,6 +289,19 @@ app.status.message.on("ping", message => {
 });
 
 //Login
+//Link token
+const linkToken = (token, callback) => {
+    //Send a request
+    app.client.request({ token: token }, "/api/tokens", "LINK", { id: app.config.socketId }, undefined, (statusCode, payload) => {
+        if (statusCode == 200) {
+            app.status.connection.emit("link");
+            callback(false);
+        }
+        else {
+            callback(payload ? payload : statusCode);
+        }
+    });
+};
 //only logged in and only logged out elements
 const showLoginStatus = loggedIn => {
     //Update the stylesheet
@@ -365,7 +377,7 @@ const showLoginElements = status => {
         loginElements.loggedOutDisplay.classList.add("hidden");
     }
 };
-//Once connected
+//Once connected automatically login
 app.status.connection.on("connect", () => {
     showLoginElements("login");
 
@@ -379,11 +391,22 @@ app.status.connection.on("connect", () => {
         app.client.request(undefined, "/api/tokens", "GET", { id: token }, undefined, (statusCode, payload) => {
             //Check that the token is valid
             if (statusCode == 200 && payload && payload.valid) {
-                //Connect the token to the websocket
-                app.client.message("token", { id: payload.id });
-                //Show loggedIn
-                showLoginElements("success");
-                app.status.token.emit("login", payload);
+                //Link socket
+                linkToken(payload.id, err => {
+                    if (!err) {
+                        //Connect the token to the websocket
+                        app.client.message("token", { id: payload.id });
+                        //Show loggedIn
+                        showLoginElements("success");
+                        app.status.token.emit("login", payload);
+                    }
+                    else {
+                        //Remove the token from localStorage
+                        localStorage.removeItem("token");
+                        //Show login
+                        showLoginElements("login");
+                    }
+                });
             }
             else {
                 //Remove the token from localStorage
@@ -472,12 +495,20 @@ loginElements.form.onsubmit = e => {
     app.client.request(undefined, "/api/tokens", "POST", undefined, payload, (statusCode, payload) => {
         //Check if the status code is 201 - created
         if (statusCode == 201) {
-            //Connect the token to the websocket
-            app.client.message("token", { id: payload.id });
-            showLoginElements("success");
-            app.status.token.emit("login", payload);
-            //Save the token in localStorage
-            localStorage.setItem("token", payload.id);
+            //Link
+            linkToken(payload.id, err => {
+                if (!err) {
+                    //Connect the token to the websocket
+                    app.client.message("token", { id: payload.id });
+                    showLoginElements("success");
+                    app.status.token.emit("login", payload);
+                    //Save the token in localStorage
+                    localStorage.setItem("token", payload.id);
+                }
+                else {
+                    showLoginElements("failed");
+                }
+            });
         }
         //Check if the status code is 606 - not verified
         else if (statusCode == 606) {
@@ -534,8 +565,6 @@ const connect = () => {
             ws.send(JSON.parse(message));
         });
         //Emit connection
-        app.status.lastPinged = Date.now();
-        app.status.connection.emit("connect");
     };
 
     //Bind to close and error events
@@ -573,6 +602,12 @@ const connect = () => {
         }
     };
 };
+app.status.message.on("id", message => {
+    //Save socket id
+    app.config.socketId = message.data.id;
+    //Emit connection
+    app.status.connection.emit("connect");
+});
 //Connect
 connect();
 //Bind connect button to connect
