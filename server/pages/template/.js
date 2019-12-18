@@ -273,6 +273,49 @@ app.status.connection.on("close", () => {
 app.status.connection.on("ping", ms => {
     ping.display.innerHTML = ms;    
 });
+/*Ping interval
+var pingLoop;
+//Start ping
+const startPing = () => {
+    //Ping
+    const ping = () => {
+        //set a ping request
+        //Get the time before sending
+        let timeBeforeSending = Date.now();
+        app.client.message("ping", {}, 1000, (timeOut, data) => {
+            //If there is a timeout, show offline, because if you have more than a millisecond of lag, then you dead.
+            if (!timeOut && data) {
+                //Calculate the ping
+                let ping = Date.now() - timeBeforeSending;
+                app.status.connection.emit("ping", ping);
+                //Pong back
+                app.client.message("pong");
+            }
+            else {
+                console.log("time out", timeOut, data);
+                app.status.connection.emit("close");
+            }
+        });
+    };
+    //Do a ping
+    ping();
+    //Every second, do a ping
+    pingLoop = setInterval(() => {
+        ping();
+    }, 1000);
+};
+//Stop ping
+const stopPing = () => {
+    clearInterval(pingLoop);
+};
+//Start and stop pinging when connection opens and closes
+app.status.connection.on("connect", () => {
+    startPing();
+});
+app.status.connection.on("close", () => {
+    stopPing();
+});*/
+
 //Whenever the server asks for a ping, request a pong
 app.status.message.on("ping", message => {
     app.status.lastPinged = Date.now();
@@ -379,8 +422,6 @@ app.status.connection.on("connect", () => {
         app.client.request(undefined, "/api/tokens", "GET", { id: token }, undefined, (statusCode, payload) => {
             //Check that the token is valid
             if (statusCode == 200 && payload && payload.valid) {
-                //Connect the token to the websocket
-                app.client.message("token", { id: payload.id });
                 //Show loggedIn
                 showLoginElements("success");
                 app.status.token.emit("login", payload);
@@ -472,8 +513,6 @@ loginElements.form.onsubmit = e => {
     app.client.request(undefined, "/api/tokens", "POST", undefined, payload, (statusCode, payload) => {
         //Check if the status code is 201 - created
         if (statusCode == 201) {
-            //Connect the token to the websocket
-            app.client.message("token", { id: payload.id });
             showLoginElements("success");
             app.status.token.emit("login", payload);
             //Save the token in localStorage
@@ -556,10 +595,6 @@ const connect = () => {
             //Warn the user
             console.warn("A websocket message was received with invalid JSON format.", stringMessage);
             message = {};
-        }
-        //Check if there is an error
-        if (message.data.error) {
-            console.error("server error");
         }
         //Try to find the path of the message
         if (message.path) {
