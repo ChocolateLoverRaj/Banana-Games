@@ -10,61 +10,18 @@ const EventEmitter = require("events");
 
 //My Scripts
 const status = require("./status");
+const config = require("./lib/config");
+const randomString = require("./lib/randomstring");
 const tokens = require("./server/api/tokens");
 
 //Create a container for websocket
 const socket = {};
 
+//Emitter that emits messages
+socket.messages = new EventEmitter();
+
 //Init Function
 socket.init = server => {
-    //Emitter that emits messages
-    socket.messages = new EventEmitter();
-
-    //Ping Event
-    socket.messages.on("ping", (data, clientId, ws) => {
-        //Get the id
-        const id = typeof (data.id) == 'string' && data.id.trim().length > 0 ? data.id.trim() : false;
-
-        ws.send(JSON.stringify({ error: false, id: id }));
-    });
-
-    //Token Event
-    socket.messages.on("token", (data, clientId, ws) => {
-        //Get the id and token
-        const id = typeof (data.id) == 'string' && data.id.trim().length > 0 ? data.id.trim() : false;
-        const token = typeof (data.token) == 'string' && data.token.trim().length > 0 ? data.token.trim() : false;
-
-        //Make sure there is a token
-        if (token) {
-            //Check the token
-            tokens.check(token, (err, token) => {
-                if (!err && token) {
-                    //Make sure the client exists
-                    if (typeof (status.clients[clientId]) == 'object' && status.clients[clientId] != null) {
-                        //Add the token to the client
-                        status.clients[clientId].token = {
-                            id: token.id,
-                            email: token.email,
-                            username: token.username
-                        }
-
-                        //Send back a friendly reply
-                        ws.send(JSON.stringify({ error: false, id: id }));
-                    }
-                    else {
-                        ws.send(JSON.stringify({ error: "You don't esist", id: id }));
-                    }
-                }
-                else {
-                    ws.send(JSON.stringify({ error: "Couldn't login", id: id }));
-                }
-            });
-        }
-        else {
-            ws.send(JSON.stringify({ error: "No token specified", id: id }));
-        }
-    });
-
     const wss = new WebSocket.Server({ server: server, clientTracking: true });
 
     wss.on("listening", ws => {
@@ -73,50 +30,91 @@ socket.init = server => {
 
     wss.on("connection", ws => {
         //Make a randomId for this client
-        const randomId = Math.random().toString();
+        let randomId = randomString(config.socket.idLength);
 
-        //Add the client to status
-        status.clients[randomId] = {
+        //Make the client object
+        let client = {
             socket: ws,
             token: false,
+            lastPinged: Date.now(),
+            ping: NaN,
+            connected: true,
+            id: randomId
+        };
+        
+        //Add the client to status
+        status.clients.id[randomId] = client;
+
+        //My own send
+        client.send = (path, data, messageId) => {
+            //Message object
+            let messageObject = {
+                path: path,
+                data: data,
+                timeSent: Date.now(),
+                id: messageId
+            };
+            //Send
+            ws.send(JSON.stringify(messageObject));
         };
 
-        //Send the id to the client
-        ws.send(JSON.stringify({
-            path: "id",
-            yourId: randomId
-        }));
+        //Update lastPinged
+        client.lastPinged = Date.now();
+        //Ping
+        client.send("ping", {});
 
+        //If the socket gets closed
         ws.on("close", (ws, code, reason) => {
-            delete status.clients[randomId];
+            //Update client
+            client.connected = false;
         });
 
+        //Handle a message
         ws.on("message", string => {
             //Try to parse the data as JSON
+            var message;
             try {
-                var data = JSON.parse(string);
+                message = JSON.parse(string);
             }
             catch (e) {
-                var data = false;
+                message = false;
             }
 
-            if (data) {
-                //Get the path key and id key from the data
-                const path = typeof (data.path) == 'string' && data.path.trim().length > 0 ? data.path.trim() : false;
+            if (message) {
+                //Get the path key and data from the data
+                let path = typeof (message.path) == 'string' && message.path.trim().length > 0 ? message.path.trim() : false;
+                let data = typeof (message.data) == 'object' && message.data != null ? message.data : false;
 
                 if (path) {
-                    socket.messages.emit(data.path, data, randomId, ws);
+                    socket.messages.emit(path, message, client);
                 }
                 else {
-                    ws.send(JSON.stringify({ error: "Missing Required data. Must specify path and id" }));
+                    client.send("error", { error: "Missing Required data. Must specify path and id" });
                 }
             }
             else {
-                ws.send(JSON.stringify({ error: "Invalid JSON. Only JSON accepted" }));
+                client.send("error", { error: "Invalid JSON. Only JSON accepted" });
             }
         });
     });
 };
+
+//Pong
+socket.messages.on("pong", (message, client) => {
+    //Calculate ping
+    client.ping = Date.now() - client.lastPinged;
+    console.log(client.ping);
+    //Reply
+    client.send("pong", {
+        ping: client.ping
+    }, message.id);
+
+    //Ask for a ping again after x seconds
+    setTimeout(() => {
+        client.lastPinged = Date.now();
+        client.send("ping", {});
+    }, config.socket.pingFrequency);
+});
 
 //Export the module
 module.exports = socket;

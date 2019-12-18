@@ -76,7 +76,8 @@ app.status = {
     connection: new Emitter(),
     message: new Emitter(),
     token: new Emitter(),
-    ping: 0
+    ping: NaN,
+    lastPinged: NaN,
 }
 
 //AJAX client for REST api
@@ -171,16 +172,22 @@ app.client.request = (headers, path, method, queryStringObject, payload, callbac
 app.client.message = (path, data, timeoutMs, callback) => {
     //Check if socket connection
     if (ws.readyState == ws.OPEN) {
-        //add the path to the data
-        data.path = path;
+        //Make a randomId
+        let randomId = Math.random().toString();
+
+        //Message object
+        let messageObject = {
+            path: path,
+            data: data,
+            timeSent: Date.now(),
+            id: randomId
+        };
         //If callback is requested, add a listener and id
         if (timeoutMs && callback) {
-            //Add a randomId to the data
-            data.id = Math.random().toString();
-            let id = app.status.message.on("reply:" + data.id, data => {
+            let id = app.status.message.on("reply:" + randomId, message => {
                 //Cancel the canceling timer
                 clearInterval(cancel);
-                callback(false, data);
+                callback(false, message);
             });
 
             //Cancel
@@ -192,7 +199,7 @@ app.client.message = (path, data, timeoutMs, callback) => {
             }, timeoutMs);
         }
         //Send
-        ws.send(JSON.stringify(data));
+        ws.send(JSON.stringify(messageObject));
     }
 };
 
@@ -266,7 +273,7 @@ app.status.connection.on("close", () => {
 app.status.connection.on("ping", ms => {
     ping.display.innerHTML = ms;    
 });
-//Ping interval
+/*Ping interval
 var pingLoop;
 //Start ping
 const startPing = () => {
@@ -281,8 +288,11 @@ const startPing = () => {
                 //Calculate the ping
                 let ping = Date.now() - timeBeforeSending;
                 app.status.connection.emit("ping", ping);
+                //Pong back
+                app.client.message("pong");
             }
             else {
+                console.log("time out", timeOut, data);
                 app.status.connection.emit("close");
             }
         });
@@ -304,6 +314,22 @@ app.status.connection.on("connect", () => {
 });
 app.status.connection.on("close", () => {
     stopPing();
+});*/
+
+//Whenever the server asks for a ping, request a pong
+app.status.message.on("ping", message => {
+    app.status.lastPinged = Date.now();
+    app.client.message("pong", {}, 5000, (timeOut, message) => {
+        if (!timeOut && message) {
+            //Update ping
+            app.status.ping = message.data.ping;
+            app.status.connection.emit("ping", app.status.ping);
+        }
+        else {
+            //Show offline
+            app.status.connection.emit("close");
+        }
+    });
 });
 
 //Login
@@ -546,6 +572,9 @@ const connect = () => {
         messagesToSend.forEach(message => {
             ws.send(JSON.parse(message));
         });
+        //Emit connection
+        app.status.lastPinged = Date.now();
+        app.status.connection.emit("connect");
     };
 
     //Bind to close and error events
@@ -558,7 +587,7 @@ const connect = () => {
     //Bind to the message event
     ws.onmessage = stringMessage => {
         //Try to parse the message
-        let message;
+        var message;
         try {
             message = JSON.parse(stringMessage.data);
         }
@@ -567,7 +596,7 @@ const connect = () => {
             console.warn("A websocket message was received with invalid JSON format.", stringMessage);
             message = {};
         }
-        //Try to find the path of the data
+        //Try to find the path of the message
         if (message.path) {
             //Emit the message
             app.status.message.emit(message.path, message);
@@ -579,11 +608,6 @@ const connect = () => {
         }
     };
 };
-//When id is received, emit connection
-app.status.message.on("id", data => {
-    app.config.socketId = data.yourId;
-    app.status.connection.emit("connect");
-});
 //Connect
 connect();
 //Bind connect button to connect

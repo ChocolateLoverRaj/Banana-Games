@@ -3,8 +3,11 @@
 //Make a container 
 const status = {};
 
-//Clients online
+//Clients
 status.clients = {};
+
+//Clients by id
+status.clients.id = {};
 
 //Export the module
 module.exports = status;
