@@ -1,0 +1,41 @@
+#games {
+    margin-bottom: 100px;
+}
+
+.game > .button {
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    width: 100%;
+    font-size: 15px;
+    padding: 20px;
+    background-color: #777;
+    color: white;
+}
+
+.game.active > .button, .game > .button:hover {
+    background-color: #555;
+}
+
+.game > .button:after {
+    content: '\02795';
+    color: white;
+    float: right;
+}
+
+.game > .button.active:after {
+    content: '\2796';
+}
+
+.game > .content {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #f1f1f1;
+    transition: max-height 0.2s ease-out;
+}
+
+.game > .content > .iframe {
+    border: none;
+    width: 100%;
+}

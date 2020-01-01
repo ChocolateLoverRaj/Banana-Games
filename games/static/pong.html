@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/games/static/iframe.css" />
+    <script src="/games/static/iframe.js"></script>
+    <style>
+        body {
+            background-color: dodgerblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="scenes">
+        <!-- Anything We Have In SVG is 600 x 400 and will get automatically scaled -->
+        <svg id="home" width="100%" height="100%" viewBox="0 0 600 400">
+            <!-- Background -->
+            <rect x="0" y="0" width="100%" height="100%"></rect>
+            <!-- Text Says Pong -->
+            <text x="25%" y="25%" font-size="50" textLength="50%" font-stretch="ultra-expanded" fill="white">Pong</text>
+            <!-- Play Button -->
+            <g id="playButton">
+                <rect stroke="white" stroke-width="1%" fill="transparent" x="25%" y="50%" width="50%" height="25%"></rect>
+                <polygon points="250,225 250,275 350,250" fill="white"></polygon>
+            </g>
+        </svg>
+        <svg class="hidden" id="play" width="100%" height="100%" viewBox="0 0 600 400">
+            <!-- Background -->
+            <rect x="0" y="0" width="100%" height="100%"></rect>
+            <!-- Text Says Play -->
+            <text x="25%" y="25%" font-size="50" textLength="50%" font-stretch="ultra-expanded" fill="white">Play</text>
+        </svg>
+    </div>
+    <script>
+        //Control the scenes
+        const scene = new Scene("home", "play");
+        scenes = {
+            display: document.getElementById("scenes"),
+            home: {
+                display: document.getElementById("home"),
+                playButton: document.getElementById("playButton")
+            },
+            play: {
+                display: document.getElementById("play")
+            }
+        };
+
+        //Go to play scene
+        scenes.home.playButton.onclick = e => {
+            scene.currentScene = "play";
+        };
+
+        maintainRatio(scenes.display, {
+            width: 3,
+            height: 2
+        });
+
+        //Scenes
+        scene.on = scene => {
+            if (scene == "home") {
+                scenes.home.display.classList.remove("hidden");
+            }
+            else {
+                scenes.home.display.classList.add("hidden");
+            }
+            if (scene == "play") {
+                scenes.play.display.classList.remove("hidden");
+            }
+            else {
+                scenes.play.display.classList.add("hidden");
+            }
+        };
+    </script>
+</body>
+</html>

@@ -10,6 +10,7 @@ const StringDecoder = require('string_decoder').StringDecoder;
 //My Scripts
 const api = require('./server/api');
 const pages = require('./server/pages');
+const games = require('./games');
 const resources = require('./server/resources');
 const config = require('./lib/config');
 const socket = require("./socket");
@@ -75,6 +76,11 @@ myModule.server = http.createServer((req, res) => {
         //If it starts with '/api' then choose api
         if (pathRoute == 'api') {
             chosenHandler = api;
+        }
+
+        //If it starts with '/games' then choose games
+        else if (pathRoute == 'games') {
+            chosenHandler = games;
         }
 
         //If it starts with '/resource' then choose resources

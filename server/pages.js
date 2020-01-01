@@ -44,7 +44,7 @@ const costomizations = {
     "terms": {
         title: "Banana Games Terms Of Service"
     },
-    "games": {
+    "play": {
         title: "Banana Games"
     }
 };
@@ -62,7 +62,7 @@ const router = {
     "account/friends": "/account/friends",
     "account": "/account",
     "terms": "/terms",
-    "games": "/games"
+    "play": "/play"
 };
 
 //Process Function
