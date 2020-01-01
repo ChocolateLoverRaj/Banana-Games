@@ -14,18 +14,22 @@
         <!-- Anything We Have In SVG is 600 x 400 and will get automatically scaled -->
         <svg id="home" width="100%" height="100%" viewBox="0 0 600 400">
             <!-- Background -->
-            <rect x="0" y="0" width="100%" height="100%"></rect>
+            <rect x="0" y="0" width="600" height="400"></rect>
             <!-- Text Says Pong -->
-            <text x="25%" y="25%" font-size="50" textLength="50%" font-stretch="ultra-expanded" fill="white">Pong</text>
+            <text x="150" y="100" font-size="50" textLength="300" font-stretch="ultra-expanded" fill="white">Pong</text>
             <!-- Play Button -->
             <g id="playButton">
-                <rect stroke="white" stroke-width="1%" fill="transparent" x="25%" y="50%" width="50%" height="25%"></rect>
+                <rect stroke="white" stroke-width="5" fill="transparent" x="150" y="200" width="300" height="100"></rect>
                 <polygon points="250,225 250,275 350,250" fill="white"></polygon>
             </g>
         </svg>
         <svg class="hidden" id="play" width="100%" height="100%" viewBox="0 0 600 400">
             <!-- Background -->
             <rect x="0" y="0" width="100%" height="100%"></rect>
+            <!-- Go Back -->
+            <g id="backHome">
+                <rect stroke="white" stroke-width="5" x="0" y="0" width="100" height="100"></rect>
+            </g>
             <!-- Text Says Play -->
             <text x="25%" y="25%" font-size="50" textLength="50%" font-stretch="ultra-expanded" fill="white">Play</text>
         </svg>
