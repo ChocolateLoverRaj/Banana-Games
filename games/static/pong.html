@@ -1,56 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="/games/static/iframe.css" />
     <script src="/games/static/iframe.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: dodgerblue;
+        }
+
+        .button {
+            cursor: pointer;
+        }
+
+        .coming-soon {
+            cursor: not-allowed;
+        }
+
+        #set-up {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            align-items: center;
+        }
+
+        #set-up table {
+            display: inline-table;
+            border-collapse: collapse;
+        }
+
+        #set-up table, #set-up th, #set-up td {
+            border: 1px solid white;
         }
     </style>
 </head>
 <body>
     <div id="scenes">
         <!-- Anything We Have In SVG is 600 x 400 and will get automatically scaled -->
+        <!-- Home Scene -->
         <svg id="home" width="100%" height="100%" viewBox="0 0 600 400">
             <!-- Background -->
             <rect x="0" y="0" width="600" height="400"></rect>
             <!-- Text Says Pong -->
             <text x="150" y="100" font-size="50" textLength="300" font-stretch="ultra-expanded" fill="white">Pong</text>
             <!-- Play Button -->
-            <g id="playButton">
+            <g class="button" id="playButton">
                 <rect stroke="white" stroke-width="5" fill="transparent" x="150" y="200" width="300" height="100"></rect>
                 <polygon points="250,225 250,275 350,250" fill="white"></polygon>
             </g>
         </svg>
+        <!-- Play Scene -->
         <svg class="hidden" id="play" width="100%" height="100%" viewBox="0 0 600 400">
             <!-- Background -->
             <rect x="0" y="0" width="100%" height="100%"></rect>
             <!-- Go Back -->
-            <g id="backHome">
+            <g class="button" id="backHome">
                 <rect stroke="white" stroke-width="5" x="0" y="0" width="100" height="100"></rect>
+                <text fill="white" x="0" y="75" font-size="50" textLength="100">Back</text>
             </g>
             <!-- Text Says Play -->
             <text x="25%" y="25%" font-size="50" textLength="50%" font-stretch="ultra-expanded" fill="white">Play</text>
+            <!-- Play Local -->
+            <g class="button" id="play-local">
+                <rect stroke="white" x="25" y="200" width="250" height="100"></rect>
+                <text x="50" y="275" textLength="200" font-size="50" fill="white">Play Local</text>
+            </g>
+            <!-- Play Online -->
+            <g class="button coming-soon" id="play-online">
+                <rect stroke="white" x="325" y="200" width="250" height="100"></rect>
+                <text x="350" y="250" textLength="200" font-size="25" fill="white">Play Online</text>
+                <text x="350" y="295" textLength="200" font-size="40" fill="white">Coming Soon</text>
+            </g>
         </svg>
+        <!-- Set-Up Scene -->
+        <div id="set-up" class="hidden">
+            <h1>Set Up Game</h1>
+            <table>
+                <tr>
+                    <th>Players</th>
+                    <td id="players-display">2</td>
+                    <td id="change-players"><i class="material-icons">edit</i></td>
+                </tr>
+                <tr>
+                    <td>Map</td>
+                </tr>
+            </table>
+        </div>
     </div>
     <script>
         //Control the scenes
-        const scene = new Scene("home", "play");
-        scenes = {
+        const scene = new Scene("home", "play", "set-up");
+        const scenes = {
             display: document.getElementById("scenes"),
             home: {
                 display: document.getElementById("home"),
                 playButton: document.getElementById("playButton")
             },
             play: {
-                display: document.getElementById("play")
+                display: document.getElementById("play"),
+                back: document.getElementById("backHome"),
+                local: document.getElementById("play-local")
+            },
+            setUp: {
+                display: document.getElementById("set-up")
             }
         };
 
         //Go to play scene
         scenes.home.playButton.onclick = e => {
             scene.currentScene = "play";
+        };
+
+        //Go Back Home
+        scenes.play.back.onclick = e => {
+            scene.currentScene = "home";
+        };
+
+        //Go To Setup Screen
+        scenes.play.local.onclick = e => {
+            scene.currentScene = "set-up";
         };
 
         maintainRatio(scenes.display, {
@@ -71,6 +146,12 @@
             }
             else {
                 scenes.play.display.classList.add("hidden");
+            }
+            if (scene == "set-up") {
+                scenes.setUp.display.classList.remove("hidden");
+            }
+            else {
+                scenes.setUp.display.classList.add("hidden");
             }
         };
     </script>
