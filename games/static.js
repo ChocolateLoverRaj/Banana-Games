@@ -9,30 +9,34 @@ const static = {};
 
 //Router
 const router = {
-    "pong": {
-        path: "/pong.html",
+    "static/pong": {
+        path: "/static/pong.html",
         type: "text/html",
     },
-    "iframe.js": {
-        path: "/iframe.js",
+    "logic/pong": {
+        path: "/logic/pong.js",
         type: "application/javascript"
     },
-    "iframe.css": {
-        path: "/iframe.css",
+    "static/iframe.js": {
+        path: "/static/iframe.js",
+        type: "application/javascript"
+    },
+    "static/iframe.css": {
+        path: "/static/iframe.css",
         type: "text/css"
-    }
+    },
 }
 
 //Process
 static.process = (data, callback) => {
     //Check if data matches router
-    if (typeof (router[data.path]) == 'object') {
+    if (typeof (router[data.pathRoute + "/" + data.path]) == 'object') {
         //Read the file based on the path
-        let joinedPath = path.join(__dirname, "./static", router[data.path].path);
+        let joinedPath = path.join(__dirname, "../games", router[data.pathRoute + "/" + data.path].path);
         //Read the file
         fs.readFile(joinedPath, "utf8", (err, res) => {
             if (!err && res) {
-                callback(res, 200, router[data.path].type);
+                callback(res, 200, router[data.pathRoute + "/" + data.path].type);
             }
             else {
                 callback("Error", 500);

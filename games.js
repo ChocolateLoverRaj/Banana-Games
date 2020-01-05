@@ -13,6 +13,9 @@ games.process = (data, callback) => {
     //Get the first segment of the path
     let pathRoute = pathArray[0];
 
+    //Update the pathRoute
+    data.pathRoute = pathRoute;
+
     //Get the rest of the segments of the path
     let remainingPathArray = pathArray;
     remainingPathArray.shift();
@@ -24,7 +27,7 @@ games.process = (data, callback) => {
     data.path = remainingPath;
 
     //Get the path
-    if (pathRoute == "static") {
+    if (pathRoute == "static" || pathRoute == "logic") {
         static.process(data, callback);
     }
     else if (pathRoute == "api") {
