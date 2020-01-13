@@ -30,3 +30,18 @@ logic.maps = [
         }
     }
 ];
+
+//Game Class
+logic.Game = class {
+    config = {
+        map: logic.maps[0],
+        players: [
+            {
+                type: "person"
+            },
+            {
+                type: "person"
+            }
+        ]
+    };
+}
