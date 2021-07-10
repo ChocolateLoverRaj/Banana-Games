@@ -3,12 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 // TODO once https://github.com/mastilver/dynamic-cdn-webpack-plugin/pull/71 is merged, switch to main package
 const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 module.exports = {
-  mode: 'development',
+  mode: isProduction ? 'production' : 'development',
   entry: {
     app: './src/index.tsx'
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
     contentBase: './dist',
     hot: true
@@ -17,7 +19,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/index.html')
     }),
-    new DynamicCdnPlugin()
+    ...isProduction ? [new DynamicCdnPlugin()] : []
   ],
   output: {
     filename: '[name].bundle.js',
