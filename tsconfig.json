@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": false,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "sourceMap": true
+  }
+}
