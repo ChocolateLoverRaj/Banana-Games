@@ -1,5 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+// TODO once https://github.com/mastilver/dynamic-cdn-webpack-plugin/pull/71 is merged, switch to main package
+const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -14,7 +16,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/index.html')
-    })
+    }),
+    new DynamicCdnPlugin()
   ],
   output: {
     filename: '[name].bundle.js',
