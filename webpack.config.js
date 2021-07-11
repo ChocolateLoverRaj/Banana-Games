@@ -63,6 +63,10 @@ module.exports = {
       {
         test: /\.module\.s[ac]ss$/i,
         use: [styleLoader, cssLoader, 'sass-loader']
+      },
+      {
+        test: /\.txt$/i,
+        type: 'asset/source'
       }
     ]
   },
