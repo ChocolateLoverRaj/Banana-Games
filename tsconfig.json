@@ -4,6 +4,11 @@
     "strictNullChecks": true,
     "moduleResolution": "node",
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ]
   }
 }
