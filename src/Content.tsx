@@ -14,11 +14,11 @@ const Content: FC = () => {
         <div>
           <h1 className={header}>All Games</h1>
           <Table
-            dataSource={games} columns={[{
+            dataSource={[...games]} columns={[{
               title: 'Name',
-              render: ({ url, name }: Game) => <Link to={`./${url}`}>{name}</Link>
+              render: ([url, { name }]: [string, Game]) => <Link to={`./${url}`}>{name}</Link>
             }]}
-            rowKey='name'
+            rowKey='0'
             pagination={{ hideOnSinglePage: true }}
           />
         </div>

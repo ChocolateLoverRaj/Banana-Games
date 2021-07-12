@@ -9,6 +9,7 @@
       {
         "name": "typescript-plugin-css-modules"
       }
-    ]
+    ],
+    "downlevelIteration": true
   }
 }

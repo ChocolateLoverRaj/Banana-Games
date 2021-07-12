@@ -1,5 +1,4 @@
 {
   "$schema": "../../game.schema.json",
-  "name": "Full Screen",
-  "url": "full-screen"
+  "name": "Full Screen"
 }
