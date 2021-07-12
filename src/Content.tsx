@@ -6,11 +6,16 @@ import games from './games'
 import Game from './types/Game'
 import { header } from './Content.module.scss'
 import GameRoute from './GameRoute'
+import { appName } from './config'
+import Helmet from 'react-helmet'
 
 const Content: FC = () => {
   return (
     <Switch>
       <Route path='/' exact>
+        <Helmet>
+          <title>{appName}</title>
+        </Helmet>
         <div>
           <h1 className={header}>All Games</h1>
           <Table
