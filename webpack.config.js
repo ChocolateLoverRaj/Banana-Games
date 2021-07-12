@@ -5,6 +5,7 @@ const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const { ProvidePlugin } = require('webpack')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -31,6 +32,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/index.html')
+    }),
+    new ProvidePlugin({
+      process: 'process/browser'
     }),
     ...isProduction
       ? [new DynamicCdnPlugin(), new MiniCssExtractPlugin()]
@@ -69,7 +73,8 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     fallback: {
-      path: require.resolve('path-browserify')
+      path: require.resolve('path-browserify'),
+      assert: require.resolve('assert-browserify')
     }
   },
   optimization: {

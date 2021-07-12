@@ -4,6 +4,7 @@
     "antd",
     "effortlessmotion",
     "ghaction",
+    "hookplus",
     "pnpm"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib",
