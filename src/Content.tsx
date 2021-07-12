@@ -5,7 +5,7 @@ import { Table } from 'antd'
 import games from './games'
 import Game from './types/Game'
 import { header } from './Content.module.scss'
-import GameComponent from './Game'
+import GameRoute from './GameRoute'
 
 const Content: FC = () => {
   return (
@@ -23,7 +23,7 @@ const Content: FC = () => {
           />
         </div>
       </Route>
-      <Route component={GameComponent} />
+      <Route component={GameRoute} />
     </Switch>
   )
 }

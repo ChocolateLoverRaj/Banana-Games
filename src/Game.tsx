@@ -1,27 +1,41 @@
 import * as React from 'react'
 import { FC, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
-import { Spin, Result, Button } from 'antd'
+import { Spin, Result, Button, PageHeader, PageHeaderProps } from 'antd'
 import { loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
+import GameType from './types/Game'
 
-const Game: FC<RouteComponentProps> = props => {
-  const { location: { pathname } } = props
+export interface GameProps {
+  id: string
+  game: GameType
+}
 
+const Game: FC<GameProps> = props => {
+  const { id, game } = props
+
+  const history = useHistory()
   const [retryAttempt, retry] = useUnique()
   const [Game, error, state] = usePromise(
-    async () => (await import(`./games${pathname}`)).default,
-    [pathname, retryAttempt]
+    async () => (await import(`./games/${id}`)).default,
+    [id, retryAttempt]
   )
   useEffect(() => {
     if (error !== undefined) console.error(error)
   }, [error])
 
+  const handleBack: PageHeaderProps['onBack'] = () => history.push('')
+
   return (
     <>
       {state === 'resolved'
-        ? <Game />
+        ? (
+          <div>
+            <PageHeader title={game.name} onBack={handleBack} />
+            <Game />
+          </div>
+          )
         : state === 'pending'
           ? (
             <div className={loading}>

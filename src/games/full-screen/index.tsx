@@ -17,7 +17,6 @@ const FullScreenGame: FC = () => {
 
   return (
     <div ref={ref} className={game}>
-      <h1>Full Screen Game</h1>
       {fullScreen
         ? (
           <Button onClick={handleExit} loading={operation === FullScreenOperation.EXITING}>
