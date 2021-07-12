@@ -15,9 +15,7 @@ const IndexPage: FC = () => (
       <div>
         <Menu />
       </div>
-      <div>
-        <Content />
-      </div>
+      <Content />
     </div>
   </HashRouter>
 )

@@ -5,24 +5,25 @@ import { Table } from 'antd'
 import games from './games'
 import Game from './types/Game'
 import { header } from './Content.module.scss'
+import GameComponent from './Game'
 
 const Content: FC = () => {
   return (
     <Switch>
       <Route path='/' exact>
-        <h1 className={header}>All Games</h1>
-        <Table
-          dataSource={games} columns={[{
-            title: 'Name',
-            render: ({ url, name }: Game) => <Link to={`./${url}`}>{name}</Link>
-          }]}
-          rowKey='name'
-          pagination={{ hideOnSinglePage: true }}
-        />
+        <div>
+          <h1 className={header}>All Games</h1>
+          <Table
+            dataSource={games} columns={[{
+              title: 'Name',
+              render: ({ url, name }: Game) => <Link to={`./${url}`}>{name}</Link>
+            }]}
+            rowKey='name'
+            pagination={{ hideOnSinglePage: true }}
+          />
+        </div>
       </Route>
-      <Route>
-        Game Specific Page
-      </Route>
+      <Route component={GameComponent} />
     </Switch>
   )
 }

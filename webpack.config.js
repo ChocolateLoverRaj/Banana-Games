@@ -63,20 +63,22 @@ module.exports = {
       {
         test: /\.module\.s[ac]ss$/i,
         use: [styleLoader, cssLoader, 'sass-loader']
-      },
-      {
-        test: /\.txt$/i,
-        type: 'asset/source'
       }
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      path: require.resolve('path-browserify')
+    }
   },
   optimization: {
     minimizer: [
       '...',
       new CssMinimizerPlugin()
-    ]
+    ],
+    splitChunks: {
+      chunks: 'all'
+    }
   }
 }
