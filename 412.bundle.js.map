@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://games/./src/games/full-screen/index.tsx"],"names":[],"mappings":"yIAGA,MAEA,EAF2B,IAAM","file":"412.bundle.js","sourcesContent":["import { FC } from 'react'\nimport * as React from 'react'\n\nconst FullScreenGame: FC = () => <h1>Full Screen Game</h1>\n\nexport default FullScreenGame\n"],"sourceRoot":""}

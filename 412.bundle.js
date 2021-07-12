@@ -1,0 +1,2 @@
+(self.webpackChunkgames=self.webpackChunkgames||[]).push([[412],{3412:(e,a,l)=>{"use strict";l.r(a),l.d(a,{default:()=>u});var s=l(3804);const u=()=>s.createElement("h1",null,"Full Screen Game")}}]);
+//# sourceMappingURL=412.bundle.js.map
