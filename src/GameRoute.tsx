@@ -5,7 +5,7 @@ import { Result, Button } from 'antd'
 import games from './games'
 import Game from './Game'
 import Helmet from 'react-helmet'
-import { appName } from './config'
+import config from './config.json'
 
 const GameRoute: FC<RouteComponentProps> = props => {
   const { location: { pathname } } = props
@@ -19,7 +19,7 @@ const GameRoute: FC<RouteComponentProps> = props => {
         : (
           <>
             <Helmet>
-              <title>{'<404>'} {'\u2022'} {appName}</title>
+              <title>{'<404>'} {'\u2022'} {config.appName}</title>
             </Helmet>
             <Result
               status='404'

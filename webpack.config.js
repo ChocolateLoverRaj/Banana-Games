@@ -6,6 +6,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { ProvidePlugin } = require('webpack')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
+const { appName } = require('./src/config.json')
+const { description, version } = require('./package.json')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -26,7 +29,6 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: './dist',
     hot: true
   },
   plugins: [
@@ -35,6 +37,18 @@ module.exports = {
     }),
     new ProvidePlugin({
       process: 'process/browser'
+    }),
+    new FaviconsWebpackPlugin({
+      logo: path.join(__dirname, './public/logo.svg'),
+      favicons: {
+        appName,
+        appDescription: description,
+        // For GitHub Pages deploy
+        start_url: process.env.GITHUB_REPOSITORY !== undefined
+          ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
+          : '/',
+        version
+      }
     }),
     ...isProduction
       ? [new DynamicCdnPlugin(), new MiniCssExtractPlugin()]

@@ -7,7 +7,7 @@ import { loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
 import GameType from './types/Game'
 import Helmet from 'react-helmet'
-import { appName } from './config'
+import config from './config.json'
 
 export interface GameProps {
   id: string
@@ -32,7 +32,7 @@ const Game: FC<GameProps> = props => {
   return (
     <>
       <Helmet>
-        <title>{game.name} {'\u2022'} {appName}</title>
+        <title>{game.name} {'\u2022'} {config.appName}</title>
       </Helmet>
       {state === 'resolved'
         ? (

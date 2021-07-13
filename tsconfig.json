@@ -10,6 +10,7 @@
         "name": "typescript-plugin-css-modules"
       }
     ],
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   }
 }
