@@ -7,6 +7,7 @@ specifiers:
   '@babel/preset-react': ^7.14.5
   '@babel/preset-typescript': ^7.14.5
   '@effortlessmotion/dynamic-cdn-webpack-plugin': ^5.0.1
+  '@rehooks/component-size': ^1.0.3
   '@types/appgeist__ensure-dir': ^1.1.0
   '@types/react': ^17.0.14
   '@types/react-dom': ^17.0.9
@@ -56,6 +57,7 @@ specifiers:
 
 dependencies:
   '@ant-design/icons': 4.6.2_react-dom@17.0.2+react@17.0.2
+  '@rehooks/component-size': 1.0.3_react@17.0.2
   antd: 4.16.6_react-dom@17.0.2+react@17.0.2
   assert-browserify: 2.0.0
   favicons: 6.2.2
@@ -969,6 +971,14 @@ packages:
   /@polka/url/1.0.0-next.15:
     resolution: {integrity: sha512-15spi3V28QdevleWBNXE4pIls3nFZmBbUGrW9IVPwiQczuSb9n76TCB4bsk8TSel+I1OkHEdPhu5QKMfY6rQHA==}
     dev: true
+
+  /@rehooks/component-size/1.0.3_react@17.0.2:
+    resolution: {integrity: sha512-pnYld+8SSF2vXwdLOqBGUyOrv/SjzwLjIUcs/4c1JJgR0q4E9eBtBfuZMD6zUD51fvSehSsbnlQMzotSmPTXPg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /@trysound/sax/0.1.1:
     resolution: {integrity: sha512-Z6DoceYb/1xSg5+e+ZlPZ9v0N16ZvZ+wYMraFue4HYrE4ttONKtsvruIRf6t9TBR0YvSOfi1hUU0fJfBLCDYow==}

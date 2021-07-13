@@ -8,7 +8,8 @@
     "favicons",
     "ghaction",
     "hookplus",
-    "pnpm"
+    "pnpm",
+    "rehooks"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.format.semicolons": "remove"

@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
 import { Spin, Result, Button, PageHeader, PageHeaderProps } from 'antd'
-import { loading } from './Game.module.scss'
+import { content, loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
 import GameType from './types/Game'
 import Helmet from 'react-helmet'
@@ -36,7 +36,7 @@ const Game: FC<GameProps> = props => {
       </Helmet>
       {state === 'resolved'
         ? (
-          <div>
+          <div className={content}>
             <PageHeader title={game.name} onBack={handleBack} />
             <Game />
           </div>
