@@ -9,6 +9,7 @@ const { ProvidePlugin } = require('webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { appName } = require('./src/config.json')
 const { description, version } = require('./package.json')
+const { StatsWriterPlugin } = require('webpack-stats-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -25,7 +26,8 @@ const cssLoader = {
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
-    app: './src/index.tsx'
+    app: './src/index.tsx',
+    serviceWorker: './src/serviceWorker.ts'
   },
   devtool: 'source-map',
   devServer: {
@@ -33,7 +35,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, './src/index.html')
+      template: path.join(__dirname, './src/index.html'),
+      chunks: ['app']
     }),
     new ProvidePlugin({
       process: 'process/browser'
@@ -50,6 +53,8 @@ module.exports = {
         version
       }
     }),
+    // TODO: Only use necessary stats
+    new StatsWriterPlugin({ stats: 'all' }),
     ...isProduction
       ? [new DynamicCdnPlugin(), new MiniCssExtractPlugin()]
       : [new BundleAnalyzerPlugin({ openAnalyzer: false })]

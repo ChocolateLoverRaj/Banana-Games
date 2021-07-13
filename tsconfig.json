@@ -11,6 +11,9 @@
       }
     ],
     "downlevelIteration": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "lib": [
+      "DOM",
+    ]
   }
 }
