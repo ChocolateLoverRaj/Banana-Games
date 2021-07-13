@@ -24,6 +24,9 @@ const cssLoader = {
   }
 }
 
+const subRoute = process.env.GITHUB_REPOSITORY !== undefined
+  ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
+  : '/'
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
@@ -48,10 +51,9 @@ module.exports = {
         appName,
         appDescription: description,
         // For GitHub Pages deploy
-        start_url: process.env.GITHUB_REPOSITORY !== undefined
-          ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
-          : '/',
-        version
+        start_url: subRoute,
+        version,
+        scope: subRoute
       }
     }),
     // TODO: Only use necessary stats
