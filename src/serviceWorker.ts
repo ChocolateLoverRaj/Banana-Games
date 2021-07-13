@@ -15,7 +15,13 @@ self.addEventListener('install', (e: any) => {
       // Delete old caches
       await Promise.all((await caches.keys()).map(async key => await caches.delete(key)))
       // Add new cache
-      await (await caches.open(stats.hash)).addAll(filesToCache)
+      const cache = (await caches.open(stats.hash))
+      await cache.addAll(filesToCache)
+      try {
+        await cache.add('assets/favicon.ico')
+      } catch (e) {
+        console.warn("Couldn't load favicon", e)
+      }
     }))
 })
 
