@@ -18,7 +18,6 @@
     "@rehooks/component-size": "^1.0.3",
     "antd": "^4.16.6",
     "assert-browserify": "^2.0.0",
-    "dependency-tree-webpack-plugin": "^1.0.12",
     "favicons": "^6.2.2",
     "favicons-webpack-plugin": "^5.0.2",
     "html-loader": "^2.1.2",
@@ -28,7 +27,6 @@
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
-    "webpack-manifest-plugin": "^3.1.1",
     "webpack-stats-plugin": "^1.0.3"
   },
   "devDependencies": {
@@ -36,7 +34,6 @@
     "@babel/core": "^7.14.6",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
-    "@effortlessmotion/dynamic-cdn-webpack-plugin": "^5.0.1",
     "@types/appgeist__ensure-dir": "^1.1.0",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.9",
@@ -59,7 +56,6 @@
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
     "mini-css-extract-plugin": "^2.1.0",
-    "module-to-cdn": "^3.1.5",
     "path-browserify": "^1.0.1",
     "react-use-promise": "^0.3.1",
     "sass": "^1.35.2",

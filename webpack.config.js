@@ -1,7 +1,8 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // TODO once https://github.com/mastilver/dynamic-cdn-webpack-plugin/pull/71 is merged, switch to main package
-const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
+// TODO make dynamic cdn plugin work with dependencies
+// const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
@@ -56,7 +57,7 @@ module.exports = {
     // TODO: Only use necessary stats
     new StatsWriterPlugin({ stats: 'all' }),
     ...isProduction
-      ? [new DynamicCdnPlugin(), new MiniCssExtractPlugin()]
+      ? [/* new DynamicCdnPlugin(),  */new MiniCssExtractPlugin()]
       : [new BundleAnalyzerPlugin({ openAnalyzer: false })]
   ],
   output: {
