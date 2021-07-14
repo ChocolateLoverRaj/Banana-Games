@@ -1,3 +1,5 @@
+import ServiceWorkerMessages from './ServiceWorkerMessages'
+
 self.addEventListener('install', (e: any) => {
   console.log('Service worker is here!')
   e.waitUntil(fetch('./stats.json')
@@ -31,4 +33,8 @@ self.addEventListener('fetch', (e: any) => {
       return response ?? fetch(e.request)
     })
   )
+})
+
+self.addEventListener('message', e => {
+  if (e.data === ServiceWorkerMessages.SKIP_WAITING) (self as any).skipWaiting()
 })

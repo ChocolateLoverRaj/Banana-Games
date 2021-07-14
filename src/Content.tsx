@@ -8,6 +8,7 @@ import { header } from './Content.module.scss'
 import GameRoute from './GameRoute'
 import config from './config.json'
 import Helmet from 'react-helmet'
+import serviceWorkerRoute from './ServiceWorkerRoute'
 
 const Content: FC = () => {
   return (
@@ -28,6 +29,7 @@ const Content: FC = () => {
           />
         </div>
       </Route>
+      <Route path='/service-worker' exact component={serviceWorkerRoute} />
       <Route component={GameRoute} />
     </Switch>
   )

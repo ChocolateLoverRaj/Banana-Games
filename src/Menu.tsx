@@ -21,6 +21,9 @@ const Menu: FC = () => {
         {[...games].map(([url, { name }]) =>
           <AntdMenu.Item key={`/${url}`}><Link to={`/${url}`}>{name}</Link></AntdMenu.Item>)}
       </AntdMenu.SubMenu>
+      <AntdMenu.Item key='serviceWorker'>
+        <Link to='/service-worker'>Service Worker</Link>
+      </AntdMenu.Item>
       <AntdMenu.Item key='gh' icon={<GithubOutlined />}>
         <a href={config.ghUrl}>GitHub</a>
       </AntdMenu.Item>

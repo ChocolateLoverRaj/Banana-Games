@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
-import { Spin, Result, Button, PageHeader, PageHeaderProps } from 'antd'
+import { Spin, PageHeader, PageHeaderProps } from 'antd'
 import { content, loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
 import GameType from './types/Game'
 import Helmet from 'react-helmet'
 import config from './config.json'
+import Error from './Error'
 
 export interface GameProps {
   id: string
@@ -23,9 +24,6 @@ const Game: FC<GameProps> = props => {
     async () => (await import(`./games/${id}`)).default,
     [id, retryAttempt]
   )
-  useEffect(() => {
-    if (error !== undefined) console.error(error)
-  }, [error])
 
   const handleBack: PageHeaderProps['onBack'] = () => history.push('')
 
@@ -48,12 +46,7 @@ const Game: FC<GameProps> = props => {
             </div>
             )
           : (
-            <Result
-              status='error'
-              title='Error Downloading Game'
-              subTitle='Open console to view error'
-              extra={<Button type='primary' onClick={retry}>Retry</Button>}
-            />
+            <Error error={error as Error} title='Error Downloading Game' retry={retry} />
             )}
     </>
   )

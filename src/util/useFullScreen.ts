@@ -8,10 +8,9 @@ import {
 } from 'react'
 import never from 'never'
 import usePromise from 'react-use-promise'
+import PromiseState from '../types/PromiseState'
 
 export enum FullScreenOperation { NONE, ENTERING, EXITING }
-
-export type FullScreenOperationState = 'pending' | 'resolved' | 'rejected'
 
 export type UseFullScreenResult = [
   fullScreen: boolean,
@@ -24,7 +23,7 @@ export type UseFullScreenResult = [
   /**
    * https://www.npmjs.com/package/react-use-promise#api
    */
-  state: FullScreenOperationState
+  state: PromiseState
 ]
 
 const useFullScreen = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>): UseFullScreenResult => {
@@ -46,7 +45,7 @@ const useFullScreen = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>): 
   useEffect(() => setOperation(FullScreenOperation.NONE), [promise])
   // Expose error and state of promise
   const [error, state] = usePromise(promise, []).slice(1) as
-    [Error, FullScreenOperationState]
+    [Error, PromiseState]
   // Actually make the element enter / exit full screen
   const setFullScreen = useCallback<Dispatch<SetStateAction<boolean>>>(value => _setFullScreen(wasFullScreen => {
     const willBeFullScreen = typeof value === 'function' ? value(wasFullScreen) : value
