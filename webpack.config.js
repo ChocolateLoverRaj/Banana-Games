@@ -6,11 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { ProvidePlugin } = require('webpack')
+const { ProvidePlugin, BannerPlugin } = require('webpack')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const { appName } = require('./src/config.json')
 const { description, version } = require('./package.json')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -55,6 +56,13 @@ module.exports = {
         version,
         scope: subRoute
       }
+    }),
+    // So the service worker will be different based on file changes
+    new BannerPlugin({
+      banner: '/*@preserve [fullhash]*/',
+      entryOnly: true,
+      include: 'serviceWorker',
+      raw: true
     }),
     // TODO: Only use necessary stats
     new StatsWriterPlugin({ stats: 'all' }),
@@ -101,7 +109,14 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      '...',
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: /@preserve/i
+          }
+        },
+        extractComments: /^\**!|@license|@cc_on/i
+      }),
       new CssMinimizerPlugin()
     ],
     splitChunks: {

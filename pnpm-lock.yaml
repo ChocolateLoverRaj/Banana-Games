@@ -45,6 +45,7 @@ specifiers:
   sass: ^1.35.2
   sass-loader: ^12.1.0
   style-loader: ^3.0.0
+  terser-webpack-plugin: ^5.1.4
   ts-node: ^10.1.0
   typescript: ^4.3.5
   typescript-plugin-css-modules: ^3.4.0
@@ -102,6 +103,7 @@ devDependencies:
   sass: 1.35.2
   sass-loader: 12.1.0_sass@1.35.2+webpack@5.44.0
   style-loader: 3.0.0_webpack@5.44.0
+  terser-webpack-plugin: 5.1.4_webpack@5.44.0
   ts-node: 10.1.0_typescript@4.3.5
   typescript: 4.3.5
   typescript-plugin-css-modules: 3.4.0_ts-node@10.1.0+typescript@4.3.5
@@ -1039,6 +1041,10 @@ packages:
 
   /@types/node/16.3.1:
     resolution: {integrity: sha512-N87VuQi7HEeRJkhzovao/JviiqKjDKMVKxKMfUvSKw+MbkbW8R0nA3fi/MQhhlxV2fQ+2ReM+/Nt4efdrJx3zA==}
+
+  /@types/node/16.3.2:
+    resolution: {integrity: sha512-jJs9ErFLP403I+hMLGnqDRWT0RYKSvArxuBVh2veudHV7ifEC1WAmjJADacZ7mRbA2nWgHtn8xyECMAot0SkAw==}
+    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -4454,7 +4460,7 @@ packages:
     resolution: {integrity: sha512-qupxcj/dRuA3xHPMUd40gr2EaAurFbkwzOh7wfPaeE9id7hyjURRQoqNfHifHK3XjJU6YJJUQKILGUnwGPEOCA==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 16.3.1
+      '@types/node': 16.3.2
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
