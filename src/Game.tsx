@@ -21,7 +21,11 @@ const Game: FC<GameProps> = props => {
   const history = useHistory()
   const [retryAttempt, retry] = useUnique()
   const [Game, error, state] = usePromise(
-    async () => (await import(`./games/${id}`)).default,
+    async () => (await import(
+      /* webpackInclude: /index.tsx/ */
+      /* webpackChunkName: "games/[request]" */
+      `./games/${id}`
+    )).default,
     [id, retryAttempt]
   )
 

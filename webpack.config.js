@@ -36,7 +36,7 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    hot: true
+    hot: false
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -71,7 +71,8 @@ module.exports = {
       : [new BundleAnalyzerPlugin({ openAnalyzer: false })]
   ],
   output: {
-    filename: '[name].bundle.js',
+    filename: ({ runtime }) =>
+      runtime !== 'serviceWorker' ? '[name].[contenthash].js' : '[name].js',
     path: path.resolve(__dirname, 'dist'),
     clean: true
   },

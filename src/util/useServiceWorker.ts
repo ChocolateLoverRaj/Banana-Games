@@ -2,9 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import usePromise from 'react-use-promise'
 import ServiceWorkerMessages from '../ServiceWorkerMessages'
 import PromiseState from '../types/PromiseState'
+import Retry from '../types/Retry'
 import serviceWorkerSupported from './serviceWorkerSupported'
 
-export type Retry = () => void
 export type CheckForUpdates = () => void
 export type ResetCheckForUpdates = () => void
 export type Update = () => void
@@ -20,7 +20,8 @@ export type UseServiceWorkerResult = [
   checkForUpdatesError: Error | undefined,
   checkForUpdatesState: PromiseState,
   resetCheckForUpdates: ResetCheckForUpdates,
-  update: Update
+  update: Update,
+  active: ServiceWorker | undefined
 ]
 
 const useServiceWorker = (
@@ -46,6 +47,7 @@ const useServiceWorker = (
   // Handle updates
   useEffect(() => {
     const updateInstalling = (): void => setInstalling(registration?.installing ?? undefined)
+    updateInstalling()
     registration?.addEventListener('updatefound', updateInstalling)
     return () => registration?.removeEventListener('updatefound', updateInstalling)
   }, [registration])
@@ -91,6 +93,15 @@ const useServiceWorker = (
     window.location.reload()
   }, [waiting])
 
+  // Update active service worker
+  const [active, setActive] = useState<ServiceWorker>()
+  useEffect(() => {
+    const updateActive = (): void => setActive(registration?.active ?? undefined)
+    updateActive()
+    installing?.addEventListener('statechange', updateActive)
+    return () => installing?.removeEventListener('statechange', updateActive)
+  }, [registration, installing])
+
   return [
     registration,
     registrationError,
@@ -101,7 +112,8 @@ const useServiceWorker = (
     checkForUpdatesError,
     checkForUpdatesState,
     resetCheckForUpdates,
-    update
+    update,
+    active
   ]
 }
 

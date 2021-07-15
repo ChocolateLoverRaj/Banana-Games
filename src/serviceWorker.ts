@@ -1,4 +1,7 @@
 import ServiceWorkerMessages from './ServiceWorkerMessages'
+import diff from 'arr-diff'
+
+const cacheName = 'v2'
 
 self.addEventListener('install', (e: any) => {
   console.log('Service worker is here!')
@@ -6,24 +9,17 @@ self.addEventListener('install', (e: any) => {
     .then(async res => await res.json())
     .then(async stats => {
       console.log(stats)
-      const appChunk = stats.chunks.find(({ names }) => names.includes('app'))
-      console.log('app chunk', appChunk)
-      const mainChunks = stats.chunks.filter(({ id }) => appChunk.siblings.includes(id))
-      console.log('main chunks', mainChunks)
-      const filesToCache = [
-        './',
-        ...[appChunk, ...mainChunks].flatMap(({ files }) => files)
-      ]
-      // Delete old caches
-      await Promise.all((await caches.keys()).map(async key => await caches.delete(key)))
-      // Add new cache
-      const cache = (await caches.open(stats.hash))
-      await cache.addAll(filesToCache)
-      try {
-        await cache.add('assets/favicon.ico')
-      } catch (e) {
-        console.warn("Couldn't load favicon", e)
-      }
+      const filesToCache = stats.namedChunkGroups.app.assets.map(({ name }) => name) as string[]
+      // Update cache
+      const cache = (await caches.open(cacheName))
+      const currentlyCached = (await cache.keys()).map(({ url }) => url)
+      const filesToAdd = diff(filesToCache, currentlyCached)
+      const filesToDelete = diff(currentlyCached, filesToCache)
+      await Promise.all<unknown>([
+        cache.addAll([...filesToAdd, /* cache index.html */'./']),
+        cache.add('assets/favicon.ico').catch(e => console.warn("Couldn't load favicon", e)),
+        ...filesToDelete.map(async file => await cache.delete(file))
+      ])
     }))
 })
 
@@ -36,5 +32,17 @@ self.addEventListener('fetch', (e: any) => {
 })
 
 self.addEventListener('message', e => {
-  if (e.data === ServiceWorkerMessages.SKIP_WAITING) (self as any).skipWaiting()
+  switch (e.data) {
+    case ServiceWorkerMessages.SKIP_WAITING:
+      (self as any).skipWaiting()
+      break
+    case ServiceWorkerMessages.GET_DOWNLOADED_GAMES:
+      console.log('download time')
+  }
+})
+
+self.addEventListener('activate', (e: any) => {
+  // Delete old caches
+  e.waitUntil(caches.keys().then(async keys => await Promise.all(keys
+    .filter(key => key !== cacheName).map(async key => await caches.delete(key)))))
 })

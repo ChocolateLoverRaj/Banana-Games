@@ -20,7 +20,8 @@ const serviceWorkerRoute: FC = () => {
     checkForUpdatesError,
     checkForUpdatesState,
     resetCheckForUpdates,
-    update
+    update,
+    active
   ] = useContext(GlobalStateContext).serviceWorker
 
   return (
@@ -29,7 +30,7 @@ const serviceWorkerRoute: FC = () => {
         <title>Service Worker {'\u2022'} {config.appName}</title>
       </Helmet>
       {serviceWorkerSupported
-        ? state === 'resolved'
+        ? active !== undefined
           ? waiting !== undefined
             ? <Result
                 status='info'
@@ -65,7 +66,7 @@ const serviceWorkerRoute: FC = () => {
                   retry={checkForUpdates}
                   cancel={resetCheckForUpdates}
                 />
-          : state === 'pending'
+          : state !== 'rejected'
             ? <Result icon={<LoadingOutlined />} title='Registering Service Worker' />
             : <Error error={error ?? new window.Error('hi')} title='Error Registering Service Worker' retry={retry} />
         : <ServiceWorkerNotSupported />}

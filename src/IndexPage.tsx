@@ -7,16 +7,18 @@ import Menu from './Menu'
 import GlobalStateContext from './GlobalStateContext'
 import useServiceWorker from './util/useServiceWorker'
 import { message } from 'antd'
+import useDownloadedGames from './useDownloadedGames'
 
 const IndexPage: FC = () => {
-  const serviceWorker = useServiceWorker('./serviceWorker.bundle.js', () => {
+  const serviceWorker = useServiceWorker('./serviceWorker.js', () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     message.info('No updates found')
   })
+  const downloadedGames = useDownloadedGames(serviceWorker[10])
 
   return (
     <HashRouter hashType='noslash'>
-      <GlobalStateContext.Provider value={{ serviceWorker }}>
+      <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
         <div className={page}>
           <div>
             <Menu />

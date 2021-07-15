@@ -1,34 +1,14 @@
 import { FC } from 'react'
 import * as React from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
-import { Table } from 'antd'
-import games from './games'
-import Game from './types/Game'
-import { header } from './Content.module.scss'
+import { Switch, Route } from 'react-router-dom'
 import GameRoute from './GameRoute'
-import config from './config.json'
-import Helmet from 'react-helmet'
 import serviceWorkerRoute from './ServiceWorkerRoute'
+import AllGames from './AllGames'
 
 const Content: FC = () => {
   return (
     <Switch>
-      <Route path='/' exact>
-        <Helmet>
-          <title>{config.appName}</title>
-        </Helmet>
-        <div>
-          <h1 className={header}>All Games</h1>
-          <Table
-            dataSource={[...games]} columns={[{
-              title: 'Name',
-              render: ([url, { name }]: [string, Game]) => <Link to={`./${url}`}>{name}</Link>
-            }]}
-            rowKey='0'
-            pagination={{ hideOnSinglePage: true }}
-          />
-        </div>
-      </Route>
+      <Route path='/' exact component={AllGames} />
       <Route path='/service-worker' exact component={serviceWorkerRoute} />
       <Route component={GameRoute} />
     </Switch>
