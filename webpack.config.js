@@ -55,7 +55,8 @@ module.exports = {
         start_url: subRoute,
         version,
         scope: subRoute
-      }
+      },
+      devMode: 'light'
     }),
     // So the service worker will be different based on file changes
     new BannerPlugin({
@@ -67,7 +68,10 @@ module.exports = {
     // TODO: Only use necessary stats
     new StatsWriterPlugin({ stats: 'all' }),
     ...isProduction
-      ? [/* new DynamicCdnPlugin(),  */new MiniCssExtractPlugin()]
+      ? [
+          /* new DynamicCdnPlugin(),  */
+          new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
+        ]
       : [new BundleAnalyzerPlugin({ openAnalyzer: false })]
   ],
   output: {
@@ -121,7 +125,12 @@ module.exports = {
       new CssMinimizerPlugin()
     ],
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      cacheGroups: {
+        commonChunks: {
+          filename: '[name].[contenthash].js'
+        }
+      }
     }
   }
 }
