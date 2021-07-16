@@ -1,12 +1,12 @@
-import { FC, MouseEventHandler, useRef, useEffect } from 'react'
+import { forwardRef, MouseEventHandler, useEffect } from 'react'
 import * as React from 'react'
 import { Button } from 'antd'
 import useFullScreen, { FullScreenOperation } from '../../util/useFullScreen'
 import { game } from './index.module.scss'
+import GameComponent from '../../types/GameComponent'
 
-const FullScreenGame: FC = () => {
-  const ref = useRef(null)
-  const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref)
+const FullScreenGame: GameComponent = forwardRef((_props, ref) => {
+  const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref as any)
   useEffect(() => {
     // eslint-disable-next-line no-extra-boolean-cast
     if (Boolean(error)) console.error(error)
@@ -30,6 +30,6 @@ const FullScreenGame: FC = () => {
           )}
     </div>
   )
-}
+})
 
 export default FullScreenGame

@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { FC, useRef } from 'react'
+import { forwardRef } from 'react'
 import useComponentSize from '@rehooks/component-size'
 import { gameDiv, maxSize } from './index.module.scss'
+import GameComponent from '../../types/GameComponent'
 
 const ratio = {
   width: 16,
   height: 9
 }
 
-const FixedAspectRatio: FC = () => {
-  const ref = useRef(null)
-  const { width, height } = useComponentSize(ref)
+const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
+  const { width, height } = useComponentSize(ref as any)
 
   const maxScaleWidth = width / ratio.width
   const maxScaleHeight = height / ratio.height
@@ -32,6 +32,6 @@ const FixedAspectRatio: FC = () => {
       </div>
     </div>
   )
-}
+})
 
 export default FixedAspectRatio

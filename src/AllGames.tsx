@@ -4,7 +4,7 @@ import config from './config.json'
 import Helmet from 'react-helmet'
 import { Table, Tooltip, Button, Popconfirm } from 'antd'
 import games from './games'
-import Game from './types/Game'
+import GameJson from './types/GameJson'
 import { header, errorColor } from './AllGames.module.scss'
 import { Link } from 'react-router-dom'
 import GlobalStateContext from './GlobalStateContext'
@@ -37,10 +37,10 @@ const AllGames: FC = () => {
           ? <Table
               dataSource={[...games]} columns={[{
                 title: 'Name',
-                render: ([url, { name }]: [string, Game]) => <Link to={`./${url}`}>{name}</Link>
+                render: ([url, { name }]: [string, GameJson]) => <Link to={`./${url}`}>{name}</Link>
               }, {
                 title: 'Downloaded',
-                render: ([url, { name }]: [string, Game]) => {
+                render: ([url, { name }]: [string, GameJson]) => {
                   const downloadError = downloadGameErrors.get(url)
                   const removeError = removeGameErrors.get(url)
                   const error = downloadError ?? removeError
