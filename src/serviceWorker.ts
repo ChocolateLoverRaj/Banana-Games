@@ -72,6 +72,7 @@ const getGameAssetsToDownload = async (games: string[], stats: Stats): Promise<s
   .flatMap(game => (stats.games.get(game) as string[]).map(resolveUrl))
 
 const specialFilesToCache = ['./', './stats.json'].map(resolveUrl)
+const optionalFilesToCache = ['./assets/favicon.ico'].map(resolveUrl)
 self.addEventListener('install', (e: any) => {
   console.log('Service worker is here!')
   e.waitUntil(fetchStats().then(async stats => {
@@ -80,7 +81,7 @@ self.addEventListener('install', (e: any) => {
     await Promise.all<unknown>([
       downloadAssets(stats.app.map(resolveUrl), cache),
       cache.addAll(specialFilesToCache),
-      cache.add('assets/favicon.ico').catch(e => console.warn("Couldn't load favicon", e)),
+      cache.addAll(optionalFilesToCache).catch(e => console.warn("Couldn't load optional file", e)),
       getGameAssetsToDownload(await readGames(), stats).then(async assets =>
         await downloadAssets(assets, cache))
     ])
@@ -98,8 +99,8 @@ self.addEventListener('fetch', (e: any) => {
 const removeUnusedAssets = async (stats: Stats, usedGameAssets: string[]): Promise<void> => {
   const cache = (await caches.open(cacheName))
   const currentlyCached = await getCurrentlyCached(cache)
-  const filesToDelete =
-    diff(currentlyCached, stats.app.map(resolveUrl), usedGameAssets, specialFilesToCache)
+  const filesToDelete = diff(currentlyCached,
+    stats.app.map(resolveUrl), usedGameAssets, specialFilesToCache, optionalFilesToCache)
   await Promise.all(filesToDelete.map(async file => await cache.delete(file)))
 }
 
