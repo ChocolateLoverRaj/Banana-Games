@@ -1,0 +1,17 @@
+.maxSize {
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.gameDiv {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 10px dashed #1890ff;
+  text-align: center;
+}
