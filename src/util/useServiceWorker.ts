@@ -89,7 +89,7 @@ const useServiceWorker = (
 
   const update = useCallback<Update>(() => {
     if (waiting === undefined) throw new Error('Must have a waiting service worker to update')
-    waiting.postMessage(ServiceWorkerMessages.SKIP_WAITING)
+    waiting.postMessage([ServiceWorkerMessages.SKIP_WAITING])
     window.location.reload()
   }, [waiting])
 

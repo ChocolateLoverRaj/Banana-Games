@@ -12,6 +12,7 @@ const { appName } = require('./src/config.json')
 const { description, version } = require('./package.json')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const { readdirSync } = require('fs')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -66,7 +67,20 @@ module.exports = {
       raw: true
     }),
     // TODO: Only use necessary stats
-    new StatsWriterPlugin({ stats: 'all' }),
+    new StatsWriterPlugin({
+      stats: 'chunkGroup',
+      transform: ({ namedChunkGroups }) => {
+        const games = new Set(readdirSync(path.join(__dirname, './src/games')))
+        const getName = ({ name }) => name
+        const getAssets = ({ assets }) => assets.map(getName)
+        return JSON.stringify({
+          app: getAssets(namedChunkGroups.app),
+          games: Object.fromEntries(Object.entries(namedChunkGroups)
+            .map(([name, v]) => [path.basename(name), v])
+            .filter(([name]) => games.has(name)).map(([name, value]) => [name, getAssets(value)]))
+        })
+      }
+    }),
     ...isProduction
       ? [
           /* new DynamicCdnPlugin(),  */

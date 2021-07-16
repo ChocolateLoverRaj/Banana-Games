@@ -8,7 +8,7 @@ import useUnique from './util/useUnique'
 import GameType from './types/Game'
 import Helmet from 'react-helmet'
 import config from './config.json'
-import Error from './Error'
+import ErrorResult from './ErrorResult'
 
 export interface GameProps {
   id: string
@@ -50,7 +50,7 @@ const Game: FC<GameProps> = props => {
             </div>
             )
           : (
-            <Error error={error as Error} title='Error Downloading Game' retry={retry} />
+            <ErrorResult error={error as Error} title='Error Downloading Game' retry={retry} />
             )}
     </>
   )

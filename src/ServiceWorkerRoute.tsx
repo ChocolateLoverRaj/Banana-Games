@@ -5,7 +5,7 @@ import ServiceWorkerNotSupported from './ServiceWorkerNotSupported'
 import serviceWorkerSupported from './util/serviceWorkerSupported'
 import { Result, Button, Popconfirm } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
-import Error from './Error'
+import ErrorResult from './ErrorResult'
 import { Link } from 'react-router-dom'
 import config from './config.json'
 import Helmet from 'react-helmet'
@@ -60,7 +60,7 @@ const serviceWorkerRoute: FC = () => {
                     </Button>
                 }
                 />
-              : <Error
+              : <ErrorResult
                   error={checkForUpdatesError}
                   title='Error Checking For Updates'
                   retry={checkForUpdates}
@@ -68,7 +68,7 @@ const serviceWorkerRoute: FC = () => {
                 />
           : state !== 'rejected'
             ? <Result icon={<LoadingOutlined />} title='Registering Service Worker' />
-            : <Error error={error ?? new window.Error('hi')} title='Error Registering Service Worker' retry={retry} />
+            : <ErrorResult error={error ?? new window.Error('hi')} title='Error Registering Service Worker' retry={retry} />
         : <ServiceWorkerNotSupported />}
     </>
   )
