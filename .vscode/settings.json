@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Chamferable",
     "Paranjpe",
     "Popconfirm",
     "antd",
@@ -11,7 +12,8 @@
     "ghaction",
     "hookplus",
     "pnpm",
-    "rehooks"
+    "rehooks",
+    "wireframes"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "typescript.format.semicolons": "remove"

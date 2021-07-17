@@ -1,0 +1,4 @@
+{
+  "$schema": "../../game.schema.json",
+  "name": "Pong - Matter.js (in development)"
+}

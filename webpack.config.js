@@ -103,7 +103,8 @@ module.exports = {
           options: {
             presets: ['@babel/react', '@babel/typescript'],
             plugins: [
-              ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }]
+              ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
+              'react-require'
             ]
           }
         }],

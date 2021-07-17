@@ -3,7 +3,7 @@
     "esModuleInterop": true,
     "strictNullChecks": true,
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "preserve",
     "sourceMap": true,
     "plugins": [
       {
