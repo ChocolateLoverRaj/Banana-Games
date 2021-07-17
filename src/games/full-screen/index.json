@@ -1,4 +1,7 @@
 {
   "$schema": "../../game.schema.json",
-  "name": "Full Screen"
+  "name": "Full Screen",
+  "tags": [
+    "Demo"
+  ]
 }

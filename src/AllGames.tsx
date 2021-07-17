@@ -12,6 +12,10 @@ import ErrorResult from './ErrorResult'
 import { DownloadState } from './useDownloadedGames'
 import { CheckOutlined, LoadingOutlined, DownloadOutlined, CloseCircleFilled } from '@ant-design/icons'
 import ErrorLogger from './ErrorLogger'
+import GameTags from './GameTags'
+
+const allTags = new Set([...games.values()].flatMap(({ tags }) => tags ?? []))
+console.log(allTags)
 
 const AllGames: FC = () => {
   const [
@@ -38,6 +42,11 @@ const AllGames: FC = () => {
               dataSource={[...games]} columns={[{
                 title: 'Name',
                 render: ([url, { name }]: [string, GameJson]) => <Link to={`./${url}`}>{name}</Link>
+              }, {
+                title: 'Tags',
+                render: ([_url, { tags }]: [string, GameJson]) => <GameTags {...{ tags }} />,
+                filters: [...allTags].map(tag => ({ text: tag, value: tag })),
+                onFilter: (tag, [, { tags }]) => tags?.includes(tag as string) ?? false
               }, {
                 title: 'Downloaded',
                 render: ([url, { name }]: [string, GameJson]) => {

@@ -12,6 +12,7 @@ import ErrorResult from './ErrorResult'
 import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons'
 import useFullScreen from './util/useFullScreen'
 import GameComponent from './types/GameComponent'
+import GameTags from './GameTags'
 
 export interface GameProps {
   id: string
@@ -52,6 +53,7 @@ const Game: FC<GameProps> = props => {
                   {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
                 </Button>
               }
+              tags={<GameTags tags={game.tags} />}
             />
             <Game ref={ref} />
           </div>
