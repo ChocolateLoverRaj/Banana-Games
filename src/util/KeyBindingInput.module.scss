@@ -1,0 +1,15 @@
+.input:focus {
+  animation-name: flash;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes flash {
+  from { 
+    border: 1px solid #1890ff;
+  }
+  to {
+    border: 1px solid white;
+  }
+}
