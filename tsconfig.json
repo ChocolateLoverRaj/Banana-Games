@@ -17,5 +17,10 @@
       "ES2019"
     ],
     "strictBindCallApply": true
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "jsx": "react"
+    }
   }
 }
