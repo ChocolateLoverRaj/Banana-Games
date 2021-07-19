@@ -1,10 +1,7 @@
+@import '../../dynamicAspectRatio.scss';
+
 .game {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  border: 10px dashed #1890ff;
-  background-color: white;
+  @include dynamicAspectRatio;
   text-align: center;
   position: relative;
 
