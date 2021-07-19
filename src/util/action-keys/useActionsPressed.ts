@@ -7,7 +7,7 @@ const useActionsPressed = <Action extends string = string>(actionKeys: ActionKey
   const [currentKeys] = useCurrentKeys(actionKeys)
 
   return [...currentKeys]
-    .filter(([, key]) => keysPressed.has(key))
+    .filter(([, keys]) => keys.some(key => keysPressed.has(key)))
     .map(([action]) => action)
 }
 

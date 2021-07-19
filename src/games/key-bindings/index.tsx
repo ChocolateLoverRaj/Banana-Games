@@ -3,17 +3,17 @@ import GameComponent from '../../types/GameComponent'
 import { Tag, Tabs } from 'antd'
 import { SettingOutlined } from '@ant-design/icons'
 import { game } from './index.module.scss'
-import { Map } from 'immutable'
+import { Map, Set as ImmutableSet } from 'immutable'
 import { ActionKeys, useActionsPressed, ActionKeysConfig } from '../../util/action-keys'
 
 const actions = ['up', 'down', 'left', 'right'] as const
 type Action = typeof actions[number]
 
-const actionKeys = new ActionKeys<Action>(Map<Action, string>()
-  .set('up', 'ArrowUp')
-  .set('down', 'ArrowDown')
-  .set('left', 'ArrowLeft')
-  .set('right', 'ArrowRight')
+const actionKeys = new ActionKeys<Action>(Map<Action, ImmutableSet<string>>()
+  .set('up', ImmutableSet.of('ArrowUp', 'KeyW'))
+  .set('down', ImmutableSet.of('ArrowDown', 'KeyS'))
+  .set('left', ImmutableSet.of('ArrowLeft', 'KeyA'))
+  .set('right', ImmutableSet.of('ArrowRight', 'KeyD'))
 )
 
 const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
