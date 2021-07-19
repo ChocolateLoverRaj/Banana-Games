@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { FC, useRef } from 'react'
+import { FC, useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
 import { Spin, PageHeader, PageHeaderProps, Button } from 'antd'
@@ -34,6 +34,18 @@ const Game: FC<GameProps> = props => {
   )
   const ref = useRef(null)
   const [fullScreen, setFullScreen] = useFullScreen(ref)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (e.code === 'F11') {
+        // Don't let browser make entire page fullscreen
+        e.preventDefault()
+        setFullScreen(true)
+      }
+    }
+    addEventListener('keydown', handler)
+    return () => removeEventListener('keydown', handler)
+  }, [setFullScreen])
 
   const handleBack: PageHeaderProps['onBack'] = () => history.push('')
 
