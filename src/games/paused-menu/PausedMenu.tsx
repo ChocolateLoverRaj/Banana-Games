@@ -1,16 +1,32 @@
-import { Dispatch, FC, useState } from 'react'
+import { Dispatch, FC, useState, useEffect } from 'react'
 import { Button, Space, Switch, Form } from 'antd'
 
 export type OnClose = () => void
 export interface PausedMenuProps {
   onClose: OnClose
   pauseWhenNotVisible: [boolean, Dispatch<boolean>]
+  backKeys: Set<string>
 }
 
 const PausedMenu: FC<PausedMenuProps> = props => {
-  const { onClose, pauseWhenNotVisible: [pausedWhenNotVisible, setPausedWhenNotVisible] } = props
+  const {
+    onClose,
+    pauseWhenNotVisible: [pausedWhenNotVisible, setPausedWhenNotVisible],
+    backKeys
+  } = props
 
   const [settingsPage, setSettingsPage] = useState(false)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      if (backKeys.has(e.code)) {
+        if (settingsPage) setSettingsPage(false)
+        else onClose()
+      }
+    }
+    addEventListener('keydown', handler)
+    return () => removeEventListener('keydown', handler)
+  }, [settingsPage, backKeys, onClose])
 
   const handleValuesChange = ({ pausedWhenNotVisible }): void =>
     setPausedWhenNotVisible(pausedWhenNotVisible)

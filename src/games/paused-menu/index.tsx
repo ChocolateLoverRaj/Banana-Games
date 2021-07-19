@@ -6,7 +6,7 @@ import PausedMenu from './PausedMenu'
 import useVisible from '../../util/useVisible'
 import arrayJoin from '../../util/arrayJoin'
 
-const pauseKeys = new Set<string>().add('ShiftRight').add('Escape')
+const backKeys = new Set<string>().add('ShiftRight').add('Escape')
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
@@ -20,18 +20,20 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
   }, [pausedWhenNotVisible, visible])
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent): void => {
-      if (pauseKeys.has(e.code)) setPaused(!paused)
+    if (!paused) {
+      const handler = (e: KeyboardEvent): void => {
+        if (backKeys.has(e.code)) setPaused(true)
+      }
+      addEventListener('keydown', handler)
+      return () => removeEventListener('keydown', handler)
     }
-    addEventListener('keydown', handler)
-    return () => removeEventListener('keydown', handler)
-  })
+  }, [paused])
 
   return (
     <div ref={ref} className={game}>
       <div>
         <h1>{paused ? 'Game Blurred' : 'Playing Game'}</h1>
-        Press {arrayJoin([...pauseKeys].map(key =>
+        Press {arrayJoin([...backKeys].map(key =>
           <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
         {paused ? 'resume' : 'pause'} game
       </div>
@@ -41,6 +43,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
             <PausedMenu
               onClose={setPaused.bind(undefined, false)}
               pauseWhenNotVisible={pausedWhenNotVisibleTuple}
+              {...{ backKeys }}
             />
           </div>
         </div>
