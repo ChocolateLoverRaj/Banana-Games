@@ -16,6 +16,7 @@
       "DOM",
       "ES2019"
     ],
+    "target": "ES5",
     "strictBindCallApply": true
   },
   "ts-node": {

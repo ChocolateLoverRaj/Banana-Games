@@ -49,6 +49,7 @@ specifiers:
   react-use-promise: ^0.3.1
   sass: ^1.35.2
   sass-loader: ^12.1.0
+  single-event-emitter: ^0.2.0
   style-loader: ^3.0.0
   terser-webpack-plugin: ^5.1.4
   ts-node: ^10.1.0
@@ -77,6 +78,7 @@ dependencies:
   react-dom: 17.0.2_react@17.0.2
   react-helmet: 6.1.0_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
+  single-event-emitter: 0.2.0
   webpack-stats-plugin: 1.0.3
 
 devDependencies:
@@ -7355,6 +7357,10 @@ packages:
     resolution: {integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=}
     dependencies:
       is-arrayish: 0.3.2
+    dev: false
+
+  /single-event-emitter/0.2.0:
+    resolution: {integrity: sha512-liwL5FId+Cf1OVebAykZmj2SREi2QLW2ZtnHsTXDo7PLWnD+YwQH9f4wDO4HOw9RfXv1z7cf6v6K6bGrU91Szw==}
     dev: false
 
   /sirv/1.0.12:
