@@ -11,7 +11,7 @@ import { Map, Set } from 'immutable'
 
 type Action = 'back'
 
-const actionKeys = new ActionKeys<Action>(Map([['back', Set.of('ShiftRight', 'Escape')]]))
+const actionKeys = new ActionKeys<Action>(Map([['back', Set.of('Escape', 'KeyP')]]))
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
