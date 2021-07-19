@@ -10,8 +10,8 @@ interface KeyBindingInputProps {
 const KeyBindingsInput: FC<KeyBindingInputProps> = props => {
   const { value, onChange } = props
 
-  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = ({ target, key }) => {
-    if (document.activeElement === target) onChange?.(key)
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = ({ target, code }) => {
+    if (document.activeElement === target) onChange?.(code)
   }
 
   return <Input readOnly value={value} className={input} onKeyDown={handleKeyDown} />

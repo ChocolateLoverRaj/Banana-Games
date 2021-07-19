@@ -5,11 +5,11 @@ const useKeysPressed = (): Set<string> => {
   const [keysPressed, setKeysPressed] = useState(Set<string>())
 
   useEffect(() => {
-    const handleKeyDown = ({ key }: KeyboardEvent): void => {
-      setKeysPressed(keysPressed.add(key))
+    const handleKeyDown = ({ code }: KeyboardEvent): void => {
+      setKeysPressed(keysPressed.add(code))
     }
-    const handleKeyUp = ({ key }: KeyboardEvent): void => {
-      setKeysPressed(keysPressed.delete(key))
+    const handleKeyUp = ({ code }: KeyboardEvent): void => {
+      setKeysPressed(keysPressed.delete(code))
     }
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
