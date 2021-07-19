@@ -6,30 +6,31 @@ import PausedMenu from '../../PausedMenu'
 import useVisible from '../../util/useVisible'
 import arrayJoin from '../../util/arrayJoin'
 import { SettingOutlined } from '@ant-design/icons'
+import { ActionKeys, ActionKeysConfig, useCurrentKeys, useOnAction } from '../../util/action-keys'
+import { Map, Set } from 'immutable'
 
-const backKeys = new Set<string>().add('ShiftRight').add('Escape')
+type Action = 'back'
+
+const actionKeys = new ActionKeys<Action>(Map([['back', Set.of('ShiftRight', 'Escape')]]))
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
   const [pausedWhenNotVisible, setPausedWhenNotVisible] = useState(true)
   const visible = useVisible()
+  const [currentKeys] = useCurrentKeys(actionKeys)
 
   useEffect(() => {
     if (!visible && pausedWhenNotVisible) setPaused(true)
   }, [pausedWhenNotVisible, visible])
 
-  useEffect(() => {
-    if (!paused) {
-      const handler = (e: KeyboardEvent): void => {
-        if (backKeys.has(e.code)) setPaused(true)
-      }
-      addEventListener('keydown', handler)
-      return () => removeEventListener('keydown', handler)
-    }
-  }, [paused])
+  useOnAction(actionKeys, 'back', () => {
+    if (!paused) setPaused(true)
+  })
 
   const handleValuesChange = ({ pausedWhenNotVisible }): void =>
     setPausedWhenNotVisible(pausedWhenNotVisible)
+
+  const backKeys = currentKeys.get('back') as Set<string>
 
   return (
     <div ref={ref} className={game}>
@@ -46,15 +47,18 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
               {[{
                 title: 'Settings',
                 content: (
-                  <Form initialValues={{ pausedWhenNotVisible }} onValuesChange={handleValuesChange}>
-                    <Form.Item
-                      name='pausedWhenNotVisible'
-                      label='Paused When Not Visible'
-                      valuePropName='checked'
-                    >
-                      <Switch />
-                    </Form.Item>
-                  </Form>
+                  <>
+                    <Form initialValues={{ pausedWhenNotVisible }} onValuesChange={handleValuesChange}>
+                      <Form.Item
+                        name='pausedWhenNotVisible'
+                        label='Paused When Not Visible'
+                        valuePropName='checked'
+                      >
+                        <Switch />
+                      </Form.Item>
+                    </Form>
+                    <ActionKeysConfig {...{ actionKeys }} />
+                  </>
                 ),
                 icon: <SettingOutlined />
               }]}
