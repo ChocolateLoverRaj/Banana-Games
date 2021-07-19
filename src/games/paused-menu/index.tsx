@@ -4,8 +4,9 @@ import { game, paused as pausedStyle } from './index.module.scss'
 import { Typography } from 'antd'
 import PausedMenu from './PausedMenu'
 import useVisible from '../../util/useVisible'
+import arrayJoin from '../../util/arrayJoin'
 
-const pauseKey = 'ShiftRight'
+const pauseKeys = new Set<string>().add('ShiftRight').add('Escape')
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
@@ -20,7 +21,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent): void => {
-      if (e.code === pauseKey) setPaused(!paused)
+      if (pauseKeys.has(e.code)) setPaused(!paused)
     }
     addEventListener('keydown', handler)
     return () => removeEventListener('keydown', handler)
@@ -30,7 +31,9 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
     <div ref={ref} className={game}>
       <div>
         <h1>{paused ? 'Game Blurred' : 'Playing Game'}</h1>
-        Press <Typography.Text keyboard>{pauseKey}</Typography.Text> to {paused ? 'resume' : 'pause'} game
+        Press {arrayJoin([...pauseKeys].map(key =>
+          <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
+        {paused ? 'resume' : 'pause'} game
       </div>
       {paused && (
         <div className={pausedStyle}>
