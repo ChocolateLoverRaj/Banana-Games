@@ -1,3 +1,21 @@
+@import "../../dynamicAspectRatio.scss";
+@import "../../paused.scss";
+@import "../../relative.scss";
+
 .game {
-  background-color: white;
+  @include dynamicAspectRatio;
+  @include relative;
+  text-align: center;
+  max-height: 100%;
+  overflow: hidden;
+
+  .paused {
+    @include paused;
+    background-color: #ffffffd0;
+
+    .pausedContent {
+      max-height: 100%;
+      overflow: auto;
+    }
+  }
 }

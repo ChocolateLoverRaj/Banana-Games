@@ -6,31 +6,37 @@ import PausedMenu from '../../PausedMenu'
 import useVisible from '../../util/useVisible'
 import arrayJoin from '../../util/arrayJoin'
 import { SettingOutlined } from '@ant-design/icons'
-import { ActionKeys, ActionKeysConfig, useCurrentKeys, useOnAction } from '../../util/action-keys'
+import { ActionInputs, ActionKeysConfig, useCurrentInputs, useOnAction } from '../../util/action-inputs'
 import { Map, Set } from 'immutable'
 
 type Action = 'back'
 
-const actionKeys = new ActionKeys<Action>(Map([['back', Set.of('Escape', 'KeyP')]]))
+const actionKeys = new ActionInputs<Action>(Map([['back', {
+  keyboard: Set.of('Escape', 'KeyP'),
+  touch: {
+    buttonContents: '',
+    buttons: Set.of()
+  }
+}]]))
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
   const [pausedWhenNotVisible, setPausedWhenNotVisible] = useState(true)
   const visible = useVisible()
-  const [currentKeys] = useCurrentKeys(actionKeys)
+  const [currentInputs] = useCurrentInputs(actionKeys)
 
   useEffect(() => {
     if (!visible && pausedWhenNotVisible) setPaused(true)
   }, [pausedWhenNotVisible, visible])
 
-  useOnAction(actionKeys, 'back', () => {
+  useOnAction(actionKeys, undefined, 'back', () => {
     if (!paused) setPaused(true)
   })
 
   const handleValuesChange = ({ pausedWhenNotVisible }): void =>
     setPausedWhenNotVisible(pausedWhenNotVisible)
 
-  const backKeys = currentKeys.get('back') as Set<string>
+  const backKeys = currentInputs.get('back')?.keyboard as Set<string>
 
   return (
     <div ref={ref} className={game}>
@@ -57,7 +63,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
                         <Switch />
                       </Form.Item>
                     </Form>
-                    <ActionKeysConfig {...{ actionKeys }} />
+                    <ActionKeysConfig {...{ actionInputs: actionKeys }} />
                   </>
                 ),
                 icon: <SettingOutlined />

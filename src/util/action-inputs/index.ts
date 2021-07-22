@@ -1,5 +1,5 @@
-export { default as ActionKeys } from './ActionKeys'
+export { default as ActionInputs } from './ActionInputs'
 export { default as useActionsPressed } from './useActionsPressed'
 export { default as ActionKeysConfig } from './ActionKeysConfig'
-export { default as useCurrentKeys } from './useCurrentKeys'
+export { default as useCurrentInputs } from './useCurrentInputs'
 export { default as useOnAction } from './useOnAction'

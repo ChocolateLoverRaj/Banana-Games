@@ -1,22 +1,23 @@
 import { FC, MouseEventHandler } from 'react'
-import ActionKeys from './ActionKeys'
+import ActionInputs from './ActionInputs'
 import { Table, Form, Button, Space } from 'antd'
 import KeyBindingsInput from '../KeyBindingInput'
-import useCurrentKeys from './useCurrentKeys'
+import useCurrentInputs from './useCurrentInputs'
 import { Set } from 'immutable'
 import { DeleteOutlined } from '@ant-design/icons'
 import { flex } from './ActionKeysConfig.module.scss'
+import Input from './types/Input'
 
 export interface ActionKeysConfigProps<Action extends string = string> {
-  actionKeys: ActionKeys<Action>
+  actionInputs: ActionInputs<Action>
 }
 
 const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = string>(
   props: ActionKeysConfigProps<Action>
 ) => {
-  const { actionKeys } = props
+  const { actionInputs } = props
 
-  const [currentKeys, setCurrentKeys] = useCurrentKeys(actionKeys)
+  const [currentKeys, setCurrentKeys] = useCurrentInputs(actionInputs)
 
   return (
     <Table
@@ -27,11 +28,14 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
         render: ([action]) => <>{action}</>
       }, {
         title: 'Key Bindings',
-        render: ([action, keys]) => (
+        render: ([action, { keyboard: keys, touch }]: [Action, Input]) => (
           <Form
             // TODO: use controlled form
             initialValues={{ keys: [...keys] }}
-            onValuesChange={(_, { keys }) => setCurrentKeys(currentKeys.set(action, Set(keys)))}
+            onValuesChange={(_, { keys }) => setCurrentKeys(currentKeys.set(action, {
+              touch,
+              keyboard: Set(keys)
+            }))}
           >
             <Form.List name='keys'>
               {(fields, { add, remove }) => (
@@ -56,11 +60,17 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
         )
       }, {
         title: 'Reset',
-        render: ([action, key]) => {
+        render: ([action, { keyboard, touch }]: [Action, Input]) => {
           const handleClick: MouseEventHandler = () =>
-            setCurrentKeys(currentKeys.set(action, actionKeys.defaultKeys.get(action) as Set<string>))
+            setCurrentKeys(currentKeys.set(action, {
+              touch,
+              keyboard: actionInputs.defaultInputs.get(action)?.keyboard as Set<string>
+            }))
           return (
-            <Button disabled={key === actionKeys.defaultKeys.get(action)} onClick={handleClick}>
+            <Button
+              disabled={keyboard === actionInputs.defaultInputs.get(action)?.keyboard}
+              onClick={handleClick}
+            >
               Reset to default
             </Button>
           )

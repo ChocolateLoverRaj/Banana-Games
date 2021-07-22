@@ -23,8 +23,11 @@ specifiers:
   babel-loader: ^8.2.2
   babel-plugin-import: ^1.13.3
   babel-plugin-react-require: ^3.1.3
+  bind-args: ^0.2.1
+  boolean-to-signed: ^1.0.1
   css-loader: ^5.2.6
   css-minimizer-webpack-plugin: ^3.0.2
+  detect-touch: ^1.1.2
   eslint: '>=7.12.1'
   eslint-config-standard-jsx: ^10.0.0
   eslint-config-standard-with-typescript: ^20.0.0
@@ -37,6 +40,7 @@ specifiers:
   html-loader: ^2.1.2
   html-webpack-plugin: ^5.3.2
   immutable: ^4.0.0-rc.14
+  limit-number: ^3.0.0
   matter-js: ^0.17.1
   mini-css-extract-plugin: ^2.1.0
   never: ^1.0.3
@@ -44,6 +48,7 @@ specifiers:
   process: ^0.11.10
   react: ^17.0.2
   react-dom: ^17.0.2
+  react-draggable: ^4.4.3
   react-helmet: ^6.1.0
   react-router-dom: ^5.2.0
   react-use-promise: ^0.3.1
@@ -68,14 +73,19 @@ dependencies:
   antd: 4.16.6_react-dom@17.0.2+react@17.0.2
   arr-diff: 4.0.0
   assert-browserify: 2.0.0
+  bind-args: 0.2.1
+  boolean-to-signed: 1.0.1
+  detect-touch: 1.1.2
   favicons: 6.2.2
   favicons-webpack-plugin: 5.0.2_favicons@6.2.2+webpack@5.44.0
   html-loader: 2.1.2_webpack@5.44.0
+  limit-number: 3.0.0
   matter-js: 0.17.1
   never: 1.0.3
   process: 0.11.10
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-draggable: 4.4.3
   react-helmet: 6.1.0_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
   single-event-emitter: 0.2.0
@@ -1811,6 +1821,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /bind-args/0.2.1:
+    resolution: {integrity: sha1-BykTCrbFhGB2UdBL08r9/SRBQAw=}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /bindings/1.5.0:
     resolution: {integrity: sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==}
     dependencies:
@@ -1867,6 +1882,10 @@ packages:
 
   /boolbase/1.0.0:
     resolution: {integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=}
+
+  /boolean-to-signed/1.0.1:
+    resolution: {integrity: sha512-FI0CdGTeujeyH/FGbjZlZHsa6y+6wWqWpJbVC230Pag/RPV7qZz+Jer4KJVDoDJneKsO5u+3HJuZWGG0jMlvxw==}
+    dev: false
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -2687,6 +2706,10 @@ packages:
   /detect-node/2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
     dev: true
+
+  /detect-touch/1.1.2:
+    resolution: {integrity: sha512-9/q5UsRBdjpK+2lvLmL5+5xbwy13PrxBhwmNhXBx1X4iBpBJ4IrB30eQOnGVdpMfBYVPN+fuiePXK9oijoMWcg==}
+    dev: false
 
   /diff/4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
@@ -4705,6 +4728,10 @@ packages:
     resolution: {integrity: sha512-EHKqr/+ZvdKCifpNrJCKxBTgk5XupZA3y/aCPY9mxfgBzmgh93Mt/WqjjQ38oMxXuvDokaKiM3lAgvSH2sjtHg==}
     engines: {node: '>=10'}
     dev: true
+
+  /limit-number/3.0.0:
+    resolution: {integrity: sha512-CpXRXqmXZVtx+TKf/TZDHk3ZVGjDfp1T3WkYJDm+Z4kNMti0vh4XplQE8j916Y2Y3BsVjFqgicZEkZQrRiNdkA==}
+    dev: false
 
   /lines-and-columns/1.1.6:
     resolution: {integrity: sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=}
@@ -6741,6 +6768,13 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
+
+  /react-draggable/4.4.3:
+    resolution: {integrity: sha512-jV4TE59MBuWm7gb6Ns3Q1mxX8Azffb7oTtDtBgFkxRvhDp38YAARmRplrj0+XGkhOJB5XziArX+4HUUABtyZ0w==}
+    dependencies:
+      classnames: 2.3.1
+      prop-types: 15.7.2
     dev: false
 
   /react-fast-compare/3.2.0:

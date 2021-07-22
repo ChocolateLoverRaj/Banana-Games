@@ -9,8 +9,6 @@ import {
   Body,
   IChamferableBodyDefinition
 } from 'matter-js'
-import assignSame from '../../util/assignSame'
-import Size from '../../util/Size'
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { canvas, maxSize } from './index.module.scss'
@@ -18,8 +16,8 @@ import { blue, grey as gray } from '@ant-design/colors'
 
 const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
   const canvasRef = useRef(null)
-  const componentSize = assignSame(new Size(), useComponentSize(ref as any))
-  const scaledSize = getScaledSize(componentSize, assignSame(new Size(), { width: 16, height: 9 }))
+  const componentSize = useComponentSize(ref as any)
+  const scaledSize = getScaledSize(componentSize, { width: 16, height: 9 })
 
   useEffect(() => {
     const canvas = canvasRef.current

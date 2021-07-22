@@ -4,16 +4,16 @@ import useComponentSize from '@rehooks/component-size'
 import { gameDiv, maxSize } from './index.module.scss'
 import GameComponent from '../../types/GameComponent'
 import getScaledSize from '../../util/getScaledSize'
-import Size from '../../util/Size'
-import assignSame from '../../util/assignSame'
+import Size from '../../util/types/Size'
+import sizeToString from '../../util/sizeToString'
 
-const ratio = assignSame(new Size(), {
+const ratio: Size = {
   width: 16,
   height: 9
-})
+}
 
 const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
-  const componentSize = assignSame(new Size(), useComponentSize(ref as any))
+  const componentSize = useComponentSize(ref as any)
 
   const scaledSize = getScaledSize(componentSize, ratio)
 
@@ -21,12 +21,12 @@ const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
     <div ref={ref} className={maxSize}>
       <div className={gameDiv} style={scaledSize}>
         <span>
-          Available Size - {componentSize.toString()} <br /><br />
+          Available Size - {sizeToString(componentSize)} <br /><br />
           Aspect Ratio - {' '}
           <a href='https://en.wikipedia.org/wiki/16:9_aspect_ratio'>
             {ratio.width}:{ratio.height}
           </a> <br /><br />
-          Game Size - {scaledSize.toString()}
+          Game Size - {sizeToString(scaledSize)}
         </span>
       </div>
     </div>

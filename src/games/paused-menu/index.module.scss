@@ -1,17 +1,14 @@
-@import '../../dynamicAspectRatio.scss';
+@import "../../dynamicAspectRatio.scss";
+@import "../../paused.scss";
+@import "../../relative.scss";
 
 .game {
   @include dynamicAspectRatio;
+  @include relative;
   text-align: center;
-  position: relative;
 
   .paused {
+    @include paused;
     background-color: #ffffffd0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
