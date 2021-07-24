@@ -13,6 +13,8 @@ import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { canvas, maxSize } from './index.module.scss'
 import { blue, grey as gray } from '@ant-design/colors'
+import { Typography } from 'antd'
+import config from '../../config.json'
 
 const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
   const canvasRef = useRef(null)
@@ -84,5 +86,13 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
     </div>
   )
 })
+
+MatterJsGame.description = (
+  <Typography.Paragraph>
+    <a href='https://en.wikipedia.org/wiki/Pong'>Pong</a> has been a video game for a long time,
+    and many people make pong as a sample game. Because it is so simple, pong is the first real
+    game on {config.appName}.
+  </Typography.Paragraph>
+)
 
 export default MatterJsGame
