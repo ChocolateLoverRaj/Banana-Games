@@ -39,6 +39,7 @@ specifiers:
   favicons-webpack-plugin: ^5.0.2
   html-loader: ^2.1.2
   html-webpack-plugin: ^5.3.2
+  idb: ^6.1.2
   immutable: ^4.0.0-rc.14
   limit-number: ^3.0.0
   matter-js: ^0.17.1
@@ -79,6 +80,7 @@ dependencies:
   favicons: 6.2.2
   favicons-webpack-plugin: 5.0.2_favicons@6.2.2+webpack@5.44.0
   html-loader: 2.1.2_webpack@5.44.0
+  idb: 6.1.2
   limit-number: 3.0.0
   matter-js: 0.17.1
   never: 1.0.3
@@ -4050,6 +4052,10 @@ packages:
     dependencies:
       postcss: 8.3.5
     dev: true
+
+  /idb/6.1.2:
+    resolution: {integrity: sha512-1DNDVu3yDhAZkFDlJf0t7r+GLZ248F5pTAtA7V0oVG3yjmV125qZOx3g0XpAEkGZVYQiFDAsSOnGet2bhugc3w==}
+    dev: false
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}

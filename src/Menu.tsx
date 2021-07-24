@@ -21,6 +21,9 @@ const Menu: FC = () => {
         {[...games].map(([url, { name }]) =>
           <AntdMenu.Item key={`/${url}`}><Link to={`/${url}`}>{name}</Link></AntdMenu.Item>)}
       </AntdMenu.SubMenu>
+      <AntdMenu.Item key='settings'>
+        <Link to='/settings'>Settings</Link>
+      </AntdMenu.Item>
       <AntdMenu.Item key='serviceWorker'>
         <Link to='/service-worker'>Service Worker</Link>
       </AntdMenu.Item>

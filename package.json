@@ -26,6 +26,7 @@
     "favicons": "^6.2.2",
     "favicons-webpack-plugin": "^5.0.2",
     "html-loader": "^2.1.2",
+    "idb": "^6.1.2",
     "limit-number": "^3.0.0",
     "matter-js": "^0.17.1",
     "never": "^1.0.3",

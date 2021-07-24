@@ -1,13 +1,17 @@
 import { forwardRef, useEffect, useState } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { game, paused as pausedStyle } from './index.module.scss'
-import { Typography, Form, Switch } from 'antd'
+import { Typography } from 'antd'
 import PausedMenu from '../../PausedMenu'
 import useVisible from '../../util/useVisible'
 import arrayJoin from '../../util/arrayJoin'
 import { SettingOutlined } from '@ant-design/icons'
 import { ActionInputs, ActionKeysConfig, useCurrentInputs, useOnAction } from '../../util/action-inputs'
 import { Map, Set } from 'immutable'
+import usePromise from 'react-use-promise'
+import { useTransaction } from '../../util/use-indexed-db'
+import settingsDb from '../../settingsDb'
+import never from 'never'
 
 type Action = 'back'
 
@@ -21,20 +25,22 @@ const actionKeys = new ActionInputs<Action>(Map([['back', {
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const [paused, setPaused] = useState(false)
-  const [pausedWhenNotVisible, setPausedWhenNotVisible] = useState(true)
   const visible = useVisible()
   const [currentInputs] = useCurrentInputs(actionKeys)
+  // TODO: Show loading
+  const createTransaction = useTransaction(settingsDb)
+  const [pausedWhenNotVisible] = usePromise<boolean>(async () => await
+  (await createTransaction(['settings'], 'readonly')).objectStore('settings')
+    .get?.('pausedWhenNotVisible') ?? never('No value for key pausedWhenNotVisible'),
+  [createTransaction])
 
   useEffect(() => {
-    if (!visible && pausedWhenNotVisible) setPaused(true)
+    if (!visible && pausedWhenNotVisible === true) setPaused(true)
   }, [pausedWhenNotVisible, visible])
 
   useOnAction(actionKeys, undefined, 'back', () => {
     if (!paused) setPaused(true)
   })
-
-  const handleValuesChange = ({ pausedWhenNotVisible }): void =>
-    setPausedWhenNotVisible(pausedWhenNotVisible)
 
   const backKeys = currentInputs.get('back')?.keyboard as Set<string>
 
@@ -52,20 +58,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
             <PausedMenu onClose={setPaused.bind(undefined, false)} {...{ backKeys }}>
               {[{
                 title: 'Settings',
-                content: (
-                  <>
-                    <Form initialValues={{ pausedWhenNotVisible }} onValuesChange={handleValuesChange}>
-                      <Form.Item
-                        name='pausedWhenNotVisible'
-                        label='Paused When Not Visible'
-                        valuePropName='checked'
-                      >
-                        <Switch />
-                      </Form.Item>
-                    </Form>
-                    <ActionKeysConfig {...{ actionInputs: actionKeys }} />
-                  </>
-                ),
+                content: <ActionKeysConfig {...{ actionInputs: actionKeys }} />,
                 icon: <SettingOutlined />
               }]}
             </PausedMenu>

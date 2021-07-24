@@ -8,6 +8,8 @@ import GlobalStateContext from './GlobalStateContext'
 import useServiceWorker from './util/useServiceWorker'
 import { message } from 'antd'
 import useDownloadedGames from './useDownloadedGames'
+import { IndexedDbProvider } from './util/use-indexed-db'
+import settingsDb from './settingsDb'
 
 const IndexPage: FC = () => {
   const serviceWorker = useServiceWorker('./serviceWorker.js', () => {
@@ -17,16 +19,25 @@ const IndexPage: FC = () => {
   const downloadedGames = useDownloadedGames(serviceWorker[10])
 
   return (
-    <HashRouter hashType='noslash'>
-      <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
-        <div className={page}>
-          <div>
-            <Menu />
+    <IndexedDbProvider
+      dbs={new Map([[settingsDb, {
+        version: 1,
+        upgrade: async db => {
+          await db.createObjectStore('settings').add(true, 'pausedWhenNotVisible')
+        }
+      }]])}
+    >
+      <HashRouter hashType='noslash'>
+        <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
+          <div className={page}>
+            <div>
+              <Menu />
+            </div>
+            <Content />
           </div>
-          <Content />
-        </div>
-      </GlobalStateContext.Provider>
-    </HashRouter>
+        </GlobalStateContext.Provider>
+      </HashRouter>
+    </IndexedDbProvider>
   )
 }
 
