@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react'
 import GameComponent from '../../types/GameComponent'
-import { Tag, Tabs, Button } from 'antd'
+import { Tag, Tabs, Button, Typography } from 'antd'
 import {
   ControlOutlined,
   PauseOutlined,
@@ -25,6 +25,7 @@ import TouchButtons from '../../util/action-inputs/TouchButtons'
 import TouchButtonsConfig from '../../util/action-inputs/TouchButtonsConfig'
 import useComponentSize from '@rehooks/component-size'
 import { detectTouch } from 'detect-touch'
+import config from '../../config.json'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -183,5 +184,24 @@ const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
     </div>
   )
 })
+
+KeyBindingsGame.description = (
+  <>
+    <Typography.Paragraph>
+      One of the most important things in a game is user input. Without user input, a game wouldn't
+      be a game.
+    </Typography.Paragraph>
+    <Typography.Paragraph>
+      One of {config.appName}'s goals is to create games that are playable on most devices. Games
+      have to support both keyboard input for devices like laptops and desktop computers, and touch
+      input from tablets and phones. For touch inputs, there are buttons on the screen to press.
+    </Typography.Paragraph>
+    <Typography.Paragraph>
+      Another goal that comes with inputs is the ability to customize the inputs. For keyboard
+      inputs, the keybindings can be changed, and multiple keys can also be used for the same
+      action. For touch inputs, buttons can be moved around.
+    </Typography.Paragraph>
+  </>
+)
 
 export default KeyBindingsGame
