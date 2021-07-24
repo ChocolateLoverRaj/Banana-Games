@@ -1,6 +1,6 @@
 import { forwardRef, MouseEventHandler, useEffect } from 'react'
 import * as React from 'react'
-import { Button } from 'antd'
+import { Button, Typography } from 'antd'
 import useFullScreen, { FullScreenOperation } from '../../util/useFullScreen'
 import { game } from './index.module.scss'
 import GameComponent from '../../types/GameComponent'
@@ -31,5 +31,14 @@ const FullScreenGame: GameComponent = forwardRef((_props, ref) => {
     </div>
   )
 })
+
+FullScreenGame.description = (
+  <Typography.Paragraph>
+    Even with the game in the spotlight of the screen, there is a lot of potential for the game
+    to have more space. Using the {' '}
+    <a href='https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API'>Fullscreen API</a>,
+    you can have a better view of the game.
+  </Typography.Paragraph>
+)
 
 export default FullScreenGame
