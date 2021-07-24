@@ -14,4 +14,11 @@ const DynamicAspectRatio: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
+DynamicAspectRatio.description = (
+  <>
+    Some games can work with a range of aspect ratios. Those games take up all the available
+    space on the screen.
+  </>
+)
+
 export default DynamicAspectRatio
