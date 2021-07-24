@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FC, useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
-import { Spin, PageHeader, PageHeaderProps, Button } from 'antd'
+import { Spin, PageHeader, PageHeaderProps, Button, Skeleton, Collapse } from 'antd'
 import { content, loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
 import GameType from './types/GameJson'
@@ -49,36 +49,50 @@ const Game: FC<GameProps> = props => {
 
   const handleBack: PageHeaderProps['onBack'] = () => history.push('')
 
+  const noDescription = Game !== undefined && Game.description === undefined
+
   return (
     <>
       <Helmet>
         <title>{game.name} {'\u2022'} {config.appName}</title>
       </Helmet>
-      {Game !== undefined
-        ? (
-          <div className={content}>
-            <PageHeader
-              title={game.name}
-              onBack={handleBack}
-              extra={
-                <Button type='text' onClick={setFullScreen.bind(undefined, !fullScreen)}>
-                  {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-                </Button>
+      <div className={content}>
+        <PageHeader
+          title={game.name}
+          onBack={handleBack}
+          extra={
+            <Button type='text' onClick={setFullScreen.bind(undefined, !fullScreen)}>
+              {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+            </Button>
               }
-              tags={<GameTags tags={game.tags} />}
-            />
-            <Game ref={ref} />
-          </div>
-          )
-        : state === 'pending'
+          tags={<GameTags tags={game.tags} />}
+        >
+          <Collapse defaultActiveKey={noDescription ? undefined : 'description'} ghost>
+            <Collapse.Panel
+              header='Description'
+              key='description'
+              collapsible={noDescription ? 'disabled' : 'header'}
+            >
+              {state === 'pending'
+                ? <Skeleton active title={false} />
+                : Game?.description}
+            </Collapse.Panel>
+          </Collapse>
+        </PageHeader>
+        {Game !== undefined
           ? (
-            <div className={loading}>
-              <Spin size='large' tip='Downloading Game' />
-            </div>
+            <Game ref={ref} />
             )
-          : (
-            <ErrorResult error={error as Error} title='Error Downloading Game' retry={retry} />
-            )}
+          : state === 'pending'
+            ? (
+              <div className={loading}>
+                <Spin size='large' tip='Downloading Game' />
+              </div>
+              )
+            : (
+              <ErrorResult error={error as Error} title='Error Downloading Game' retry={retry} />
+              )}
+      </div>
     </>
   )
 }
