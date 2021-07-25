@@ -3,8 +3,10 @@
   height: 100vh;
   display: flex;
 
-  :nth-child(1) {
+  > :nth-child(1) {
     flex: 0 0 auto;
+    overflow-y: auto;
+    overflow-x: clip;
   }
 
   :nth-child(2) {
