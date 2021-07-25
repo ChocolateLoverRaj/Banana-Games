@@ -6,19 +6,24 @@ import usePromise from 'react-use-promise'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'
 import config from './config.json'
+import { zip } from 'zip-array'
 
 const SettingsRoute: FC = () => {
   const createTransaction = useTransaction(settingsDb)
-  const [pausedWhenNotVisible, error] = usePromise<boolean>(async () => await
-  (await createTransaction(['settings'], 'readwrite')).objectStore('settings')
-    .get('pausedWhenNotVisible'), [])
-
+  const [settings, error] = usePromise<object>(async () => {
+    const store = (await createTransaction(['settings'], 'readwrite')).objectStore('settings')
+    const keys = await store.getAllKeys()
+    const values = await store.getAll()
+    return Object.fromEntries(zip(keys, values))
+  }, [])
   const [savePromise, setSavePromise] = useState<Promise<void>>(Promise.resolve())
   const [, saveError, saveState] = usePromise(savePromise, [savePromise])
 
-  const handleFinish: FormProps['onFinish'] = ({ pausedWhenNotVisible }) =>
+  const handleFinish: FormProps['onFinish'] = settings =>
     setSavePromise(createTransaction(['settings'], 'readwrite').then(async transaction => {
-      await transaction.objectStore('settings').put?.(pausedWhenNotVisible, 'pausedWhenNotVisible')
+      const store = transaction.objectStore('settings')
+      // TODO: Only modify changed fields
+      await Promise.all(Object.entries(settings).map(async ([k, v]) => await store.put?.(v, k)))
     }))
 
   return (
@@ -28,14 +33,22 @@ const SettingsRoute: FC = () => {
       </Helmet>
       <div>
         <Typography.Title>Settings</Typography.Title>
-        {pausedWhenNotVisible !== undefined
+        {settings !== undefined
           ? saveError === undefined
             ? (
               // TODO: Show unsaved / unchanged fields
-              <Form initialValues={{ pausedWhenNotVisible }} onFinish={handleFinish}>
+              <Form initialValues={settings} onFinish={handleFinish}>
                 <Form.Item
                   name='pausedWhenNotVisible'
                   label='Paused When Not Visible'
+                  valuePropName='checked'
+                >
+                  <Switch />
+                </Form.Item>
+                <section id='warnBeforeLeavingGame' />
+                <Form.Item
+                  name='warnBeforeLeavingGame'
+                  label='Warn Before Leaving Game'
                   valuePropName='checked'
                 >
                   <Switch />

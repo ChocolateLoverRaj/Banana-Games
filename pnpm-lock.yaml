@@ -12,9 +12,11 @@ specifiers:
   '@types/arr-diff': ^4.0.0
   '@types/matter-js': ^0.17.3
   '@types/react': ^17.0.14
+  '@types/react-beforeunload': ^2.1.1
   '@types/react-dom': ^17.0.9
   '@types/react-helmet': ^6.1.2
   '@types/react-router-dom': ^5.1.8
+  '@types/react-router-hash-link': ^2.4.1
   '@types/webpack-env': ^1.16.2
   '@typescript-eslint/eslint-plugin': '>=4.0.1'
   antd: ^4.16.6
@@ -48,10 +50,12 @@ specifiers:
   path-browserify: ^1.0.1
   process: ^0.11.10
   react: ^17.0.2
+  react-beforeunload: ^2.5.1
   react-dom: ^17.0.2
   react-draggable: ^4.4.3
   react-helmet: ^6.1.0
   react-router-dom: ^5.2.0
+  react-router-hash-link: ^2.4.3
   react-use-promise: ^0.3.1
   sass: ^1.35.2
   sass-loader: ^12.1.0
@@ -66,6 +70,7 @@ specifiers:
   webpack-cli: ^4.7.2
   webpack-dev-server: ^3.11.2
   webpack-stats-plugin: ^1.0.3
+  zip-array: ^1.0.1
 
 dependencies:
   '@ant-design/colors': 6.0.0
@@ -86,12 +91,15 @@ dependencies:
   never: 1.0.3
   process: 0.11.10
   react: 17.0.2
+  react-beforeunload: 2.5.1_react@17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-draggable: 4.4.3
   react-helmet: 6.1.0_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
+  react-router-hash-link: 2.4.3_520bc78b4ba4065e7cfe4fe506865769
   single-event-emitter: 0.2.0
   webpack-stats-plugin: 1.0.3
+  zip-array: 1.0.1
 
 devDependencies:
   '@appgeist/ensure-dir': 1.1.4
@@ -102,9 +110,11 @@ devDependencies:
   '@types/arr-diff': 4.0.0
   '@types/matter-js': 0.17.3
   '@types/react': 17.0.14
+  '@types/react-beforeunload': 2.1.1
   '@types/react-dom': 17.0.9
   '@types/react-helmet': 6.1.2
   '@types/react-router-dom': 5.1.8
+  '@types/react-router-hash-link': 2.4.1
   '@types/webpack-env': 1.16.2
   '@typescript-eslint/eslint-plugin': 4.28.2_eslint@7.30.0+typescript@4.3.5
   babel-loader: 8.2.2_bdbf93c44932bbce0b7b7ee8ec67053a
@@ -1086,6 +1096,12 @@ packages:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
     dev: true
 
+  /@types/react-beforeunload/2.1.1:
+    resolution: {integrity: sha512-KER+M11lrXhp++tHDm9P7YWaKKBWwNyZkwnHSV3QQXGU2ZcP9x+O0Y7ZDZqGQD1OlGF4P8fmcpll3ol3a8KXsQ==}
+    dependencies:
+      '@types/react': 17.0.15
+    dev: true
+
   /@types/react-dom/17.0.9:
     resolution: {integrity: sha512-wIvGxLfgpVDSAMH5utdL9Ngm5Owu0VsGmldro3ORLXV8CShrL8awVj06NuEXFQ5xyaYfdca7Sgbk/50Ri1GdPg==}
     dependencies:
@@ -1106,6 +1122,13 @@ packages:
       '@types/react-router': 5.1.16
     dev: true
 
+  /@types/react-router-hash-link/2.4.1:
+    resolution: {integrity: sha512-SPVymyscQUBWMAPEpAn3I35MQXarTx0rOPmcfHl1xWYaTSDP5kxQnrFjmMxJlX5mjIPVHb3XBm8t6DTQNjkGEQ==}
+    dependencies:
+      '@types/react': 17.0.15
+      '@types/react-router-dom': 5.1.8
+    dev: true
+
   /@types/react-router/5.1.16:
     resolution: {integrity: sha512-8d7nR/fNSqlTFGHti0R3F9WwIertOaaA1UEB8/jr5l5mDMOs4CidEgvvYMw4ivqrBK+vtVLxyTj2P+Pr/dtgzg==}
     dependencies:
@@ -1115,6 +1138,14 @@ packages:
 
   /@types/react/17.0.14:
     resolution: {integrity: sha512-0WwKHUbWuQWOce61UexYuWTGuGY/8JvtUe/dtQ6lR4sZ3UiylHotJeWpf3ArP9+DSGUoLY3wbU59VyMrJps5VQ==}
+    dependencies:
+      '@types/prop-types': 15.7.4
+      '@types/scheduler': 0.16.2
+      csstype: 3.0.8
+    dev: true
+
+  /@types/react/17.0.15:
+    resolution: {integrity: sha512-uTKHDK9STXFHLaKv6IMnwp52fm0hwU+N89w/p9grdUqcFA6WuqDyPhaWopbNyE1k/VhgzmHl8pu1L4wITtmlLw==}
     dependencies:
       '@types/prop-types': 15.7.4
       '@types/scheduler': 0.16.2
@@ -6765,6 +6796,16 @@ packages:
       strip-json-comments: 2.0.1
     dev: false
 
+  /react-beforeunload/2.5.1_react@17.0.2:
+    resolution: {integrity: sha512-X0PROB2sOTfue/8DEMIEIbfVWHlsLYuVOQ1s9StYOkrqocWX7wVJ1SErYXNw0I6zT1vTALm6oxsI7SO2B7AoGw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+    dependencies:
+      prop-types: 15.7.2
+      react: 17.0.2
+      tiny-invariant: 1.1.0
+    dev: false
+
   /react-dom/17.0.2_react@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
@@ -6815,6 +6856,17 @@ packages:
       react-router: 5.2.0_react@17.0.2
       tiny-invariant: 1.1.0
       tiny-warning: 1.0.3
+    dev: false
+
+  /react-router-hash-link/2.4.3_520bc78b4ba4065e7cfe4fe506865769:
+    resolution: {integrity: sha512-NU7GWc265m92xh/aYD79Vr1W+zAIXDWp3L2YZOYP4rCqPnJ6LI6vh3+rKgkidtYijozHclaEQTAHaAaMWPVI4A==}
+    peerDependencies:
+      react: '>=15'
+      react-router-dom: '>=4'
+    dependencies:
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-router-dom: 5.2.0_react@17.0.2
     dev: false
 
   /react-router/5.2.0_react@17.0.2:
@@ -8627,3 +8679,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zip-array/1.0.1:
+    resolution: {integrity: sha1-mefCPX9EkDDn86IaBVeFtGrupY0=}
+    dev: false

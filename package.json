@@ -32,12 +32,15 @@
     "never": "^1.0.3",
     "process": "^0.11.10",
     "react": "^17.0.2",
+    "react-beforeunload": "^2.5.1",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.3",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.4.3",
     "single-event-emitter": "^0.2.0",
-    "webpack-stats-plugin": "^1.0.3"
+    "webpack-stats-plugin": "^1.0.3",
+    "zip-array": "^1.0.1"
   },
   "devDependencies": {
     "@appgeist/ensure-dir": "^1.1.4",
@@ -48,9 +51,11 @@
     "@types/arr-diff": "^4.0.0",
     "@types/matter-js": "^0.17.3",
     "@types/react": "^17.0.14",
+    "@types/react-beforeunload": "^2.1.1",
     "@types/react-dom": "^17.0.9",
     "@types/react-helmet": "^6.1.2",
     "@types/react-router-dom": "^5.1.8",
+    "@types/react-router-hash-link": "^2.4.1",
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": ">=4.0.1",
     "babel-loader": "^8.2.2",

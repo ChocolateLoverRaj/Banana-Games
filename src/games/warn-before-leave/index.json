@@ -1,0 +1,7 @@
+{
+  "$schema": "../../game.schema.json",
+  "name": "Warn Before Leave",
+  "tags": [
+    "Demo"
+  ]
+}

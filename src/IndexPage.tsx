@@ -21,9 +21,18 @@ const IndexPage: FC = () => {
   return (
     <IndexedDbProvider
       dbs={new Map([[settingsDb, {
-        version: 1,
-        upgrade: async db => {
-          await db.createObjectStore('settings').add(true, 'pausedWhenNotVisible')
+        version: 2,
+        upgrade: async (db, previousVersion) => {
+          console.log(previousVersion)
+          if (previousVersion === 1) {
+            // TODO: Smoother upgrades: https://github.com/jakearchibald/idb/issues/231
+            db.deleteObjectStore('settings')
+          }
+          const store = db.createObjectStore('settings')
+          await Promise.all([
+            store.add(true, 'pausedWhenNotVisible'),
+            store.add(true, 'warnBeforeLeavingGame')
+          ])
         }
       }]])}
     >
