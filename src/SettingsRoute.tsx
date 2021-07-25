@@ -6,16 +6,12 @@ import usePromise from 'react-use-promise'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'
 import config from './config.json'
-import { zip } from 'zip-array'
+import storeToObject from './util/storeToObject'
 
 const SettingsRoute: FC = () => {
   const createTransaction = useTransaction(settingsDb)
-  const [settings, error] = usePromise<object>(async () => {
-    const store = (await createTransaction(['settings'], 'readwrite')).objectStore('settings')
-    const keys = await store.getAllKeys()
-    const values = await store.getAll()
-    return Object.fromEntries(zip(keys, values))
-  }, [])
+  const [settings, error] = usePromise<object>(async () => await storeToObject(
+    (await createTransaction(['settings'], 'readonly')).objectStore('settings')), [])
   const [savePromise, setSavePromise] = useState<Promise<void>>(Promise.resolve())
   const [, saveError, saveState] = usePromise(savePromise, [savePromise])
 
