@@ -10,6 +10,8 @@ specifiers:
   '@rehooks/component-size': ^1.0.3
   '@types/appgeist__ensure-dir': ^1.1.0
   '@types/arr-diff': ^4.0.0
+  '@types/bind-args': ^0.2.0
+  '@types/detect-touch': ^1.1.0
   '@types/matter-js': ^0.17.3
   '@types/react': ^17.0.14
   '@types/react-beforeunload': ^2.1.1
@@ -65,6 +67,7 @@ specifiers:
   ts-node: ^10.1.0
   typescript: ^4.3.5
   typescript-plugin-css-modules: ^3.4.0
+  use-constant: ^1.1.0
   webpack: ^5.44.0
   webpack-bundle-analyzer: ^4.4.2
   webpack-cli: ^4.7.2
@@ -98,6 +101,7 @@ dependencies:
   react-router-dom: 5.2.0_react@17.0.2
   react-router-hash-link: 2.4.3_520bc78b4ba4065e7cfe4fe506865769
   single-event-emitter: 0.2.0
+  use-constant: 1.1.0_react@17.0.2
   webpack-stats-plugin: 1.0.3
   zip-array: 1.0.1
 
@@ -108,6 +112,8 @@ devDependencies:
   '@babel/preset-typescript': 7.14.5_@babel+core@7.14.6
   '@types/appgeist__ensure-dir': 1.1.0
   '@types/arr-diff': 4.0.0
+  '@types/bind-args': 0.2.0
+  '@types/detect-touch': 1.1.0
   '@types/matter-js': 0.17.3
   '@types/react': 17.0.14
   '@types/react-beforeunload': 2.1.1
@@ -1029,6 +1035,14 @@ packages:
 
   /@types/arr-diff/4.0.0:
     resolution: {integrity: sha512-rXnlEJI+QRG9wd+++oySF2HuckHXEG6xcLT1pX/u+NFZH/+ITpb2ocMU0W4LJaBnvkVOYMDZgegspxq3kd7Pyg==}
+    dev: true
+
+  /@types/bind-args/0.2.0:
+    resolution: {integrity: sha512-JIP3FeU1VLovz4m/98+hr43gZnSBTpS2O1kR3ymMK1edH+jIq+hPFU/PFvrpqTMHoYZmiTAW1j/QQ/b1ra5kjQ==}
+    dev: true
+
+  /@types/detect-touch/1.1.0:
+    resolution: {integrity: sha512-sUskH4/5kVGywJZq5nDXJAOAPJFPjrVJqy1IoAvEDJ6qNAJKp6Ea96PpDmrpYiV+O1eEjlwUiGeNLm27AJIXqA==}
     dev: true
 
   /@types/eslint-scope/3.7.1:
@@ -8217,6 +8231,14 @@ packages:
       punycode: 1.3.2
       querystring: 0.2.0
     dev: true
+
+  /use-constant/1.1.0_react@17.0.2:
+    resolution: {integrity: sha512-yrflEfv7Xv/W8WlYV6nwRH01K+2BpR4cWxuzY03yPRjYZuHixhGlvnJN5O2bRYrXGpJ4zy8QjFABGIQ2QXeBOA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}

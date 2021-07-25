@@ -1,6 +1,6 @@
-import { ReactNode, FC, useState, useEffect } from 'react'
+import { ReactNode, FC, useState } from 'react'
 import { Button, Space } from 'antd'
-import { Set } from 'immutable'
+import { ActionInputs, useOnAction } from './util/action-inputs'
 
 export type OnClose = () => void
 export interface SubMenu {
@@ -10,29 +10,20 @@ export interface SubMenu {
 }
 export interface PausedMenuProps {
   onClose: OnClose
-  backKeys: Set<string>
+  actionInputs: ActionInputs
+  action: string
   children: SubMenu[]
 }
 
 const PausedMenu = (props: PausedMenuProps): ReturnType<FC> => {
-  const {
-    onClose,
-    backKeys,
-    children
-  } = props
+  const { onClose, actionInputs, children, action } = props
 
   const [currentSubMenu, setCurrentSubMenu] = useState<string>()
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent): void => {
-      if (backKeys.has(e.code)) {
-        if (currentSubMenu !== undefined) setCurrentSubMenu(undefined)
-        else onClose()
-      }
-    }
-    addEventListener('keydown', handler)
-    return () => removeEventListener('keydown', handler)
-  }, [currentSubMenu, backKeys, onClose])
+  useOnAction(actionInputs, undefined, action, () => {
+    if (currentSubMenu !== undefined) setCurrentSubMenu(undefined)
+    else setTimeout(onClose, 4)
+  })
 
   const subMenu = currentSubMenu !== undefined
     ? children.find(({ title }) => title === currentSubMenu)

@@ -19,7 +19,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
   return (
     <div ref={ref} className={game}>
       {pausedWhenNotVisible !== undefined
-        ? <Game {...{ pausedWhenNotVisible }} />
+        ? <Game {...{ pausedWhenNotVisible, ref }} />
         : error === undefined
           ? <Spin tip='Loading Settings' size='large' />
           : <ErrorResult error={error} title='Error Loading Settings' />}

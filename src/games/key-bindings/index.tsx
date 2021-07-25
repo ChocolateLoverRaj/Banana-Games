@@ -1,31 +1,25 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
-import { Tag, Tabs, Button, Typography } from 'antd'
+import { Tag, Typography } from 'antd'
 import {
-  ControlOutlined,
   PauseOutlined,
   UpOutlined,
   DownOutlined,
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons'
-import { game, paused as pausedStyle, pausedContent } from './index.module.scss'
+import { game } from './index.module.scss'
 import { Map, Set as ImmutableSet } from 'immutable'
 import {
   ActionInputs,
-  useActionsPressed,
-  ActionKeysConfig,
-  useOnAction,
-  useCurrentInputs
+  useActionsPressed
 } from '../../util/action-inputs'
 import Input from '../../util/action-inputs/types/Input'
-import PausedMenu from '../../PausedMenu'
-import TouchInputs from '../../util/action-inputs/TouchInputs'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
-import TouchButtonsConfig from '../../util/action-inputs/TouchButtonsConfig'
 import useComponentSize from '@rehooks/component-size'
-import { detectTouch } from 'detect-touch'
 import config from '../../config.json'
+import useConstant from 'use-constant'
+import { GameWithActions, useScreen } from '../../util/game-with-actions'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -124,63 +118,23 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
     }
   })
 )
-const touchButtons = new TouchButtons(actionInputs)
-
-enum Screen { PLAYING, PAUSED, TOUCH_EDIT }
 
 const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
+  const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const actionsPressed = useActionsPressed(actionInputs, touchButtons)
-  const [currentInputs] = useCurrentInputs(actionInputs)
   const size = useComponentSize(ref as any)
-
-  const [screen, setScreen] = useState(Screen.PLAYING)
-
-  useOnAction(actionInputs, touchButtons, 'back', setScreen.bind(undefined, Screen.PAUSED))
+  const useScreenResult = useScreen()
 
   // TODO - don't allow duplicate keybindings
   return (
     <div ref={ref} className={game}>
-      <div>
+      <GameWithActions {...{ actionInputs, touchButtons, size, useScreenResult }} back='back'>
         <h1>Pressed Keys</h1>
         {actions.map(action =>
           <Tag.CheckableTag key={action} checked={actionsPressed.has(action)}>
             {action}
           </Tag.CheckableTag>)}
-      </div>
-      {(detectTouch() as boolean) && (screen === Screen.TOUCH_EDIT
-        ? <TouchButtonsConfig
-            {...{ actionInputs }}
-            onExit={setScreen.bind(undefined, Screen.PAUSED)}
-            boundary={size}
-          />
-        : <TouchInputs touchButtons={touchButtons} />)}
-      {screen === Screen.PAUSED && (
-        <div className={pausedStyle}>
-          <div className={pausedContent}>
-            <PausedMenu
-              onClose={setScreen.bind(undefined, Screen.PLAYING)}
-              backKeys={currentInputs.get('back')?.keyboard as ImmutableSet<string>}
-            >
-              {[{
-                title: 'Controls',
-                content: (
-                  <Tabs>
-                    <Tabs.TabPane key='keyboard' tab='Keyboard'>
-                      <ActionKeysConfig {...{ actionInputs }} />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane key='touch' tab='Touch' disabled={!(detectTouch() as boolean)}>
-                      <Button onClick={setScreen.bind(undefined, Screen.TOUCH_EDIT)}>
-                        Edit Buttons
-                      </Button>
-                    </Tabs.TabPane>
-                  </Tabs>
-                ),
-                icon: <ControlOutlined />
-              }]}
-            </PausedMenu>
-          </div>
-        </div>
-      )}
+      </GameWithActions>
     </div>
   )
 })

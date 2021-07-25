@@ -39,6 +39,7 @@
     "react-router-dom": "^5.2.0",
     "react-router-hash-link": "^2.4.3",
     "single-event-emitter": "^0.2.0",
+    "use-constant": "^1.1.0",
     "webpack-stats-plugin": "^1.0.3",
     "zip-array": "^1.0.1"
   },
@@ -49,6 +50,8 @@
     "@babel/preset-typescript": "^7.14.5",
     "@types/appgeist__ensure-dir": "^1.1.0",
     "@types/arr-diff": "^4.0.0",
+    "@types/bind-args": "^0.2.0",
+    "@types/detect-touch": "^1.1.0",
     "@types/matter-js": "^0.17.3",
     "@types/react": "^17.0.14",
     "@types/react-beforeunload": "^2.1.1",

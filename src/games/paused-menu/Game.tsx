@@ -1,12 +1,16 @@
-import { FC, useEffect, useState } from 'react'
-import { paused as pausedStyle } from './index.module.scss'
+import { useEffect, forwardRef } from 'react'
 import { Typography } from 'antd'
-import PausedMenu from '../../PausedMenu'
 import useVisible from '../../util/useVisible'
 import arrayJoin from '../../util/arrayJoin'
-import { SettingOutlined } from '@ant-design/icons'
-import { ActionInputs, ActionKeysConfig, useCurrentInputs, useOnAction } from '../../util/action-inputs'
+import { ActionInputs, useCurrentInputs } from '../../util/action-inputs'
 import { Map, Set } from 'immutable'
+import useConstant from 'use-constant'
+import TouchButtons from '../../util/action-inputs/TouchButtons'
+import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
+import useComponentSize from '@rehooks/component-size'
+import never from 'never'
+import { PauseOutlined } from '@ant-design/icons'
+import { GameWithActions } from '../../util/game-with-actions'
 
 export interface GameProps {
   pausedWhenNotVisible: boolean
@@ -14,55 +18,49 @@ export interface GameProps {
 
 type Action = 'back'
 
-const actionKeys = new ActionInputs<Action>(Map([['back', {
+const actionInputs = new ActionInputs<Action>(Map([['back', {
   keyboard: Set.of('Escape', 'KeyP'),
   touch: {
-    buttonContents: '',
-    buttons: Set.of()
+    buttonContents: <PauseOutlined />,
+    buttons: Set.of({
+      x: {
+        value: 10,
+        reverse: true
+      },
+      y: {
+        value: 10,
+        reverse: false
+      },
+      width: 50,
+      height: 50
+    })
   }
 }]]))
 
-const Game: FC<GameProps> = props => {
+const Game = forwardRef<HTMLDivElement, GameProps>((props, ref) => {
   const { pausedWhenNotVisible } = props
 
-  const [paused, setPaused] = useState(false)
+  const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const visible = useVisible()
-  const [currentInputs] = useCurrentInputs(actionKeys)
+  const useScreenResult = useScreen()
+  const [screen, setScreen] = useScreenResult
+  const [currentInputs] = useCurrentInputs(actionInputs)
+  const size = useComponentSize(ref as any)
 
   useEffect(() => {
-    if (!visible && pausedWhenNotVisible) setPaused(true)
+    if (!visible && pausedWhenNotVisible && screen === Screen.PLAYING) setScreen(Screen.PAUSED)
   }, [pausedWhenNotVisible, visible])
 
-  useOnAction(actionKeys, undefined, 'back', () => {
-    if (!paused) setPaused(true)
-  })
-
-  const backKeys = currentInputs.get('back')?.keyboard as Set<string>
+  const backButtons = [...currentInputs.get('back')?.keyboard ?? never('No input for back action')]
 
   return (
-    <>
-      <div>
-        <h1>{paused ? 'Game Blurred' : 'Playing Game'}</h1>
-        Press {arrayJoin([...backKeys].map(key =>
-          <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
-        {paused ? 'resume' : 'pause'} game
-      </div>
-      {paused && (
-        <div className={pausedStyle}>
-          <div>
-            <PausedMenu onClose={setPaused.bind(undefined, false)} {...{ backKeys }}>
-              {[{
-                title: 'Settings',
-                content: <ActionKeysConfig {...{ actionInputs: actionKeys }} />,
-                icon: <SettingOutlined />
-              }]}
-            </PausedMenu>
-
-          </div>
-        </div>
-      )}
-    </>
+    <GameWithActions {...{ actionInputs, touchButtons, size, useScreenResult }} back='back'>
+      <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
+      Press {arrayJoin(backButtons.map(key =>
+        <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
+      {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+    </GameWithActions>
   )
-}
+})
 
 export default Game

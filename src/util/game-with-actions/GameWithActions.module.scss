@@ -1,0 +1,11 @@
+@import "../../paused.scss";
+
+.paused {
+  @include paused;
+  background-color: #ffffffd0;
+
+  .pausedContent {
+    max-height: 100%;
+    overflow: auto;
+  }
+}
