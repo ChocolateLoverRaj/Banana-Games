@@ -42,7 +42,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/index.html'),
-      chunks: ['app']
+      chunks: ['app'],
+      meta: {}
     }),
     new ProvidePlugin({
       process: 'process/browser'
