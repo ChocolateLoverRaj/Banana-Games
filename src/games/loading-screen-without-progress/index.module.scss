@@ -1,0 +1,5 @@
+@import "../../dynamicAspectRatio.scss";
+
+.game {
+  @include dynamicAspectRatio;
+}
