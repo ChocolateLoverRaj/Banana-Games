@@ -1,28 +1,57 @@
 import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { game } from './index.module.scss'
-import { Typography, Spin } from 'antd'
-import usePromise from 'react-use-promise'
-import { useTransaction } from '../../util/use-indexed-db'
-import settingsDb from '../../settingsDb'
+import { Typography } from 'antd'
 import never from 'never'
-import Game from './Game'
-import ErrorResult from '../../ErrorResult'
+import arrayJoin from '../../util/arrayJoin'
+import { ActionInputs, useCurrentInputs } from '../../util/action-inputs'
+import { Map, Set } from 'immutable'
+import useConstant from 'use-constant'
+import TouchButtons from '../../util/action-inputs/TouchButtons'
+import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
+import useComponentSize from '@rehooks/component-size'
+
+import { PauseOutlined } from '@ant-design/icons'
+import { GameWithActions } from '../../util/game-with-actions'
+
+type Action = 'back'
+
+const actionInputs = new ActionInputs<Action>(Map([['back', {
+  keyboard: Set.of('Escape', 'KeyP'),
+  touch: {
+    buttonContents: <PauseOutlined />,
+    buttons: Set.of({
+      x: {
+        value: 10,
+        reverse: true
+      },
+      y: {
+        value: 10,
+        reverse: false
+      },
+      width: 50,
+      height: 50
+    })
+  }
+}]]))
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
-  const createTransaction = useTransaction(settingsDb)
-  const [pausedWhenNotVisible, error] = usePromise<boolean>(async () => await
-  (await createTransaction(['settings'], 'readonly')).objectStore('settings')
-    .get?.('pausedWhenNotVisible') ?? never('No value for key pausedWhenNotVisible'),
-  [createTransaction])
+  const touchButtons = useConstant(() => new TouchButtons(actionInputs))
+  const useScreenResult = useScreen()
+  const [screen] = useScreenResult
+  const [currentInputs] = useCurrentInputs(actionInputs)
+  const size = useComponentSize(ref as any)
+
+  const backButtons = [...currentInputs.get('back')?.keyboard ?? never('No input for back action')]
 
   return (
     <div ref={ref} className={game}>
-      {pausedWhenNotVisible !== undefined
-        ? <Game {...{ pausedWhenNotVisible, ref }} />
-        : error === undefined
-          ? <Spin tip='Loading Settings' size='large' />
-          : <ErrorResult error={error} title='Error Loading Settings' />}
+      <GameWithActions {...{ actionInputs, touchButtons, size, useScreenResult }} back='back'>
+        <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
+        Press {arrayJoin(backButtons.map(key =>
+          <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
+        {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+      </GameWithActions>
     </div>
   )
 })
