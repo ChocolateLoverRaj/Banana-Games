@@ -11,7 +11,9 @@ specifiers:
   '@types/appgeist__ensure-dir': ^1.1.0
   '@types/arr-diff': ^4.0.0
   '@types/bind-args': ^0.2.0
+  '@types/boolean-to-signed': ^1.0.0
   '@types/detect-touch': ^1.1.0
+  '@types/limit-number': ^3.0.0
   '@types/matter-js': ^0.17.3
   '@types/react': ^17.0.14
   '@types/react-beforeunload': ^2.1.1
@@ -115,7 +117,9 @@ devDependencies:
   '@types/appgeist__ensure-dir': 1.1.0
   '@types/arr-diff': 4.0.0
   '@types/bind-args': 0.2.0
+  '@types/boolean-to-signed': 1.0.0
   '@types/detect-touch': 1.1.0
+  '@types/limit-number': 3.0.0
   '@types/matter-js': 0.17.3
   '@types/react': 17.0.14
   '@types/react-beforeunload': 2.1.1
@@ -1043,6 +1047,10 @@ packages:
     resolution: {integrity: sha512-JIP3FeU1VLovz4m/98+hr43gZnSBTpS2O1kR3ymMK1edH+jIq+hPFU/PFvrpqTMHoYZmiTAW1j/QQ/b1ra5kjQ==}
     dev: true
 
+  /@types/boolean-to-signed/1.0.0:
+    resolution: {integrity: sha512-O0v+hpkwe0/DVfpEbHmZpXVZgE6aKTwris665Vt7/U8Yinto8IZwNbNqSemWopxO9WyIkrvQnEezU1i/Zi2Fng==}
+    dev: true
+
   /@types/detect-touch/1.1.0:
     resolution: {integrity: sha512-sUskH4/5kVGywJZq5nDXJAOAPJFPjrVJqy1IoAvEDJ6qNAJKp6Ea96PpDmrpYiV+O1eEjlwUiGeNLm27AJIXqA==}
     dev: true
@@ -1087,6 +1095,10 @@ packages:
 
   /@types/json-schema/7.0.8:
     resolution: {integrity: sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==}
+    dev: true
+
+  /@types/limit-number/3.0.0:
+    resolution: {integrity: sha512-XArxweMjKAFPVI15+w03uD6Uh8iJ/7oNj+1PTyqWuoQ8Ca6NVqSmMscD+HXfpZXxbkVvyXzgAlClEMrrEkcFCA==}
     dev: true
 
   /@types/matter-js/0.17.3:

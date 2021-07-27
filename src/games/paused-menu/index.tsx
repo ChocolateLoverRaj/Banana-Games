@@ -5,35 +5,17 @@ import { Typography } from 'antd'
 import never from 'never'
 import arrayJoin from '../../util/arrayJoin'
 import { ActionInputs, useCurrentInputs } from '../../util/action-inputs'
-import { Map, Set } from 'immutable'
+import { Map } from 'immutable'
 import useConstant from 'use-constant'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
 import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
 import useComponentSize from '@rehooks/component-size'
-
-import { PauseOutlined } from '@ant-design/icons'
 import { GameWithActions } from '../../util/game-with-actions'
+import defaultPauseInput from '../../defaultPauseInput'
 
 type Action = 'back'
 
-const actionInputs = new ActionInputs<Action>(Map([['back', {
-  keyboard: Set.of('Escape', 'KeyP'),
-  touch: {
-    buttonContents: <PauseOutlined />,
-    buttons: Set.of({
-      x: {
-        value: 10,
-        reverse: true
-      },
-      y: {
-        value: 10,
-        reverse: false
-      },
-      width: 50,
-      height: 50
-    })
-  }
-}]]))
+const actionInputs = new ActionInputs<Action>(Map([['back', defaultPauseInput]]))
 
 const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))

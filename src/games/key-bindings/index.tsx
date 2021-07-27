@@ -2,7 +2,6 @@ import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { Tag, Typography } from 'antd'
 import {
-  PauseOutlined,
   UpOutlined,
   DownOutlined,
   LeftOutlined,
@@ -20,6 +19,7 @@ import config from '../../config.json'
 import useConstant from 'use-constant'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
 import { game } from './index.module.scss'
+import defaultPauseInput from '../../defaultPauseInput'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -99,24 +99,7 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
       })
     }
   })
-  .set('back', {
-    keyboard: ImmutableSet.of('Escape', 'KeyP'),
-    touch: {
-      buttonContents: <PauseOutlined />,
-      buttons: ImmutableSet.of({
-        x: {
-          value: 10,
-          reverse: true
-        },
-        y: {
-          value: 10,
-          reverse: false
-        },
-        width: 50,
-        height: 50
-      })
-    }
-  })
+  .set('back', defaultPauseInput)
 )
 
 const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
