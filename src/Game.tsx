@@ -13,6 +13,7 @@ import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons'
 import useFullScreen from './util/useFullScreen'
 import GameComponent from './types/GameComponent'
 import GameTags from './GameTags'
+import WarnLeaveGame from './WarnLeaveGame'
 
 export interface GameProps {
   id: string
@@ -81,7 +82,10 @@ const Game: FC<GameProps> = props => {
         </PageHeader>
         {Game !== undefined
           ? (
-            <Game ref={ref} />
+            <>
+              <WarnLeaveGame />
+              <Game ref={ref} />
+            </>
             )
           : state === 'pending'
             ? (

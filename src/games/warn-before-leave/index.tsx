@@ -3,17 +3,13 @@ import * as React from 'react'
 import { Typography } from 'antd'
 import { game } from './index.module.scss'
 import GameComponent from '../../types/GameComponent'
-import WarnLeaveGame from '../../WarnLeaveGame'
 import { HashLink } from 'react-router-hash-link'
 import closeTabShortcut from './closeTabShortcut.json'
 
 const FullScreenGame: GameComponent = forwardRef((_props, ref) => (
-  <>
-    <WarnLeaveGame />
-    <div ref={ref} className={game}>
-      <Typography.Title>Game</Typography.Title>
-    </div>
-  </>
+  <div ref={ref} className={game}>
+    <Typography.Title>Game</Typography.Title>
+  </div>
 ))
 
 FullScreenGame.description = (
