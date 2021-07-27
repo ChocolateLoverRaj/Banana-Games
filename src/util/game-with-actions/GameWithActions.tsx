@@ -1,43 +1,35 @@
-import { FC, ReactNode } from 'react'
-import { Spin } from 'antd'
-import { ActionInputs } from '../../util/action-inputs'
-import TouchButtons from '../action-inputs/TouchButtons'
+import { forwardRef, ReactNode } from 'react'
 import Size from '../types/Size'
-import { UseScreenResult } from './useScreen'
-import { useTransaction } from '../use-indexed-db'
-import settingsDb from '../../settingsDb'
-import usePromise from 'react-use-promise'
-import never from 'never'
-import LoadedGame from './LoadedGame'
-import ErrorResult from '../../ErrorResult'
+import { LoadedGameConfig } from './LoadedGame'
+import useComponentSize from '@rehooks/component-size'
+import FixedAspectRatio from './FixedAspectRatio'
+import DynamicAspectRatio from './DynamicAspectRatio'
 
 export interface GameWithActionsProps<Action extends string = string> {
-  actionInputs: ActionInputs<Action>
-  touchButtons: TouchButtons<Action>
-  back: Action
+  loadedGameConfig: LoadedGameConfig<Action>
+  aspectRatio?: Size
   children: ReactNode
-  size: Size
-  useScreenResult: UseScreenResult
+  className?: string
 }
 
-const GameWithActions: FC<GameWithActionsProps> = <Action extends string = string>(
-  props: GameWithActionsProps<Action>
-) => {
-  const createTransaction = useTransaction(settingsDb)
-  const [pausedWhenNotVisible, error] = usePromise<boolean>(async () => await
-  (await createTransaction(['settings'], 'readonly')).objectStore('settings')
-    .get?.('pausedWhenNotVisible') ?? never('No value for key pausedWhenNotVisible'),
-  [createTransaction])
+const GameWithActions = forwardRef<HTMLDivElement, GameWithActionsProps>((props, ref) => {
+  const { loadedGameConfig, aspectRatio, children, className } = props
+
+  const size = useComponentSize(ref as any)
 
   return (
     <>
-      {pausedWhenNotVisible !== undefined
-        ? <LoadedGame {...props} {...{ pausedWhenNotVisible }} />
-        : error === undefined
-          ? <Spin tip='Loading Settings' size='large' />
-          : <ErrorResult error={error} title='Error Loading Settings' />}
+      {aspectRatio !== undefined
+        ? (
+          <FixedAspectRatio {...{ aspectRatio, size, loadedGameConfig, className }} ref={ref}>
+            {children}
+          </FixedAspectRatio>)
+        : (
+          <DynamicAspectRatio {...{ size, loadedGameConfig, className }} ref={ref}>
+            {children}
+          </DynamicAspectRatio>)}
     </>
   )
-}
+})
 
 export default GameWithActions

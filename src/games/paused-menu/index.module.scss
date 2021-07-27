@@ -1,8 +1,3 @@
-@import "../../dynamicAspectRatio.scss";
-@import "../../relative.scss";
-
 .game {
-  @include dynamicAspectRatio;
-  @include relative;
   text-align: center;
 }

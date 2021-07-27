@@ -29,6 +29,7 @@ specifiers:
   babel-plugin-react-require: ^3.1.3
   bind-args: ^0.2.1
   boolean-to-signed: ^1.0.1
+  classnames: ^2.3.1
   css-loader: ^5.2.6
   css-minimizer-webpack-plugin: ^3.0.2
   detect-touch: ^1.1.2
@@ -84,6 +85,7 @@ dependencies:
   assert-browserify: 2.0.0
   bind-args: 0.2.1
   boolean-to-signed: 1.0.1
+  classnames: 2.3.1
   detect-touch: 1.1.2
   favicons: 6.2.2
   favicons-webpack-plugin: 5.0.2_favicons@6.2.2+webpack@5.44.0

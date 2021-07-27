@@ -45,14 +45,16 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
   const backButtons = [...currentInputs.get('back')?.keyboard ?? never('No input for back action')]
 
   return (
-    <div ref={ref} className={game}>
-      <GameWithActions {...{ actionInputs, touchButtons, size, useScreenResult }} back='back'>
-        <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
-        Press {arrayJoin(backButtons.map(key =>
-          <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
-        {screen === Screen.PLAYING ? 'pause' : 'resume'} game
-      </GameWithActions>
-    </div>
+    <GameWithActions
+      {...{ size, ref }}
+      loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
+      className={game}
+    >
+      <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
+      Press {arrayJoin(backButtons.map(key =>
+        <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
+      {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+    </GameWithActions>
   )
 })
 

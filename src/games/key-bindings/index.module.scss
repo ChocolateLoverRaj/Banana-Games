@@ -2,9 +2,5 @@
 @import "../../relative.scss";
 
 .game {
-  @include dynamicAspectRatio;
-  @include relative;
   text-align: center;
-  max-height: 100%;
-  overflow: hidden;
 }

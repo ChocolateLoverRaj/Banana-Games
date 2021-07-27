@@ -8,7 +8,6 @@ import {
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons'
-import { game } from './index.module.scss'
 import { Map, Set as ImmutableSet } from 'immutable'
 import {
   ActionInputs,
@@ -20,6 +19,7 @@ import useComponentSize from '@rehooks/component-size'
 import config from '../../config.json'
 import useConstant from 'use-constant'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
+import { game } from './index.module.scss'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -127,15 +127,17 @@ const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
 
   // TODO - don't allow duplicate keybindings
   return (
-    <div ref={ref} className={game}>
-      <GameWithActions {...{ actionInputs, touchButtons, size, useScreenResult }} back='back'>
-        <h1>Pressed Keys</h1>
-        {actions.map(action =>
-          <Tag.CheckableTag key={action} checked={actionsPressed.has(action)}>
-            {action}
-          </Tag.CheckableTag>)}
-      </GameWithActions>
-    </div>
+    <GameWithActions
+      {...{ size, ref }}
+      loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
+      className={game}
+    >
+      <h1>Pressed Keys</h1>
+      {actions.map(action =>
+        <Tag.CheckableTag key={action} checked={actionsPressed.has(action)}>
+          {action}
+        </Tag.CheckableTag>)}
+    </GameWithActions>
   )
 })
 
