@@ -1,5 +1,5 @@
 import GameComponent from '../../types/GameComponent'
-import { forwardRef, useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import {
   Engine,
   Runner,
@@ -11,18 +11,21 @@ import {
 } from 'matter-js'
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
-import { canvas, maxSize } from './index.module.scss'
+import { canvas } from './index.module.scss'
 import { blue, grey as gray } from '@ant-design/colors'
 import { Typography } from 'antd'
 import config from '../../config.json'
+import { GameWithActions, useScreen } from '../../util/game-with-actions'
+
+const aspectRatio = { width: 16, height: 9 }
 
 const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
-  const canvasRef = useRef(null)
+  const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const componentSize = useComponentSize(ref as any)
-  const scaledSize = getScaledSize(componentSize, { width: 16, height: 9 })
+  const useScreenResult = useScreen()
+  const scaledSize = getScaledSize(componentSize, aspectRatio)
 
   useEffect(() => {
-    const canvas = canvasRef.current
     if (canvas !== null) {
       const engine = Engine.create()
       engine.gravity.y = 0
@@ -77,13 +80,14 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
 
       // run the engine
       Runner.run(runner, engine)
+      return () => Runner.stop(runner)
     }
-  }, [])
+  }, [canvas])
 
   return (
-    <div ref={ref} className={maxSize}>
-      <canvas ref={canvasRef} className={canvas} style={scaledSize} />
-    </div>
+    <GameWithActions loadedGameConfig={{ useScreenResult }} ref={ref} {...{ aspectRatio }}>
+      <canvas ref={setCanvas} className={canvas} style={scaledSize} />
+    </GameWithActions>
   )
 })
 

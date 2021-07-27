@@ -9,7 +9,7 @@ const LoadingScreen: GameComponent = forwardRef((_props, ref) => {
   const useScreenResult = useScreen()
 
   return (
-    <GameWithActions loadedGameConfig={{ useScreenResult }}>
+    <GameWithActions loadedGameConfig={{ useScreenResult }} ref={ref}>
       <Spin tip='Loading' size='large' />
     </GameWithActions>
   )

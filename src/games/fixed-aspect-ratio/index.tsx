@@ -7,6 +7,7 @@ import Size from '../../util/types/Size'
 import sizeToString from '../../util/sizeToString'
 import { Typography } from 'antd'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
+import { game } from './index.module.scss'
 
 const ratio: Size = {
   width: 16,
@@ -20,7 +21,12 @@ const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
   const scaledSize = getScaledSize(componentSize, ratio)
 
   return (
-    <GameWithActions loadedGameConfig={{ useScreenResult }} aspectRatio={ratio} ref={ref}>
+    <GameWithActions
+      loadedGameConfig={{ useScreenResult }}
+      aspectRatio={ratio}
+      ref={ref}
+      className={game}
+    >
       <span>
         Available Size - {sizeToString(componentSize)} <br /><br />
         Aspect Ratio - {' '}

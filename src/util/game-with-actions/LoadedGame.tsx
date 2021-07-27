@@ -1,7 +1,6 @@
-import { FC, useEffect, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 import { ActionInputs } from '../action-inputs'
-import { Screen, UseScreenResult } from './useScreen'
-import useVisible from '../useVisible'
+import { UseScreenResult } from './useScreen'
 import Size from '../types/Size'
 import TouchButtons from '../action-inputs/TouchButtons'
 import LoadedGameNotPauseable from './LoadedGameNotPauseable'
@@ -45,13 +44,6 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
     useScreenResult,
     pausedWhenNotVisible
   } = props
-
-  const [screen, setScreen] = useScreenResult
-  const visible = useVisible()
-
-  useEffect(() => {
-    if (!visible && pausedWhenNotVisible && screen === Screen.PLAYING) setScreen(Screen.PAUSED)
-  }, [pausedWhenNotVisible, visible])
 
   return (
     <>

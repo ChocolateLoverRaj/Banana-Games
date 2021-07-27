@@ -2,6 +2,7 @@ import * as React from 'react'
 import { forwardRef } from 'react'
 import useComponentSize from '@rehooks/component-size'
 import GameComponent from '../../types/GameComponent'
+import { game } from './index.module.scss'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
 
 const DynamicAspectRatio: GameComponent = forwardRef((_props, ref) => {
@@ -9,7 +10,7 @@ const DynamicAspectRatio: GameComponent = forwardRef((_props, ref) => {
   const useScreenResult = useScreen()
 
   return (
-    <GameWithActions loadedGameConfig={{ useScreenResult }} ref={ref}>
+    <GameWithActions loadedGameConfig={{ useScreenResult }} ref={ref} className={game}>
       <span>{width}x{height}</span>
     </GameWithActions>
   )
