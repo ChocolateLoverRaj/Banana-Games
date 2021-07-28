@@ -7,6 +7,7 @@ specifiers:
   '@babel/core': ^7.14.6
   '@babel/preset-react': ^7.14.5
   '@babel/preset-typescript': ^7.14.5
+  '@pmmmwh/react-refresh-webpack-plugin': ^0.4.3
   '@rehooks/component-size': ^1.0.3
   '@types/appgeist__ensure-dir': ^1.1.0
   '@types/arr-diff': ^4.0.0
@@ -59,6 +60,7 @@ specifiers:
   react-dom: ^17.0.2
   react-draggable: ^4.4.3
   react-helmet: ^6.1.0
+  react-refresh: ^0.10.0
   react-router-dom: ^5.2.0
   react-router-hash-link: ^2.4.3
   react-use-promise: ^0.3.1
@@ -114,6 +116,7 @@ devDependencies:
   '@babel/core': 7.14.6
   '@babel/preset-react': 7.14.5_@babel+core@7.14.6
   '@babel/preset-typescript': 7.14.5_@babel+core@7.14.6
+  '@pmmmwh/react-refresh-webpack-plugin': 0.4.3_eb8360582ca042a872e09cbae549ba78
   '@types/appgeist__ensure-dir': 1.1.0
   '@types/arr-diff': 4.0.0
   '@types/bind-args': 0.2.0
@@ -145,6 +148,7 @@ devDependencies:
   immutable: 4.0.0-rc.14
   mini-css-extract-plugin: 2.1.0_webpack@5.44.0
   path-browserify: 1.0.1
+  react-refresh: 0.10.0
   react-use-promise: 0.3.1_react@17.0.2
   sass: 1.35.2
   sass-loader: 12.1.0_sass@1.35.2+webpack@5.44.0
@@ -1000,6 +1004,43 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.11.1
+    dev: true
+
+  /@pmmmwh/react-refresh-webpack-plugin/0.4.3_eb8360582ca042a872e09cbae549ba78:
+    resolution: {integrity: sha512-br5Qwvh8D2OQqSXpd1g/xqXKnK0r+Jz6qVKBbWmpUcrbGOxUrf39V5oZ1876084CGn18uMdR5uvPqBv9UqtBjQ==}
+    engines: {node: '>= 10.x'}
+    peerDependencies:
+      '@types/webpack': 4.x
+      react-refresh: '>=0.8.3 <0.10.0'
+      sockjs-client: ^1.4.0
+      type-fest: ^0.13.1
+      webpack: '>=4.43.0 <6.0.0'
+      webpack-dev-server: 3.x
+      webpack-hot-middleware: 2.x
+      webpack-plugin-serve: 0.x || 1.x
+    peerDependenciesMeta:
+      '@types/webpack':
+        optional: true
+      sockjs-client:
+        optional: true
+      type-fest:
+        optional: true
+      webpack-dev-server:
+        optional: true
+      webpack-hot-middleware:
+        optional: true
+      webpack-plugin-serve:
+        optional: true
+    dependencies:
+      ansi-html: 0.0.7
+      error-stack-parser: 2.0.6
+      html-entities: 1.4.0
+      native-url: 0.2.6
+      react-refresh: 0.10.0
+      schema-utils: 2.7.1
+      source-map: 0.7.3
+      webpack: 5.44.0_webpack-cli@4.7.2
+      webpack-dev-server: 3.11.2_webpack-cli@4.7.2+webpack@5.44.0
     dev: true
 
   /@polka/url/1.0.0-next.15:
@@ -2944,6 +2985,12 @@ packages:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
     dependencies:
       is-arrayish: 0.2.1
+    dev: true
+
+  /error-stack-parser/2.0.6:
+    resolution: {integrity: sha512-d51brTeqC+BHlwF0BhPtcYgF5nlzf9ZZ0ZIUQNZpc9ZB9qw5IJ2diTrBY9jlCJkTLITYPjmiX6OWCwH+fuyNgQ==}
+    dependencies:
+      stackframe: 1.2.0
     dev: true
 
   /es-abstract/1.18.3:
@@ -5202,6 +5249,12 @@ packages:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
     dev: false
 
+  /native-url/0.2.6:
+    resolution: {integrity: sha512-k4bDC87WtgrdD362gZz6zoiXQrl40kYlBmpfmSjwRO1VU0V5ccwJTlxuE72F6m3V0vc1xOf6n3UCP9QyerRqmA==}
+    dependencies:
+      querystring: 0.2.1
+    dev: true
+
   /natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
     dev: true
@@ -6288,6 +6341,12 @@ packages:
     deprecated: The
     dev: true
 
+  /querystring/0.2.1:
+    resolution: {integrity: sha512-wkvS7mL/JMugcup3/rMitHmd9ecIGd2lhFhK9N3UUQ450h66d1r3Y9nvXzQAW1Lq+wyx61k/1pfKS5KuKiyEbg==}
+    engines: {node: '>=0.4.x'}
+    deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+    dev: true
+
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
     dev: true
@@ -6870,6 +6929,11 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  /react-refresh/0.10.0:
+    resolution: {integrity: sha512-PgidR3wST3dDYKr6b4pJoqQFpPGNKDSCDx4cZoshjXipw3LzO7mG1My2pwEzz2JVkF+inx3xRpDeQLFQGH/hsQ==}
+    engines: {node: '>=0.10.0'}
+    dev: true
 
   /react-router-dom/5.2.0_react@17.0.2:
     resolution: {integrity: sha512-gxAmfylo2QUjcwxI63RhQ5G85Qqt4voZpUXSEqCwykV0baaOTQDR1f0PmY8AELqIyVc0NEZUj0Gov5lNGcXgsA==}
@@ -7675,6 +7739,10 @@ packages:
 
   /stable/0.1.8:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
+    dev: true
+
+  /stackframe/1.2.0:
+    resolution: {integrity: sha512-GrdeshiRmS1YLMYgzF16olf2jJ/IzxXY9lhKOskuVziubpTYcYqyOwYeJKzQkwy7uN0fYSsbsC4RQaXf9LCrYA==}
     dev: true
 
   /static-extend/0.1.2:

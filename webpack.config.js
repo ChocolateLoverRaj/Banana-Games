@@ -13,6 +13,7 @@ const { description, version } = require('./package.json')
 const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { readdirSync } = require('fs')
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
@@ -87,7 +88,10 @@ module.exports = {
           /* new DynamicCdnPlugin(),  */
           new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
         ]
-      : [new BundleAnalyzerPlugin({ openAnalyzer: false })]
+      : [
+          new BundleAnalyzerPlugin({ openAnalyzer: false }),
+          new ReactRefreshPlugin()
+        ]
   ],
   output: {
     filename: ({ runtime }) =>
@@ -105,7 +109,8 @@ module.exports = {
             presets: ['@babel/react', '@babel/typescript'],
             plugins: [
               ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
-              'react-require'
+              'react-require',
+              ...isProduction ? [] : ['react-refresh/babel']
             ]
           }
         }],
