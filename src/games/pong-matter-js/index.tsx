@@ -8,7 +8,8 @@ import {
   Composite,
   Body,
   IChamferableBodyDefinition,
-  Events
+  Events,
+  Vector
 } from 'matter-js'
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
@@ -26,6 +27,9 @@ import { Screen } from '../../util/game-with-actions/useScreen'
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons'
 import limit from 'limit-number'
 import toSigned from 'boolean-to-signed'
+import never from 'never'
+import random from 'rn-randomnumber'
+import randomBoolean from 'random-boolean'
 
 const aspectRatio = { width: 16, height: 9 }
 
@@ -158,6 +162,26 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
        * In units per millisecond
        */
       const paddleSpeed = 0.5
+      const scoreFontSize = 100
+      const scoreFont = 'Trebuchet MS'
+      const scoreMargin = 10
+      const scoreColor = 'white'
+      /**
+       * 0 < n <= π / 2
+       */
+      const maxStartAngle = Math.PI / 4
+      const startingVelocity = 15
+
+      const getStartingVelocity = (): Vector => {
+        // Yes, we do this here
+        const angle = random(-maxStartAngle, maxStartAngle) as number
+        return {
+          x: Math.cos(angle) * startingVelocity * toSigned(randomBoolean()),
+          y: Math.sin(angle) * startingVelocity
+        }
+      }
+
+      const scores = [0, 0] as [number, number]
 
       const render = Render.create({ canvas, engine, options: { width, height, wireframes: false, background: 'white' } })
 
@@ -169,7 +193,6 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
         inertia: Infinity,
         render: { fillStyle: ballColor }
       })
-      Body.setVelocity(ball, { x: 3, y: -20 })
 
       // Walls
       const wallOptions: IChamferableBodyDefinition = {
@@ -184,9 +207,17 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
         render: { fillStyle: paddleColor },
         isStatic: true
       }
-      const leftPaddle = Bodies.rectangle(paddleWidth / 2, height / 2, paddleWidth, paddleHeight, paddleOptions)
-      const rightPaddle = Bodies.rectangle(width - paddleWidth / 2, height / 2, paddleWidth, paddleHeight, paddleOptions)
+      const startingPaddleY = height / 2
+      const leftPaddle = Bodies.rectangle(paddleWidth / 2, startingPaddleY, paddleWidth, paddleHeight, paddleOptions)
+      const rightPaddle = Bodies.rectangle(width - paddleWidth / 2, startingPaddleY, paddleWidth, paddleHeight, paddleOptions)
       const paddles = [leftPaddle, rightPaddle] as const
+
+      const reset = (): void => {
+        Body.setPosition(ball, { x: width / 2, y: height / 2 })
+        Body.setVelocity(ball, getStartingVelocity())
+        for (const paddle of paddles) Body.setPosition(paddle, { x: paddle.position.x, y: startingPaddleY })
+      }
+      reset()
 
       // add all of the bodies to the world
       Composite.add(engine.world, [ball, topWall, bottomWall, leftPaddle, rightPaddle])
@@ -216,7 +247,26 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
             })
           }
         }
+
+        // Scoring
+        if (ball.position.x > width) {
+          reset()
+          scores[0]++
+        } else if (ball.position.x < 0) {
+          reset()
+          scores[1]++
+        }
       }
+
+      Events.on(render, 'afterRender', e => {
+        const ctx = canvas.getContext('2d') ?? never('No 2d context')
+        ctx.textBaseline = 'top'
+        ctx.font = `${scoreFontSize}px ${scoreFont}`
+        ctx.fillStyle = scoreColor
+        ctx.textAlign = 'center'
+        ctx.fillText(scores[0].toString(), width / 4, scoreMargin, width / 2)
+        ctx.fillText(scores[1].toString(), width * 3 / 4, scoreMargin, width / 2)
+      })
 
       Events.on(runner, 'tick', handleTick)
       return () => Events.off(runner, 'tick', handleTick)
