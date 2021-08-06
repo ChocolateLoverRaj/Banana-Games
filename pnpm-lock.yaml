@@ -57,6 +57,7 @@ specifiers:
   path-browserify: ^1.0.1
   process: ^0.11.10
   random-boolean: ^1.0.0
+  rc-field-form: ^1.21.1
   react: ^17.0.2
   react-beforeunload: ^2.5.1
   react-dom: ^17.0.2
@@ -67,6 +68,7 @@ specifiers:
   react-router-hash-link: ^2.4.3
   react-use-promise: ^0.3.1
   rn-randomnumber: ^1.0.2
+  rooks: ChocolateLoverRaj/rooks#build/preview-531
   sass: ^1.35.2
   sass-loader: ^12.1.0
   single-event-emitter: ^0.2.0
@@ -111,6 +113,7 @@ dependencies:
   react-router-dom: 5.2.0_react@17.0.2
   react-router-hash-link: 2.4.3_520bc78b4ba4065e7cfe4fe506865769
   rn-randomnumber: 1.0.2
+  rooks: github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165_react-dom@17.0.2+react@17.0.2
   single-event-emitter: 0.2.0
   use-constant: 1.1.0_react@17.0.2
   webpack-stats-plugin: 1.0.3
@@ -154,6 +157,7 @@ devDependencies:
   immutable: 4.0.0-rc.14
   mini-css-extract-plugin: 2.1.0_webpack@5.44.0
   path-browserify: 1.0.1
+  rc-field-form: 1.21.1_react-dom@17.0.2+react@17.0.2
   react-refresh: 0.10.0
   react-use-promise: 0.3.1_react@17.0.2
   sass: 1.35.2
@@ -539,6 +543,12 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.7
+
+  /@babel/runtime/7.14.8:
+    resolution: {integrity: sha512-twj3L8Og5SaCRCErB4x4ajbvBIVV77CGeFglHpeg5WC5FF8TZzBWXtTJ4MqaD9QszLYTtr+IsaAL2rEUevb+eg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.9
 
   /@babel/template/7.14.5:
     resolution: {integrity: sha512-6Z3Po85sfxRGachLULUhOmvAaOo7xCvqGQtxINai2mEGPFm6pQ4z5QInFnUrRpfoSV60BnjyF5F3c+15fxFV1g==}
@@ -1818,7 +1828,6 @@ packages:
 
   /async-validator/3.5.2:
     resolution: {integrity: sha512-8eLCg00W9pIRZSB781UUX/H6Oskmm8xloZfr09lz5bikRpBVDlJ3hRVuxxP1SxcwsEYfJ4IU8Q19Y8/893r3rQ==}
-    dev: false
 
   /async/2.6.3:
     resolution: {integrity: sha512-zflvls11DCy+dQWzTW2dzuilv8Z5X/pjfmZOWba6TNIVDm+2UDaJmXSOXlasHKfNBs8oo3M0aT50fDEWfKZjXg==}
@@ -4945,6 +4954,10 @@ packages:
     resolution: {integrity: sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=}
     dev: true
 
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha1-gteb/zCmfEAF/9XiUVMArZyk168=}
+    dev: false
+
   /lodash.defaultsdeep/4.6.1:
     resolution: {integrity: sha512-3j8wdDzYuWO3lM3Reg03MuQR957t287Rpcxp1njpEa8oDrikb+FwGdW3n+FELh/A6qib6yPit0j/pv9G/yeAqA==}
     dev: false
@@ -6371,6 +6384,12 @@ packages:
       inherits: 2.0.4
     dev: false
 
+  /raf/3.4.1:
+    resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
+    dependencies:
+      performance-now: 2.1.0
+    dev: false
+
   /random-boolean/1.0.0:
     resolution: {integrity: sha1-4iWEP+FR8rVufyh2VoZy2A3IYxM=}
     engines: {node: '>=0.10.0'}
@@ -6507,6 +6526,20 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
+
+  /rc-field-form/1.21.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-+GE91CNj+YFSyG3nk2prN4uiF2iQzeHCCHn+IDXvIeBxAdNyAICWPi8bnmC4Imm4TZq4nrEOcGGEaRG7sDsuSw==}
+    engines: {node: '>=8.x'}
+    peerDependencies:
+      react: '>= 16.9.0'
+      react-dom: '>= 16.9.0'
+    dependencies:
+      '@babel/runtime': 7.14.8
+      async-validator: 3.5.2
+      rc-util: 5.13.2_react-dom@17.0.2+react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: true
 
   /rc-image/5.2.4_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-kWOjhZC1OoGKfvWqtDoO9r8WUNswBwnjcstI6rf7HMudz0usmbGvewcWqsOhyaBRJL9+I4eeG+xiAoxV1xi75Q==}
@@ -6867,12 +6900,11 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
-      '@babel/runtime': 7.14.6
+      '@babel/runtime': 7.14.8
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-is: 16.13.1
       shallowequal: 1.1.0
-    dev: false
 
   /rc-virtual-list/3.3.0_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-lVXpGWC6yMdwV2SHo6kc63WlqjCnb3eO72V726KA2/wh9KA6wi/swcdR3zAowuA8hJxG/lRANmY5kpLZ+Pz3iQ==}
@@ -7084,6 +7116,9 @@ packages:
 
   /regenerator-runtime/0.13.7:
     resolution: {integrity: sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew==}
+
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
 
   /regex-not/1.0.2:
     resolution: {integrity: sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==}
@@ -7492,7 +7527,6 @@ packages:
 
   /shallowequal/1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
-    dev: false
 
   /sharp/0.28.3:
     resolution: {integrity: sha512-21GEP45Rmr7q2qcmdnjDkNP04Ooh5v0laGS5FDpojOO84D1DJwUijLiSq8XNNM6e8aGXYtoYRh3sVNdm8NodMA==}
@@ -8805,4 +8839,20 @@ packages:
 
   /zip-array/1.0.1:
     resolution: {integrity: sha1-mefCPX9EkDDn86IaBVeFtGrupY0=}
+    dev: false
+
+  github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165_react-dom@17.0.2+react@17.0.2:
+    resolution: {tarball: https://codeload.github.com/ChocolateLoverRaj/rooks/tar.gz/2584eca87253b3b6bbaa096c2b63a9feeb4e2165}
+    id: github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165
+    name: rooks
+    version: 5.4.4
+    engines: {node: '>=0.10.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17.0.0
+      react-dom: ^16.8.0  || ^17.0.0
+    dependencies:
+      lodash.debounce: 4.0.8
+      raf: 3.4.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
