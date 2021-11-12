@@ -53,6 +53,10 @@ specifiers:
   limit-number: ^3.0.0
   matter-js: ^0.17.1
   mini-css-extract-plugin: ^2.1.0
+  mobx: ^6.3.7
+  mobx-autorun-cleanup: ^1.1.1
+  mobx-react-lite: ^3.2.2
+  mobx-theme: ^3.0.0
   never: ^1.0.3
   path-browserify: ^1.0.1
   process: ^0.11.10
@@ -72,7 +76,7 @@ specifiers:
   sass: ^1.35.2
   sass-loader: ^12.1.0
   single-event-emitter: ^0.2.0
-  style-loader: ^3.0.0
+  style-loader: ^3.3.1
   terser-webpack-plugin: ^5.1.4
   ts-node: ^10.1.0
   typescript: ^4.3.5
@@ -102,6 +106,10 @@ dependencies:
   idb: 6.1.2
   limit-number: 3.0.0
   matter-js: 0.17.1
+  mobx: 6.3.7
+  mobx-autorun-cleanup: 1.1.1
+  mobx-react-lite: 3.2.2_17a9a2b9737f188c3f2d8ece9728da86
+  mobx-theme: 3.0.0_mobx@6.3.7
   never: 1.0.3
   process: 0.11.10
   random-boolean: 1.0.0
@@ -162,7 +170,7 @@ devDependencies:
   react-use-promise: 0.3.1_react@17.0.2
   sass: 1.35.2
   sass-loader: 12.1.0_sass@1.35.2+webpack@5.44.0
-  style-loader: 3.0.0_webpack@5.44.0
+  style-loader: 3.3.1_webpack@5.44.0
   terser-webpack-plugin: 5.1.4_webpack@5.44.0
   ts-node: 10.1.0_typescript@4.3.5
   typescript: 4.3.5
@@ -5208,6 +5216,63 @@ packages:
     hasBin: true
     dev: true
 
+  /mobx-autorun-cleanup/1.1.1:
+    resolution: {integrity: sha512-JexCHbbnUINLW5RcbAD6FNsT9wtlEkYV7zFl5lMwEGoihJk26dCmqt9NooLHINCLCBoZ/n1nJ9IHHXNiMog4Qw==}
+    dependencies:
+      mobx: 6.3.7
+      tslib: 2.3.1
+    dev: false
+
+  /mobx-localstorage/1.2.0_mobx@6.3.7:
+    resolution: {integrity: sha512-fb03qyQfjnDIOW28qdV+h9AZ8qtJCZnzNgsej0YxCYwAR2ViykKxgHThikgOi+zJzJj5ljxWyvjGrr6CoptcFw==}
+    peerDependencies:
+      mobx: '>=3'
+    dependencies:
+      mobx: 6.3.7
+      reactive-localstorage: 0.0.2
+    dev: false
+
+  /mobx-matchmedia/1.0.0_mobx@6.3.7:
+    resolution: {integrity: sha512-qGnxcJlGOv/KQU1BfGK+QymfaJiEVjGxuRaSkDv7iRRa0oy8PAly5yVDQbn9o69miPoCfCjQuzeHvyXMcz2ifg==}
+    peerDependencies:
+      mobx: '>=5'
+    dependencies:
+      mobx: 6.3.7
+    dev: false
+
+  /mobx-react-lite/3.2.2_17a9a2b9737f188c3f2d8ece9728da86:
+    resolution: {integrity: sha512-FxJJMqmHcnQYOVVs2DdjNHioGlFsXF5/9VHztS9NAfIT3DYrxNZzVi119Zr/OmlWKkWNkAsssSNzPkqautfL4A==}
+    peerDependencies:
+      mobx: ^6.1.0
+      react: ^16.8.0 || ^17
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      mobx: 6.3.7
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /mobx-theme/3.0.0_mobx@6.3.7:
+    resolution: {integrity: sha512-HKAYrMYEKJrD6+j2Gjezk9YVA9IKTEmUEX3jp/jO03ylC1FVtWw7iQk8OzzWmkgmDElI2aP75MgHtJyEsjOa/g==}
+    peerDependencies:
+      mobx: ^6.3.6
+    dependencies:
+      mobx: 6.3.7
+      mobx-localstorage: 1.2.0_mobx@6.3.7
+      mobx-matchmedia: 1.0.0_mobx@6.3.7
+      tslib: 2.3.1
+    dev: false
+
+  /mobx/6.3.7:
+    resolution: {integrity: sha512-X7yU7eOEyxIBk4gjIi2UIilwdw48gXh0kcZ5ex3Rc+COJsJmJ4SNpf42uYea3aUqb1hedTv5xzJrq5Q55p0P5g==}
+    dev: false
+
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
     dev: false
@@ -7050,6 +7115,10 @@ packages:
       object-assign: 4.1.1
     dev: false
 
+  /reactive-localstorage/0.0.2:
+    resolution: {integrity: sha512-+3oKBiiNxBbLH9mWw6eiBOAbwQSg3xpRIg7ys+E5Zc98DKQ1zyoUcQygWDDwZAn6mka2kWTaZD+ZUSgmV2VzLA==}
+    dev: false
+
   /read-chunk/1.0.1:
     resolution: {integrity: sha1-X2jKswfmY/GZk1J9m1icrORmEZQ=}
     engines: {node: '>=0.10.0'}
@@ -7934,8 +8003,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-loader/3.0.0_webpack@5.44.0:
-    resolution: {integrity: sha512-pqJTDiCtLr8D2eyVWXPiwNkLsAMDuvPHnu+Z/Edo9hu+DzdJwdO5eZv9zUBF6tWI8GJGhAkenWJaVjXI+sHnuQ==}
+  /style-loader/3.3.1_webpack@5.44.0:
+    resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
@@ -8226,6 +8295,10 @@ packages:
 
   /tslib/2.3.0:
     resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+
+  /tslib/2.3.1:
+    resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
+    dev: false
 
   /tsutils/3.21.0_typescript@4.3.5:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}

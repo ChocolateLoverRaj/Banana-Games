@@ -9,6 +9,7 @@ import config from './config.json'
 import storeToObject from './util/storeToObject'
 import { useMapState } from 'rooks'
 import { NamePath } from 'rc-field-form/lib/interface'
+import ThemeChooser from './ThemeChooser'
 
 const SettingsRoute: FC = () => {
   const createTransaction = useTransaction(settingsDb)
@@ -65,6 +66,7 @@ const SettingsRoute: FC = () => {
           : error === undefined
             ? <Spin tip='Loading Settings' />
             : <ErrorResult title='Error loading settings' error={error} />}
+        <ThemeChooser />
       </div>
     </>
   )

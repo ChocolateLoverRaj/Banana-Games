@@ -108,7 +108,7 @@ module.exports = {
           options: {
             presets: ['@babel/react', '@babel/typescript'],
             plugins: [
-              ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
+              ['import', { libraryName: 'antd', libraryDirectory: 'es' }],
               'react-require',
               ...isProduction ? [] : ['react-refresh/babel']
             ]
@@ -117,8 +117,11 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.css$/i,
-        use: [styleLoader, cssLoader]
+        test: /\.lazy\.css$/i,
+        use: [
+          { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+          'css-loader'
+        ]
       },
       {
         test: /\.module\.s[ac]ss$/i,
@@ -131,7 +134,8 @@ module.exports = {
     fallback: {
       path: require.resolve('path-browserify'),
       assert: require.resolve('assert-browserify')
-    }
+    },
+    modules: ['node_modules']
   },
   optimization: {
     minimizer: [

@@ -23,5 +23,8 @@
     "compilerOptions": {
       "jsx": "react"
     }
-  }
+  },
+  "include": [
+    "./src/types.d.ts"
+  ]
 }
