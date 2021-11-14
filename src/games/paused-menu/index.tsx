@@ -1,6 +1,5 @@
 import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
-import { game } from './index.module.scss'
 import { Typography } from 'antd'
 import never from 'never'
 import arrayJoin from '../../util/arrayJoin'
@@ -12,6 +11,7 @@ import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
 import useComponentSize from '@rehooks/component-size'
 import { GameWithActions } from '../../util/game-with-actions'
 import defaultPauseInput from '../../defaultPauseInput'
+import { css } from '@emotion/css'
 
 type Action = 'back'
 
@@ -30,7 +30,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
     <GameWithActions
       {...{ size, ref }}
       loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
-      className={game}
+      className={css({ textAlign: 'center' })}
     >
       <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
       Press {arrayJoin(backButtons.map(key =>

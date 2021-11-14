@@ -3,15 +3,18 @@ import { Menu as AntdMenu } from 'antd'
 import { GithubOutlined } from '@ant-design/icons'
 import config from './config.json'
 import * as React from 'react'
-import { menu } from './Menu.module.scss'
 import { useLocation, Link } from 'react-router-dom'
 import games from './games'
+import { css } from '@emotion/css'
 
 const Menu: FC = () => {
   const { pathname } = useLocation()
   return (
     <AntdMenu
-      className={menu}
+      className={css({
+        width: 256,
+        height: '100%'
+      })}
       mode='inline'
       selectedKeys={[pathname]}
       defaultOpenKeys={['games']}

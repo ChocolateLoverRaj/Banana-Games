@@ -1,7 +1,8 @@
 import { forwardRef } from 'react'
 import BaseGame, { BaseGameProps } from './BaseGame'
-import { game } from './DynamicAspectRatio.module.scss'
 import cn from 'classnames'
+import { css } from '@emotion/css'
+import dynamicAspectRatioStyles from '../../dynamicAspectRatioStyles'
 
 export interface DynamicAspectRatioProps extends BaseGameProps {
   className?: string
@@ -11,7 +12,7 @@ const DynamicAspectRatio = forwardRef<HTMLDivElement, DynamicAspectRatioProps>((
   const { loadedGameConfig, size, children, className } = props
 
   return (
-    <div ref={ref} className={cn(game, className)}>
+    <div ref={ref} className={cn(css(dynamicAspectRatioStyles), className)}>
       <BaseGame {...{ loadedGameConfig, size }}>{children}</BaseGame>
     </div>
   )

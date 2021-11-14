@@ -1,16 +1,16 @@
-import { forwardRef } from 'react'
-import * as React from 'react'
 import { Typography } from 'antd'
-import { game } from './index.module.scss'
 import GameComponent from '../../types/GameComponent'
 import { HashLink } from 'react-router-hash-link'
 import closeTabShortcut from './closeTabShortcut.json'
+import { css } from '@emotion/css'
+import getBackgroundColor from '../../getBackgroundColor'
+import { observer } from 'mobx-react-lite'
 
-const FullScreenGame: GameComponent = forwardRef((_props, ref) => (
-  <div ref={ref} className={game}>
+const FullScreenGame: GameComponent = observer((_props, ref) => (
+  <div ref={ref} className={css({ backgroundColor: getBackgroundColor() })}>
     <Typography.Title>Game</Typography.Title>
   </div>
-))
+), { forwardRef: true })
 
 FullScreenGame.description = (
   <Typography.Paragraph>

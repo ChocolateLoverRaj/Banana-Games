@@ -2,7 +2,7 @@ import Size from '../types/Size'
 import { forwardRef } from 'react'
 import BaseGame, { BaseGameProps } from './BaseGame'
 import getScaledSize from '../getScaledSize'
-import { gameDiv, maxSize } from './FixedAspectRatio.module.scss'
+import { css } from '@emotion/css'
 import cn from 'classnames'
 
 export interface FixedAspectRatioProps<Action extends string = string> extends
@@ -15,10 +15,29 @@ const FixedAspectRatio = forwardRef<HTMLDivElement, FixedAspectRatioProps>((prop
   const { loadedGameConfig, size, aspectRatio, children, className } = props
 
   const scaledSize = getScaledSize(size, aspectRatio)
+  console.log(size)
 
   return (
-    <div ref={ref} className={cn(className, maxSize)}>
-      <div className={gameDiv} style={scaledSize}>
+    <div
+      ref={ref}
+      className={css(`
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          padding: 0;
+          position: relative;
+          background-color: white;`)}
+    >
+      <div
+        className={cn(className, css(`
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          text-align: center;`))}
+        style={scaledSize}
+      >
         <BaseGame {...{ loadedGameConfig, size }}>{children}</BaseGame>
       </div>
     </div>

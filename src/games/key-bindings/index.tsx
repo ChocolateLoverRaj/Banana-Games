@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { Tag, Typography } from 'antd'
 import {
@@ -18,8 +17,12 @@ import useComponentSize from '@rehooks/component-size'
 import config from '../../config.json'
 import useConstant from 'use-constant'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
-import { game } from './index.module.scss'
+import { css } from '@emotion/css'
 import defaultPauseInput from '../../defaultPauseInput'
+import relativeStyles from '../../relativeStyles'
+import dynamicAspectRatioStyles from '../../dynamicAspectRatioStyles'
+import getBackgroundColor from '../../getBackgroundColor'
+import { observer } from 'mobx-react-lite'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -102,7 +105,7 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
   .set('back', defaultPauseInput)
 )
 
-const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
+const KeyBindingsGame: GameComponent = observer((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const actionsPressed = useActionsPressed(actionInputs, touchButtons)
   const size = useComponentSize(ref as any)
@@ -113,7 +116,12 @@ const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
     <GameWithActions
       {...{ size, ref }}
       loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
-      className={game}
+      className={css({
+        ...relativeStyles,
+        ...dynamicAspectRatioStyles,
+        textAlign: 'center',
+        backgroundColor: getBackgroundColor()
+      })}
     >
       <h1>Pressed Keys</h1>
       {actions.map(action =>
@@ -122,7 +130,7 @@ const KeyBindingsGame: GameComponent = forwardRef((_props, ref) => {
         </Tag.CheckableTag>)}
     </GameWithActions>
   )
-})
+}, { forwardRef: true })
 
 KeyBindingsGame.description = (
   <>

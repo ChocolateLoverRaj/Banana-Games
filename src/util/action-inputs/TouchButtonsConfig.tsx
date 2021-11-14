@@ -1,7 +1,6 @@
 import { FC, MouseEventHandler, useState, useRef, Dispatch } from 'react'
 import ActionInputs from './ActionInputs'
 import useCurrentInputs from './useCurrentInputs'
-import { menu, dragHandle } from './TouchButtonsConfig.module.scss'
 import { DragOutlined, StopOutlined, CheckOutlined } from '@ant-design/icons'
 import { Space, Divider } from 'antd'
 import Draggable from 'react-draggable'
@@ -9,6 +8,7 @@ import { Map } from 'immutable'
 import AbsolutePosition from './types/AbsolutePosition'
 import TouchButtonEdit from './TouchButtonEdit'
 import Size from '../types/Size'
+import { css } from '@emotion/css'
 
 export type OnExit = () => void
 export interface TouchButtonsConfigProps<Action extends string = string> {
@@ -16,6 +16,8 @@ export interface TouchButtonsConfigProps<Action extends string = string> {
   onExit: OnExit
   boundary: Size
 }
+
+const dragHandle = css({ cursor: 'move ' })
 
 const TouchButtonsConfig: FC<TouchButtonsConfigProps> = <Action extends string = string>(
   props: TouchButtonsConfigProps<Action>
@@ -59,7 +61,12 @@ const TouchButtonsConfig: FC<TouchButtonsConfigProps> = <Action extends string =
           )
         }))}
       <Draggable bounds='parent' handle={`.${dragHandle}`}>
-        <Space className={menu}>
+        <Space
+          className={css`
+          border: 1px solid black;
+          padding: 1%;
+        `}
+        >
           <DragOutlined className={dragHandle} />
           <Divider type='vertical' />
           <StopOutlined onClick={onExit} />

@@ -1,11 +1,13 @@
-import { forwardRef, MouseEventHandler, useEffect } from 'react'
+import { MouseEventHandler, useEffect } from 'react'
 import * as React from 'react'
 import { Button, Typography } from 'antd'
 import useFullScreen, { FullScreenOperation } from '../../util/useFullScreen'
-import { game } from './index.module.scss'
 import GameComponent from '../../types/GameComponent'
+import { css } from '@emotion/css'
+import getBackgroundColor from '../../getBackgroundColor'
+import { observer } from 'mobx-react-lite'
 
-const FullScreenGame: GameComponent = forwardRef((_props, ref) => {
+const FullScreenGame: GameComponent = observer((_props, ref) => {
   const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref as any)
   useEffect(() => {
     // eslint-disable-next-line no-extra-boolean-cast
@@ -16,7 +18,7 @@ const FullScreenGame: GameComponent = forwardRef((_props, ref) => {
   const handleExit: MouseEventHandler = () => setFullScreen(false)
 
   return (
-    <div ref={ref} className={game}>
+    <div ref={ref} className={css({ backgroundColor: getBackgroundColor() })}>
       {fullScreen
         ? (
           <Button onClick={handleExit} loading={operation === FullScreenOperation.EXITING}>
@@ -30,7 +32,7 @@ const FullScreenGame: GameComponent = forwardRef((_props, ref) => {
           )}
     </div>
   )
-})
+}, { forwardRef: true })
 
 FullScreenGame.description = (
   <Typography.Paragraph>

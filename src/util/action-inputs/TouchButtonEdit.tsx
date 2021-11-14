@@ -2,12 +2,12 @@ import { Dispatch, ReactNode, FC, useRef } from 'react'
 import absolutePositionToCss from '../../absolutePositionToCss'
 import TouchInput from './TouchInput'
 import AbsolutePosition from './types/AbsolutePosition'
-import { button } from './TouchButtonEdit.module.scss'
 import Position from './types/Position'
 import never from 'never'
 import toSigned from 'boolean-to-signed'
 import Size from '../types/Size'
 import limitNumber from 'limit-number'
+import { css } from '@emotion/css'
 
 export interface TouchButtonEditProps {
   absolutePosition: AbsolutePosition & Size
@@ -30,7 +30,12 @@ const TouchButtonEdit: FC<TouchButtonEditProps> = props => {
       <TouchInput ref={buttonRef} absolutePosition={absolutePosition}>{children}</TouchInput>
       <div
         ref={boxRef}
-        className={button}
+        className={css`
+          position: absolute;
+          border: 1px solid green;
+          background-color: change-color($color: green, $alpha: 0.5);
+          box-sizing: content-box;
+        `}
         style={absolutePositionToCss(absolutePosition)}
         onTouchStart={e => {
           const { clientX, clientY } = e.touches[0]

@@ -17,6 +17,7 @@
     "Popconfirm",
     "randomnumber",
     "rehooks",
+    "tinycolor",
     "wireframes"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib",

@@ -1,6 +1,4 @@
-import * as React from 'react'
 import { FC } from 'react'
-import { page } from './IndexPage.module.scss'
 import { HashRouter } from 'react-router-dom'
 import Content from './Content'
 import Menu from './Menu'
@@ -10,6 +8,7 @@ import { message } from 'antd'
 import useDownloadedGames from './useDownloadedGames'
 import { IndexedDbProvider } from './util/use-indexed-db'
 import settingsDb from './settingsDb'
+import { css } from '@emotion/css'
 
 const IndexPage: FC = () => {
   const serviceWorker = useServiceWorker('./serviceWorker.js', () => {
@@ -37,7 +36,21 @@ const IndexPage: FC = () => {
     >
       <HashRouter hashType='noslash'>
         <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
-          <div className={page}>
+          <div className={css`
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+          
+            > :nth-child(1) {
+              flex: 0 0 auto;
+              overflow-y: auto;
+              overflow-x: clip;
+            }
+          
+            > :nth-child(2) {
+              flex: 1 1 auto;
+            }`}
+          >
             <div>
               <Menu />
             </div>

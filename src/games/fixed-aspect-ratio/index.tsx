@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { forwardRef } from 'react'
 import useComponentSize from '@rehooks/component-size'
 import GameComponent from '../../types/GameComponent'
@@ -7,7 +6,8 @@ import Size from '../../util/types/Size'
 import sizeToString from '../../util/sizeToString'
 import { Typography } from 'antd'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
-import { game } from './index.module.scss'
+import { css } from '@emotion/css'
+import borderStyles from '../../borderStyles'
 
 const ratio: Size = {
   width: 16,
@@ -25,7 +25,7 @@ const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
       loadedGameConfig={{ useScreenResult }}
       aspectRatio={ratio}
       ref={ref}
-      className={game}
+      className={css(borderStyles)}
     >
       <span>
         Available Size - {sizeToString(componentSize)} <br /><br />

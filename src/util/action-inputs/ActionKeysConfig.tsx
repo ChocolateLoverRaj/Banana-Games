@@ -5,8 +5,8 @@ import KeyBindingsInput from '../KeyBindingInput'
 import useCurrentInputs from './useCurrentInputs'
 import { Set } from 'immutable'
 import { DeleteOutlined } from '@ant-design/icons'
-import { flex } from './ActionKeysConfig.module.scss'
 import Input from './types/Input'
+import { css } from '@emotion/css'
 
 export interface ActionKeysConfigProps<Action extends string = string> {
   actionInputs: ActionInputs<Action>
@@ -41,7 +41,7 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
               {(fields, { add, remove }) => (
                 <>
                   {fields.map((field, index) => (
-                    <Space className={flex} key={field.key} align='baseline'>
+                    <Space className={css({ display: 'flex' })} key={field.key} align='baseline'>
                       <Form.Item key={field.key}>
                         <Form.Item {...field} noStyle>
                           <KeyBindingsInput />

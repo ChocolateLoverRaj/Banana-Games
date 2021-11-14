@@ -1,11 +1,9 @@
-import * as React from 'react'
 import { FC, useContext } from 'react'
 import config from './config.json'
 import Helmet from 'react-helmet'
 import { Table, Tooltip, Button, Popconfirm } from 'antd'
 import games from './games'
 import GameJson from './types/GameJson'
-import { header, errorColor } from './AllGames.module.scss'
 import { Link } from 'react-router-dom'
 import GlobalStateContext from './GlobalStateContext'
 import ErrorResult from './ErrorResult'
@@ -13,9 +11,10 @@ import { DownloadState } from './useDownloadedGames'
 import { CheckOutlined, LoadingOutlined, DownloadOutlined, CloseCircleFilled } from '@ant-design/icons'
 import ErrorLogger from './ErrorLogger'
 import GameTags from './GameTags'
+import { css } from '@emotion/css'
+import { red } from '@ant-design/colors'
 
 const allTags = new Set([...games.values()].flatMap(({ tags }) => tags ?? []))
-console.log(allTags)
 
 const AllGames: FC = () => {
   const [
@@ -36,7 +35,7 @@ const AllGames: FC = () => {
         <title>{config.appName}</title>
       </Helmet>
       <div>
-        <h1 className={header}>All Games</h1>
+        <h1 className={css({ textAlign: 'center' })}>All Games</h1>
         {downloadedGamesError === undefined
           ? <Table
               dataSource={[...games]} columns={[{
@@ -70,7 +69,7 @@ const AllGames: FC = () => {
                             ? resetDownloadGame.bind(undefined, url)
                             : resetRemoveGame.bind(undefined, url)}
                         >
-                          <CloseCircleFilled className={errorColor} />
+                          <CloseCircleFilled className={css({ color: red[4] })} />
                         </Popconfirm>
                       </>
                     )

@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Tabs, Button } from 'antd'
 import { ControlOutlined } from '@ant-design/icons'
-import { paused as pausedStyle, pausedContent } from './LoadedGame.module.scss'
 import {
   ActionKeysConfig,
   useOnAction
@@ -14,6 +13,8 @@ import bind from 'bind-args'
 import { Screen } from './useScreen'
 import useVisible from '../useVisible'
 import { LoadedGameOptionalConfig, LoadedGameRequiredProps } from './LoadedGame'
+import { css } from '@emotion/css'
+import PausedContainer from './PausedContainer'
 
 export interface LoadedGamePauseableProps<Action extends string = string> extends
   LoadedGameRequiredProps,
@@ -50,8 +51,13 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string
           />
         : <TouchInputs touchButtons={touchButtons} />)}
       {screen === Screen.PAUSED && (
-        <div className={pausedStyle}>
-          <div className={pausedContent}>
+        <PausedContainer>
+          <div
+            className={css({
+              maxHeight: '100%',
+              overflow: 'auto'
+            })}
+          >
             <PausedMenu
               onClose={bind(setScreen, Screen.PLAYING)}
               actionInputs={actionInputs}
@@ -75,7 +81,7 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string
               }]}
             </PausedMenu>
           </div>
-        </div>
+        </PausedContainer>
       )}
     </>
   )

@@ -16,6 +16,7 @@
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons": "^4.6.2",
+    "@emotion/css": "^11.5.0",
     "@rehooks/component-size": "^1.0.3",
     "antd": "^4.16.6",
     "arr-diff": "^4.0.0",
@@ -47,6 +48,7 @@
     "rn-randomnumber": "^1.0.2",
     "rooks": "ChocolateLoverRaj/rooks#build/preview-531",
     "single-event-emitter": "^0.2.0",
+    "tinycolor2": "^1.4.2",
     "use-constant": "^1.1.0",
     "webpack-stats-plugin": "^1.0.3",
     "zip-array": "^1.0.1"
@@ -71,6 +73,7 @@
     "@types/react-helmet": "^6.1.2",
     "@types/react-router-dom": "^5.1.8",
     "@types/react-router-hash-link": "^2.4.1",
+    "@types/tinycolor2": "^1.4.3",
     "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": ">=4.0.1",
     "babel-loader": "^8.2.2",
@@ -92,8 +95,6 @@
     "rc-field-form": "^1.21.1",
     "react-refresh": "^0.10.0",
     "react-use-promise": "^0.3.1",
-    "sass": "^1.35.2",
-    "sass-loader": "^12.1.0",
     "style-loader": "^3.3.1",
     "terser-webpack-plugin": "^5.1.4",
     "ts-node": "^10.1.0",

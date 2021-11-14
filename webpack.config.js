@@ -16,16 +16,6 @@ const { readdirSync } = require('fs')
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
-const styleLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
-const cssLoader = {
-  loader: 'css-loader',
-  options: {
-    modules: {
-      auto: true,
-      namedExport: true
-    }
-  }
-}
 
 const subRoute = process.env.GITHUB_REPOSITORY !== undefined
   ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
@@ -122,10 +112,6 @@ module.exports = {
           { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
           'css-loader'
         ]
-      },
-      {
-        test: /\.module\.s[ac]ss$/i,
-        use: [styleLoader, cssLoader, 'sass-loader']
       }
     ]
   },

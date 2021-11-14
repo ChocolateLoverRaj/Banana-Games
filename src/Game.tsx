@@ -3,7 +3,6 @@ import { FC, useRef, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
 import { Spin, PageHeader, PageHeaderProps, Button, Skeleton, Collapse } from 'antd'
-import { content, loading } from './Game.module.scss'
 import useUnique from './util/useUnique'
 import GameType from './types/GameJson'
 import Helmet from 'react-helmet'
@@ -14,6 +13,7 @@ import useFullScreen from './util/useFullScreen'
 import GameComponent from './types/GameComponent'
 import GameTags from './GameTags'
 import WarnLeaveGame from './WarnLeaveGame'
+import { css } from '@emotion/css'
 
 export interface GameProps {
   id: string
@@ -57,7 +57,21 @@ const Game: FC<GameProps> = props => {
       <Helmet>
         <title>{game.name} {'\u2022'} {config.appName}</title>
       </Helmet>
-      <div className={content}>
+      <div
+        className={css`
+        display: flex;
+        flex-direction: column;
+
+        > :nth-child(1) {
+          flex: 0 0 auto;
+          max-height: 50%;
+          overflow: auto;
+        }
+
+        :nth-child(2) {
+          flex: 1 1 auto;
+        }`}
+      >
         <PageHeader
           title={game.name}
           onBack={handleBack}
@@ -89,7 +103,7 @@ const Game: FC<GameProps> = props => {
             )
           : state === 'pending'
             ? (
-              <div className={loading}>
+              <div className={css({ textAlign: 'center' })}>
                 <Spin size='large' tip='Downloading Game' />
               </div>
               )

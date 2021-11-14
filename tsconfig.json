@@ -25,6 +25,7 @@
     }
   },
   "include": [
-    "./src/types.d.ts"
+    "./src/**/*.tsx",
+    "./src/**/*.ts"
   ]
 }
