@@ -14,121 +14,21 @@ import {
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { blue, grey as gray } from '@ant-design/colors'
-import { Typography } from 'antd'
-import config from '../../config.json'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
-import { ActionInputs, useActionsPressed } from '../../util/action-inputs'
-import { Map, Set } from 'immutable'
-import Input from '../../util/action-inputs/types/Input'
-import defaultPauseInput from '../../defaultPauseInput'
+import { useActionsPressed } from '../../util/action-inputs'
 import useConstant from 'use-constant'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
 import { Screen } from '../../util/game-with-actions/useScreen'
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons'
 import limit from 'limit-number'
 import toSigned from 'boolean-to-signed'
 import never from 'never'
 import random from 'rn-randomnumber'
 import randomBoolean from 'random-boolean'
 import getBackgroundColor from '../../getBackgroundColor'
+import actionInputs from './actionInputs'
+import Description from './Description'
 
 const aspectRatio = { width: 16, height: 9 }
-
-type Action = 'Paddle 0 Up' | 'Paddle 0 Down' | 'Paddle 1 Up' | 'Paddle 1 Down' | 'back'
-const buttonSize = 50
-const buttonMargin = 10
-const actionInputs = new ActionInputs(Map<Action, Input>([
-  ['back', {
-    ...defaultPauseInput,
-    touch: {
-      ...defaultPauseInput.touch,
-      buttons: Set.of({
-        x: {
-          value: buttonMargin * 2 + buttonSize,
-          reverse: true
-        },
-        y: {
-          value: buttonMargin,
-          reverse: false
-        },
-        width: buttonSize,
-        height: buttonSize
-      })
-    }
-  }],
-  ['Paddle 0 Up', {
-    keyboard: Set.of('KeyW'),
-    touch: {
-      buttonContents: <CaretUpOutlined />,
-      buttons: Set.of({
-        x: {
-          value: 10,
-          reverse: false
-        },
-        y: {
-          value: 10,
-          reverse: false
-        },
-        width: buttonSize,
-        height: buttonSize
-      })
-    }
-  }],
-  ['Paddle 0 Down', {
-    keyboard: Set.of('KeyS'),
-    touch: {
-      buttonContents: <CaretDownOutlined />,
-      buttons: Set.of({
-        x: {
-          value: 10,
-          reverse: false
-        },
-        y: {
-          value: 10,
-          reverse: true
-        },
-        width: buttonSize,
-        height: buttonSize
-      })
-    }
-  }],
-  ['Paddle 1 Up', {
-    keyboard: Set.of('ArrowUp'),
-    touch: {
-      buttonContents: <CaretUpOutlined />,
-      buttons: Set.of({
-        x: {
-          value: 10,
-          reverse: true
-        },
-        y: {
-          value: 10,
-          reverse: false
-        },
-        width: buttonSize,
-        height: buttonSize
-      })
-    }
-  }],
-  ['Paddle 1 Down', {
-    keyboard: Set.of('ArrowDown'),
-    touch: {
-      buttonContents: <CaretDownOutlined />,
-      buttons: Set.of({
-        x: {
-          value: 10,
-          reverse: true
-        },
-        y: {
-          value: 10,
-          reverse: true
-        },
-        width: buttonSize,
-        height: buttonSize
-      })
-    }
-  }]
-]))
 
 const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
@@ -303,12 +203,6 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
-MatterJsGame.description = (
-  <Typography.Paragraph>
-    <a href='https://en.wikipedia.org/wiki/Pong'>Pong</a> has been a video game for a long time,
-    and many people make pong as a sample game. Because it is so simple, pong is the first real
-    game on {config.appName}.
-  </Typography.Paragraph>
-)
+MatterJsGame.description = <Description />
 
 export default MatterJsGame
