@@ -30,6 +30,7 @@ import toSigned from 'boolean-to-signed'
 import never from 'never'
 import random from 'rn-randomnumber'
 import randomBoolean from 'random-boolean'
+import getBackgroundColor from '../../getBackgroundColor'
 
 const aspectRatio = { width: 16, height: 9 }
 
@@ -183,7 +184,7 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
 
       const scores = [0, 0] as [number, number]
 
-      const render = Render.create({ canvas, engine, options: { width, height, wireframes: false, background: 'white' } })
+      const render = Render.create({ canvas, engine, options: { width, height, wireframes: false, background: getBackgroundColor() } })
 
       const ball = Bodies.circle(width / 2, height / 2, ballRadius, {
         friction: 0,

@@ -15,7 +15,6 @@ const FixedAspectRatio = forwardRef<HTMLDivElement, FixedAspectRatioProps>((prop
   const { loadedGameConfig, size, aspectRatio, children, className } = props
 
   const scaledSize = getScaledSize(size, aspectRatio)
-  console.log(size)
 
   return (
     <div
@@ -25,8 +24,7 @@ const FixedAspectRatio = forwardRef<HTMLDivElement, FixedAspectRatioProps>((prop
           height: 100%;
           overflow: hidden;
           padding: 0;
-          position: relative;
-          background-color: white;`)}
+          position: relative;`)}
     >
       <div
         className={cn(className, css(`
