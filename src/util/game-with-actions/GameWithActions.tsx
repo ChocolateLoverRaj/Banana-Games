@@ -2,8 +2,9 @@ import { forwardRef, ReactNode } from 'react'
 import Size from '../types/Size'
 import { LoadedGameConfig } from './LoadedGame'
 import useComponentSize from '@rehooks/component-size'
-import FixedAspectRatio from './FixedAspectRatio'
-import DynamicAspectRatio from './DynamicAspectRatio'
+import FixedAspectRatioContainer from './FixedAspectRatioContainer'
+import DynamicAspectRatioContainer from './DynamicAspectRatioContainer'
+import BaseGame from './BaseGame'
 
 export interface GameWithActionsProps<Action extends string = string> {
   loadedGameConfig: LoadedGameConfig<Action>
@@ -17,17 +18,19 @@ const GameWithActions = forwardRef<HTMLDivElement, GameWithActionsProps>((props,
 
   const size = useComponentSize(ref as any)
 
+  const baseGame = <BaseGame {...{ loadedGameConfig, size }}>{children}</BaseGame>
+
   return (
     <>
       {aspectRatio !== undefined
         ? (
-          <FixedAspectRatio {...{ aspectRatio, size, loadedGameConfig, className }} ref={ref}>
-            {children}
-          </FixedAspectRatio>)
+          <FixedAspectRatioContainer {...{ aspectRatio, size, loadedGameConfig, className }} ref={ref}>
+            {baseGame}
+          </FixedAspectRatioContainer>)
         : (
-          <DynamicAspectRatio {...{ size, loadedGameConfig, className }} ref={ref}>
-            {children}
-          </DynamicAspectRatio>)}
+          <DynamicAspectRatioContainer {...{ className }} ref={ref}>
+            {baseGame}
+          </DynamicAspectRatioContainer>)}
     </>
   )
 })
