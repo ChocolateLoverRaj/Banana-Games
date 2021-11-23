@@ -4,17 +4,17 @@ import { ControlOutlined } from '@ant-design/icons'
 import {
   ActionKeysConfig,
   useOnAction
-} from '../action-inputs'
-import PausedMenu from '../../PausedMenu'
-import TouchInputs from '../action-inputs/TouchInputs'
-import TouchButtonsConfig from '../action-inputs/TouchButtonsConfig'
+} from '../../action-inputs'
+import PausedMenu from '../../../PausedMenu'
+import TouchInputs from '../../action-inputs/TouchInputs'
+import TouchButtonsConfig from '../../action-inputs/TouchButtonsConfig'
 import { detectTouch } from 'detect-touch'
 import bind from 'bind-args'
-import { Screen } from './useScreen'
-import useVisible from '../useVisible'
+import { Screen } from '../useScreen'
+import useVisible from '../../useVisible'
 import { LoadedGameOptionalConfig, LoadedGameRequiredProps } from './LoadedGame'
 import { css } from '@emotion/css'
-import PausedContainer from './PausedContainer'
+import PausedContainer from '../PausedContainer'
 
 export interface LoadedGamePauseableProps<Action extends string = string> extends
   LoadedGameRequiredProps,

@@ -1,8 +1,8 @@
 import { FC, ReactNode } from 'react'
-import { ActionInputs } from '../action-inputs'
-import { UseScreenResult } from './useScreen'
-import Size from '../types/Size'
-import TouchButtons from '../action-inputs/TouchButtons'
+import { ActionInputs } from '../../action-inputs'
+import { UseScreenResult } from '../useScreen'
+import Size from '../../types/Size'
+import TouchButtons from '../../action-inputs/TouchButtons'
 import LoadedGameNotPauseable from './LoadedGameNotPauseable'
 import LoadedGamePauseable from './LoadedGamePauseable'
 

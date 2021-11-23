@@ -1,6 +1,6 @@
 import { forwardRef, ReactNode } from 'react'
 import Size from '../types/Size'
-import { LoadedGameConfig } from './LoadedGame'
+import { LoadedGameConfig } from './loaded-game'
 import useComponentSize from '@rehooks/component-size'
 import FixedAspectRatioContainer from './FixedAspectRatioContainer'
 import DynamicAspectRatioContainer from './DynamicAspectRatioContainer'

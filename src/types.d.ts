@@ -1,4 +1,7 @@
-import LazyCss from './LazyCss'
+interface LazyCss {
+  use: () => void
+  unuse: () => void
+}
 
 declare module '*.lazy.css' {
   const lazyCss: LazyCss

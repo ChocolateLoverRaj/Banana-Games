@@ -2,7 +2,7 @@ import { Spin } from 'antd'
 import { FC, ReactNode } from 'react'
 import ErrorResult from '../../ErrorResult'
 import Size from '../types/Size'
-import LoadedGame, { LoadedGameConfig } from './LoadedGame'
+import LoadedGame, { LoadedGameConfig } from './loaded-game'
 import usePausedWhenNotVisible from './usePausedWhenNotVisible'
 
 export interface BaseGameProps<Action extends string = string> {
