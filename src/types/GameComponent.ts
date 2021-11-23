@@ -1,8 +1,6 @@
-import { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes, ReactNode } from 'react'
+import { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from 'react'
 
 type GameComponent =
-  ForwardRefExoticComponent<PropsWithoutRef<{}> & RefAttributes<HTMLDivElement | null>> & {
-    description?: ReactNode
-  }
+  ForwardRefExoticComponent<PropsWithoutRef<{}> & RefAttributes<HTMLDivElement | null>>
 
 export default GameComponent

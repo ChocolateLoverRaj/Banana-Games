@@ -4,7 +4,7 @@ import { Spin, Typography } from 'antd'
 import config from '../../config.json'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
 
-const LoadingScreen: GameComponent = forwardRef((_props, ref) => {
+export const Game: GameComponent = forwardRef((_props, ref) => {
   // TODO: Optional useScreenResult
   const useScreenResult = useScreen()
 
@@ -15,7 +15,7 @@ const LoadingScreen: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
-LoadingScreen.description = (
+export const description = (
   <>
     <Typography.Paragraph>
       When an asynchronous task needs to be completed before a game can be played, it's nice to see
@@ -61,5 +61,3 @@ LoadingScreen.description = (
     </Typography.Paragraph>
   </>
 )
-
-export default LoadingScreen

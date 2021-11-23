@@ -1,7 +1,0 @@
-{
-  "$schema": "../../game.schema.json",
-  "name": "Loading Screen Without Progress",
-  "tags": [
-    "Demo"
-  ]
-}

@@ -17,7 +17,7 @@ type Action = 'back'
 
 const actionInputs = new ActionInputs<Action>(Map([['back', defaultPauseInput]]))
 
-const MenuGame: GameComponent = forwardRef((_props, ref) => {
+export const Game: GameComponent = forwardRef((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const useScreenResult = useScreen()
   const [screen] = useScreenResult
@@ -40,7 +40,7 @@ const MenuGame: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
-MenuGame.description = (
+export const description = (
   <>
     <Typography.Paragraph>
       One key feature a game needs is a pause button. Besides pausing the game, a pause screen
@@ -54,5 +54,3 @@ MenuGame.description = (
     </Typography.Paragraph>
   </>
 )
-
-export default MenuGame

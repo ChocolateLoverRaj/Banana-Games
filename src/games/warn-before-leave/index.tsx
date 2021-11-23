@@ -6,13 +6,13 @@ import { css } from '@emotion/css'
 import getBackgroundColor from '../../getBackgroundColor'
 import { observer } from 'mobx-react-lite'
 
-const FullScreenGame: GameComponent = observer((_props, ref) => (
+export const Game: GameComponent = observer((_props, ref) => (
   <div ref={ref} className={css({ backgroundColor: getBackgroundColor() })}>
     <Typography.Title>Game</Typography.Title>
   </div>
 ), { forwardRef: true })
 
-FullScreenGame.description = (
+export const description = (
   <Typography.Paragraph>
     You might accidentally leave a game by pressing {' '}
     <a href={closeTabShortcut}>
@@ -27,5 +27,3 @@ FullScreenGame.description = (
     </HashLink>.
   </Typography.Paragraph>
 )
-
-export default FullScreenGame

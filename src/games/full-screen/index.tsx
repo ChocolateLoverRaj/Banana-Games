@@ -7,7 +7,7 @@ import { css } from '@emotion/css'
 import getBackgroundColor from '../../getBackgroundColor'
 import { observer } from 'mobx-react-lite'
 
-const FullScreenGame: GameComponent = observer((_props, ref) => {
+export const Game: GameComponent = observer((_props, ref) => {
   const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref as any)
   useEffect(() => {
     // eslint-disable-next-line no-extra-boolean-cast
@@ -34,7 +34,7 @@ const FullScreenGame: GameComponent = observer((_props, ref) => {
   )
 }, { forwardRef: true })
 
-FullScreenGame.description = (
+export const description = (
   <Typography.Paragraph>
     Even with the game in the spotlight of the screen, there is a lot of potential for the game
     to have more space. Using the {' '}
@@ -42,5 +42,3 @@ FullScreenGame.description = (
     you can have a better view of the game.
   </Typography.Paragraph>
 )
-
-export default FullScreenGame

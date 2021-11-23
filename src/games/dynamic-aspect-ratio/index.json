@@ -1,7 +1,0 @@
-{
-  "$schema": "../../game.schema.json",
-  "name": "Dynamic Aspect Ratio",
-  "tags": [
-    "Demo"
-  ]
-}

@@ -30,7 +30,7 @@ import Description from './Description'
 
 const aspectRatio = { width: 16, height: 9 }
 
-const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
+export const Game: GameComponent = forwardRef((_props, ref) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const componentSize = useComponentSize(ref as any)
   const useScreenResult = useScreen()
@@ -203,6 +203,4 @@ const MatterJsGame: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
-MatterJsGame.description = <Description />
-
-export default MatterJsGame
+export const description = <Description />

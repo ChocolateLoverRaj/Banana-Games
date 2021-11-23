@@ -1,11 +1,11 @@
-import GameJson from './types/GameJson'
+import GameMeta from './types/GameMeta'
 import { dirname, normalize } from 'path'
 
-const gamesContext = require.context('./games', true, /index\.json/)
+const gamesContext = require.context('./games', true, /meta\.ts/)
 
-const games = new Map<string, GameJson>(gamesContext.keys().map(k => [
+const games = new Map<string, GameMeta>(gamesContext.keys().map(k => [
   normalize(dirname(k)),
-  gamesContext(k)
+  gamesContext(k).default
 ]))
 
 export default games

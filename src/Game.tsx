@@ -4,16 +4,16 @@ import { useHistory } from 'react-router-dom'
 import usePromise from 'react-use-promise'
 import { Spin, PageHeader, PageHeaderProps, Button, Skeleton, Collapse } from 'antd'
 import useUnique from './util/useUnique'
-import GameType from './types/GameJson'
+import GameType from './types/GameMeta'
 import Helmet from 'react-helmet'
 import config from './config.json'
 import ErrorResult from './ErrorResult'
 import { FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons'
 import useFullScreen from './util/useFullScreen'
-import GameComponent from './types/GameComponent'
 import GameTags from './GameTags'
 import WarnLeaveGame from './WarnLeaveGame'
 import { css } from '@emotion/css'
+import GameExports from './types/GameExports'
 
 export interface GameProps {
   id: string
@@ -25,12 +25,12 @@ const Game: FC<GameProps> = props => {
 
   const history = useHistory()
   const [retryAttempt, retry] = useUnique()
-  const [Game, error, state] = usePromise<GameComponent>(
-    async () => (await import(
+  const [gameExports, error, state] = usePromise<GameExports>(
+    async () => await import(
       /* webpackInclude: /index.tsx/ */
       /* webpackChunkName: "games/[request]" */
       `./games/${id}`
-    )).default,
+    ),
     [id, retryAttempt]
   )
   const ref = useRef(null)
@@ -50,7 +50,7 @@ const Game: FC<GameProps> = props => {
 
   const handleBack: PageHeaderProps['onBack'] = () => history.push('')
 
-  const noDescription = Game !== undefined && Game.description === undefined
+  const noDescription = gameExports !== undefined && gameExports.description === undefined
 
   return (
     <>
@@ -90,15 +90,15 @@ const Game: FC<GameProps> = props => {
             >
               {state === 'pending'
                 ? <Skeleton active title={false} />
-                : Game?.description}
+                : gameExports?.description}
             </Collapse.Panel>
           </Collapse>
         </PageHeader>
-        {Game !== undefined
+        {gameExports !== undefined
           ? (
             <>
               <WarnLeaveGame />
-              <Game ref={ref} />
+              <gameExports.Game ref={ref} />
             </>
             )
           : state === 'pending'

@@ -105,7 +105,7 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
   .set('back', defaultPauseInput)
 )
 
-const KeyBindingsGame: GameComponent = observer((_props, ref) => {
+export const Game: GameComponent = observer((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const actionsPressed = useActionsPressed(actionInputs, touchButtons)
   const size = useComponentSize(ref as any)
@@ -132,7 +132,7 @@ const KeyBindingsGame: GameComponent = observer((_props, ref) => {
   )
 }, { forwardRef: true })
 
-KeyBindingsGame.description = (
+export const description = (
   <>
     <Typography.Paragraph>
       One of the most important things in a game is user input. Without user input, a game wouldn't
@@ -150,5 +150,3 @@ KeyBindingsGame.description = (
     </Typography.Paragraph>
   </>
 )
-
-export default KeyBindingsGame

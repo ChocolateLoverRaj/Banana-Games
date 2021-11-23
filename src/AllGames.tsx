@@ -3,7 +3,7 @@ import config from './config.json'
 import Helmet from 'react-helmet'
 import { Table, Tooltip, Button, Popconfirm } from 'antd'
 import games from './games'
-import GameJson from './types/GameJson'
+import GameMeta from './types/GameMeta'
 import { Link } from 'react-router-dom'
 import GlobalStateContext from './GlobalStateContext'
 import ErrorResult from './ErrorResult'
@@ -38,17 +38,18 @@ const AllGames: FC = () => {
         <h1 className={css({ textAlign: 'center' })}>All Games</h1>
         {downloadedGamesError === undefined
           ? <Table
-              dataSource={[...games]} columns={[{
+              dataSource={[...games]}
+              columns={[{
                 title: 'Name',
-                render: ([url, { name }]: [string, GameJson]) => <Link to={`./${url}`}>{name}</Link>
+                render: ([url, { name }]: [string, GameMeta]) => <Link to={`./${url}`}>{name}</Link>
               }, {
                 title: 'Tags',
-                render: ([_url, { tags }]: [string, GameJson]) => <GameTags {...{ tags }} />,
+                render: ([_url, { tags }]: [string, GameMeta]) => <GameTags {...{ tags }} />,
                 filters: [...allTags].map(tag => ({ text: tag, value: tag })),
                 onFilter: (tag, [, { tags }]) => tags?.includes(tag as string) ?? false
               }, {
                 title: 'Downloaded',
-                render: ([url, { name }]: [string, GameJson]) => {
+                render: ([url, { name }]: [string, GameMeta]) => {
                   const downloadError = downloadGameErrors.get(url)
                   const removeError = removeGameErrors.get(url)
                   const error = downloadError ?? removeError

@@ -14,7 +14,7 @@ const ratio: Size = {
   height: 9
 }
 
-const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
+export const Game: GameComponent = forwardRef((_props, ref) => {
   const componentSize = useComponentSize(ref as any)
   const useScreenResult = useScreen()
 
@@ -39,7 +39,7 @@ const FixedAspectRatio: GameComponent = forwardRef((_props, ref) => {
   )
 })
 
-FixedAspectRatio.description = (
+export const description = (
   <>
     Many games require a specific aspect ratio to play. In this website, games which use fixed
     aspect ratios will grow as big as possible while maintaining the same aspect ratio.
@@ -57,5 +57,3 @@ FixedAspectRatio.description = (
     screen in full screen mode.
   </>
 )
-
-export default FixedAspectRatio

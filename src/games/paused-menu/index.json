@@ -1,7 +1,0 @@
-{
-  "$schema": "../../game.schema.json",
-  "name": "Paused Menu",
-  "tags": [
-    "Demo"
-  ]
-}

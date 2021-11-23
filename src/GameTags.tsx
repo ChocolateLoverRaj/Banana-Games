@@ -1,9 +1,9 @@
 import { Tag } from 'antd'
 import { FC } from 'react'
-import GameJson from './types/GameJson'
+import GameMeta from './types/GameMeta'
 
 export interface GameTagsProps {
-  tags: GameJson['tags']
+  tags: GameMeta['tags']
 }
 
 const GameTags: FC<GameTagsProps> = props => {
