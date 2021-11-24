@@ -17,10 +17,12 @@ const flash = keyframes`
 `
 
 const input = css`
-  animation-name: ${flash};
-  animation-duration: 0.5s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+  &:focus {
+    animation-name: ${flash};
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
 `
 
 const KeyBindingsInput: FC<KeyBindingInputProps> = props => {
