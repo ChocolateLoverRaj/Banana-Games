@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react'
 import ErrorResult from '../../ErrorResult'
 import Size from '../types/Size'
 import LoadedGame, { LoadedGameConfig } from './loaded-game'
-import usePausedWhenNotVisible from './usePausedWhenNotVisible'
+import useGameSettings from './useGameSettings'
 
 export interface BaseGameProps<Action extends string = string> {
   loadedGameConfig: LoadedGameConfig<Action>
@@ -16,13 +16,13 @@ const BaseGame: FC<BaseGameProps> = <Action extends string = string>(
 ) => {
   const { loadedGameConfig, size, children } = props
 
-  const [pausedWhenNotVisible, error] = usePausedWhenNotVisible()
+  const [gameSettings, error] = useGameSettings()
 
   return (
     <>
-      {pausedWhenNotVisible !== undefined
+      {gameSettings !== undefined
         ? (
-          <LoadedGame {...loadedGameConfig} {...{ pausedWhenNotVisible, size }}>
+          <LoadedGame {...loadedGameConfig} {...{ gameSettings, size }}>
             {children}
           </LoadedGame>)
         : error === undefined

@@ -60,6 +60,14 @@ const SettingsRoute: FC = () => {
                 >
                   <Switch loading={savePromises.has('warnBeforeLeavingGame')} />
                 </Form.Item>
+                <section id='touchScreen' />
+                <Form.Item
+                  name='touchScreen'
+                  label='Touch Screen (if device supports touch screen)'
+                  valuePropName='checked'
+                >
+                  <Switch loading={savePromises.has('touchScreen')} />
+                </Form.Item>
               </Form>
               )
             : <ErrorResult title='Error saving settings' error={new Error('not implemented')} />

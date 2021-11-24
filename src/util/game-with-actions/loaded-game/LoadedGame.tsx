@@ -5,6 +5,7 @@ import Size from '../../types/Size'
 import TouchButtons from '../../action-inputs/TouchButtons'
 import LoadedGameNotPauseable from './LoadedGameNotPauseable'
 import LoadedGamePauseable from './LoadedGamePauseable'
+import { GameSettings } from '../useGameSettings'
 
 export interface LoadedGameInputs<Action extends string = string> {
   actionInputs: ActionInputs<Action>
@@ -25,7 +26,7 @@ export interface LoadedGameConfig <Action extends string = string> extends
 
 export interface LoadedGameRequiredProps extends
   LoadedGameRequiredConfig {
-  pausedWhenNotVisible: boolean
+  gameSettings: GameSettings
   size: Size
   children: ReactNode
 }
@@ -42,14 +43,17 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
     size,
     inputs,
     useScreenResult,
-    pausedWhenNotVisible
+    gameSettings,
+    gameSettings: { touchScreen }
   } = props
 
   return (
     <>
       {inputs !== undefined
         ? (
-          <LoadedGamePauseable {...{ inputs, pausedWhenNotVisible, size, useScreenResult }}>
+          <LoadedGamePauseable
+            {...{ inputs, gameSettings, size, useScreenResult, touchScreen }}
+          >
             {children}
           </LoadedGamePauseable>)
         : <LoadedGameNotPauseable>{children}</LoadedGameNotPauseable>}
