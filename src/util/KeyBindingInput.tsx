@@ -1,4 +1,4 @@
-import { Dispatch, FC, KeyboardEventHandler } from 'react'
+import { Dispatch, FC, KeyboardEventHandler, useRef } from 'react'
 import { Input } from 'antd'
 import { css, keyframes } from '@emotion/css'
 
@@ -28,11 +28,16 @@ const input = css`
 const KeyBindingsInput: FC<KeyBindingInputProps> = props => {
   const { value, onChange } = props
 
+  const ref = useRef<Input>(null)
+
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = ({ target, code }) => {
-    if (document.activeElement === target) onChange?.(code)
+    if (document.activeElement === target) {
+      onChange?.(code)
+      ref.current?.blur()
+    }
   }
 
-  return <Input readOnly value={value} className={input} onKeyDown={handleKeyDown} />
+  return <Input ref={ref} readOnly value={value} className={input} onKeyDown={handleKeyDown} />
 }
 
 export default KeyBindingsInput
