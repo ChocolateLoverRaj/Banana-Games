@@ -19,8 +19,6 @@ import useConstant from 'use-constant'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
 import { css } from '@emotion/css'
 import defaultPauseInput from '../../defaultPauseInput'
-import relativeStyles from '../../relativeStyles'
-import dynamicAspectRatioStyles from '../../dynamicAspectRatioStyles'
 import getBackgroundColor from '../../getBackgroundColor'
 import { observer } from 'mobx-react-lite'
 
@@ -117,8 +115,6 @@ export const Game: GameComponent = observer((_props, ref) => {
       {...{ size, ref }}
       loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
       className={css({
-        ...relativeStyles,
-        ...dynamicAspectRatioStyles,
         textAlign: 'center',
         backgroundColor: getBackgroundColor()
       })}
