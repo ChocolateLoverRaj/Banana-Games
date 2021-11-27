@@ -51,7 +51,6 @@ specifiers:
   html-loader: ^2.1.2
   html-webpack-plugin: ^5.3.2
   idb: ^6.1.2
-  immutable: ^4.0.0-rc.14
   limit-number: ^3.0.0
   matter-js: ^0.17.1
   mini-css-extract-plugin: ^2.1.0
@@ -75,7 +74,7 @@ specifiers:
   react-use-promise: ^0.3.1
   rn-randomnumber: ^1.0.2
   rooks: ChocolateLoverRaj/rooks#build/preview-531
-  single-event-emitter: ^0.2.0
+  single-event-emitter: ^0.3.0
   style-loader: ^3.3.1
   terser-webpack-plugin: ^5.1.4
   tinycolor2: ^1.4.2
@@ -124,7 +123,7 @@ dependencies:
   react-router-hash-link: 2.4.3_520bc78b4ba4065e7cfe4fe506865769
   rn-randomnumber: 1.0.2
   rooks: github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165_react-dom@17.0.2+react@17.0.2
-  single-event-emitter: 0.2.0
+  single-event-emitter: 0.3.0
   tinycolor2: 1.4.2
   use-constant: 1.1.0_react@17.0.2
   webpack-stats-plugin: 1.0.3
@@ -166,7 +165,6 @@ devDependencies:
   eslint-plugin-promise: 5.1.0_eslint@7.30.0
   eslint-plugin-react: 7.24.0_eslint@7.30.0
   html-webpack-plugin: 5.3.2_webpack@5.44.0
-  immutable: 4.0.0-rc.14
   mini-css-extract-plugin: 2.1.0_webpack@5.44.0
   path-browserify: 1.0.1
   rc-field-form: 1.21.1_react-dom@17.0.2+react@17.0.2
@@ -4371,10 +4369,6 @@ packages:
       queue: 6.0.1
     dev: false
 
-  /immutable/4.0.0-rc.14:
-    resolution: {integrity: sha512-pfkvmRKJSoW7JFx0QeYlAmT+kNYvn5j0u7bnpNq4N2RCvHSTlLT208G8jgaquNe+Q8kCPHKOSpxJkyvLDpYq0w==}
-    dev: true
-
   /import-cwd/3.0.0:
     resolution: {integrity: sha512-4pnzH16plW+hgvRECbDWpQl3cqtvSofHWh44met7ESfZ8UZOWWddm8hEyDTqREJ9RbYHY8gi8DqmaelApoOGMg==}
     engines: {node: '>=8'}
@@ -7776,8 +7770,8 @@ packages:
       is-arrayish: 0.3.2
     dev: false
 
-  /single-event-emitter/0.2.0:
-    resolution: {integrity: sha512-liwL5FId+Cf1OVebAykZmj2SREi2QLW2ZtnHsTXDo7PLWnD+YwQH9f4wDO4HOw9RfXv1z7cf6v6K6bGrU91Szw==}
+  /single-event-emitter/0.3.0:
+    resolution: {integrity: sha512-97C29ZNyRVaO50PzOKwdTOqTKD1ogQ5iWO2LggMZAdU5omzpxwOZPjDVZyunWnRAJ9RUqTQQyk8JyTcKGySxdQ==}
     dev: false
 
   /sirv/1.0.12:

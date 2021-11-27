@@ -1,8 +1,8 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import TouchButtons from './TouchButtons'
-import useCurrentInputs from './useCurrentInputs'
-import { Map, Set } from 'immutable'
 import TouchInput from './TouchInput'
+import { useLocalObservable } from 'mobx-react-lite'
+import { action } from 'mobx'
 
 export interface TouchInputsProps<Action extends string = string> {
   touchButtons: TouchButtons<Action>
@@ -12,31 +12,31 @@ const TouchInputs: FC<TouchInputsProps> = <Action extends string = string>(
   props: TouchInputsProps<Action>
 ) => {
   const { touchButtons } = props
+  const { actionInputs } = touchButtons
 
-  const [currentInputs] = useCurrentInputs(touchButtons.actionInputs)
-  const [buttonsPressed, setButtonsPressed] = useState(Map<Action, Set<number>>(
-    [...currentInputs.keys()].map(action => [action, Set()])))
+  const buttonsPressed = useLocalObservable(() => new Map<Action, Set<number>>(
+    [...actionInputs.currentInputs.keys()].map(action => [action, new Set()])))
 
   return (
     <>
-      {[...currentInputs].flatMap(
-        ([action, { touch: { buttonContents, buttons } }]) => [...buttons].map(
+      {[...actionInputs.currentInputs].flatMap(
+        ([actionKey, { touch: { buttonContents, buttons } }]) => [...buttons].map(
           (absolutePosition, index) => {
             const { x, y } = absolutePosition
 
-            const handlePress = (): void => {
-              const newButtonsPressed = buttonsPressed.get(action)?.add(index) as Set<number>
-              setButtonsPressed(buttonsPressed.set(action, newButtonsPressed))
+            const handlePress = action((): void => {
+              const newButtonsPressed = buttonsPressed.get(actionKey)?.add(index) as Set<number>
+              buttonsPressed.set(actionKey, newButtonsPressed)
               if (newButtonsPressed.size > 0) {
-                touchButtons.buttonsPressed = touchButtons.buttonsPressed.add(action)
+                touchButtons.buttonsPressed = touchButtons.buttonsPressed.add(actionKey)
               }
-            }
+            })
 
             const handleRelease = (): void => {
-              const newButtonsPressed = buttonsPressed.get(action)?.delete(index) as Set<number>
-              setButtonsPressed(buttonsPressed.set(action, newButtonsPressed))
-              if (newButtonsPressed.size === 0) {
-                touchButtons.buttonsPressed = touchButtons.buttonsPressed.delete(action)
+              const actionButtonsPressed = buttonsPressed.get(actionKey) as Set<number>
+              actionButtonsPressed.delete(index)
+              if (actionButtonsPressed.size === 0) {
+                touchButtons.buttonsPressed.delete(actionKey)
               }
             }
 
@@ -47,7 +47,7 @@ const TouchInputs: FC<TouchInputsProps> = <Action extends string = string>(
                   onTouchStart: handlePress,
                   onTouchEnd: handleRelease,
                   onClick: () => {
-                    touchButtons.clickEmitter.emit(action)
+                    touchButtons.clickEmitter.emit(actionKey)
                   }
                 }}
                 absolutePosition={absolutePosition}

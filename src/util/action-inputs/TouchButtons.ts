@@ -1,23 +1,16 @@
 import SingleEventEmitter from 'single-event-emitter'
 import ActionInputs from './ActionInputs'
-import { Set } from 'immutable'
+import { makeObservable, observable } from 'mobx'
 
 class TouchButtons<Action extends string = string> {
-  private _buttonsPressed = Set<Action>()
-  pressEmitter = new SingleEventEmitter()
-  clickEmitter = new SingleEventEmitter()
+  buttonsPressed = new Set<Action>()
+  readonly pressEmitter = new SingleEventEmitter()
+  readonly clickEmitter = new SingleEventEmitter<[Action]>()
 
-  constructor (public readonly actionInputs: ActionInputs<Action>) {}
-
-  get buttonsPressed (): Set<Action> {
-    return this._buttonsPressed
-  }
-
-  set buttonsPressed (buttonsPressed) {
-    if (buttonsPressed !== this._buttonsPressed) {
-      this._buttonsPressed = buttonsPressed
-      this.pressEmitter.emit()
-    }
+  constructor (public readonly actionInputs: ActionInputs<Action>) {
+    makeObservable(this, {
+      buttonsPressed: observable
+    })
   }
 }
 

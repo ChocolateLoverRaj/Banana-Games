@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import { ActionInputs } from '../../action-inputs'
 import { UseScreenResult } from '../useScreen'
 import Size from '../../types/Size'
 import TouchButtons from '../../action-inputs/TouchButtons'
@@ -8,7 +7,6 @@ import LoadedGamePauseable from './LoadedGamePauseable'
 import { GameSettings } from '../useGameSettings'
 
 export interface LoadedGameInputs<Action extends string = string> {
-  actionInputs: ActionInputs<Action>
   touchButtons: TouchButtons<Action>
   back: Action
 }

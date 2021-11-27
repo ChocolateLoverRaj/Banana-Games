@@ -1,4 +1,3 @@
-import { Set } from 'immutable'
 import TouchInput from './TouchInput'
 
 interface Input {

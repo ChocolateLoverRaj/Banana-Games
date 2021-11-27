@@ -3,8 +3,7 @@ import GameComponent from '../../types/GameComponent'
 import { Typography } from 'antd'
 import never from 'never'
 import arrayJoin from '../../util/arrayJoin'
-import { ActionInputs, useCurrentInputs } from '../../util/action-inputs'
-import { Map } from 'immutable'
+import { ActionInputs } from '../../util/action-inputs'
 import useConstant from 'use-constant'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
 import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
@@ -15,16 +14,15 @@ import { css } from '@emotion/css'
 
 type Action = 'back'
 
-const actionInputs = new ActionInputs<Action>(Map([['back', defaultPauseInput]]))
+const actionInputs = new ActionInputs<Action>(new Map([['back', defaultPauseInput]]))
 
 export const Game: GameComponent = forwardRef((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const useScreenResult = useScreen()
   const [screen] = useScreenResult
-  const [currentInputs] = useCurrentInputs(actionInputs)
   const size = useComponentSize(ref as any)
 
-  const backButtons = [...currentInputs.get('back')?.keyboard ?? never('No input for back action')]
+  const backButtons = [...actionInputs.currentInputs.get('back')?.keyboard ?? never('No input for back action')]
 
   return (
     <GameWithActions

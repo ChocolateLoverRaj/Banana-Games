@@ -6,10 +6,9 @@ import {
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons'
-import { Map, Set as ImmutableSet } from 'immutable'
 import {
   ActionInputs,
-  useActionsPressed
+  MobxActionsPressed
 } from '../../util/action-inputs'
 import Input from '../../util/action-inputs/types/Input'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
@@ -20,19 +19,19 @@ import { GameWithActions, useScreen } from '../../util/game-with-actions'
 import { css } from '@emotion/css'
 import defaultPauseInput from '../../defaultPauseInput'
 import getBackgroundColor from '../../getBackgroundColor'
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
 
 const arrowSize = 50
 const arrowSpace = 10
-const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
+const actionInputs = new ActionInputs<Action>(new Map<Action, Input>()
   .set('up', {
-    keyboard: ImmutableSet.of('ArrowUp', 'KeyW'),
+    keyboard: new Set(['ArrowUp', 'KeyW']),
     touch: {
       buttonContents: <UpOutlined />,
-      buttons: ImmutableSet.of({
+      buttons: new Set([{
         x: {
           value: arrowSpace * 2 + arrowSize,
           reverse: false
@@ -43,14 +42,14 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
         },
         width: arrowSize,
         height: arrowSize
-      })
+      }])
     }
   })
   .set('down', {
-    keyboard: ImmutableSet.of('ArrowDown', 'KeyS'),
+    keyboard: new Set(['ArrowDown', 'KeyS']),
     touch: {
       buttonContents: <DownOutlined />,
-      buttons: ImmutableSet.of({
+      buttons: new Set([{
         x: {
           value: arrowSpace * 2 + arrowSize,
           reverse: false
@@ -61,14 +60,14 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
         },
         width: arrowSize,
         height: arrowSize
-      })
+      }])
     }
   })
   .set('left', {
-    keyboard: ImmutableSet.of('ArrowLeft', 'KeyA'),
+    keyboard: new Set(['ArrowLeft', 'KeyA']),
     touch: {
       buttonContents: <LeftOutlined />,
-      buttons: ImmutableSet.of({
+      buttons: new Set([{
         x: {
           value: arrowSpace,
           reverse: false
@@ -79,14 +78,14 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
         },
         width: arrowSize,
         height: arrowSize
-      })
+      }])
     }
   })
   .set('right', {
-    keyboard: ImmutableSet.of('ArrowRight', 'KeyD'),
+    keyboard: new Set(['ArrowRight', 'KeyD']),
     touch: {
       buttonContents: <RightOutlined />,
-      buttons: ImmutableSet.of({
+      buttons: new Set([{
         x: {
           value: arrowSpace * 3 + arrowSize * 2,
           reverse: false
@@ -97,7 +96,7 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
         },
         width: arrowSize,
         height: arrowSize
-      })
+      }])
     }
   })
   .set('back', defaultPauseInput)
@@ -105,7 +104,8 @@ const actionInputs = new ActionInputs<Action>(Map<Action, Input>()
 
 export const Game: GameComponent = observer((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
-  const actionsPressed = useActionsPressed(actionInputs, touchButtons)
+  const actionsPressed =
+    useLocalObservable(() => new MobxActionsPressed(touchButtons))
   const size = useComponentSize(ref as any)
   const useScreenResult = useScreen()
 
@@ -113,7 +113,7 @@ export const Game: GameComponent = observer((_props, ref) => {
   return (
     <GameWithActions
       {...{ size, ref }}
-      loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
+      loadedGameConfig={{ useScreenResult, inputs: { touchButtons, back: 'back' } }}
       className={css({
         textAlign: 'center',
         backgroundColor: getBackgroundColor()
@@ -121,7 +121,7 @@ export const Game: GameComponent = observer((_props, ref) => {
     >
       <h1>Pressed Keys</h1>
       {actions.map(action =>
-        <Tag.CheckableTag key={action} checked={actionsPressed.has(action)}>
+        <Tag.CheckableTag key={action} checked={actionsPressed.actionsPressed.has(action)}>
           {action}
         </Tag.CheckableTag>)}
     </GameWithActions>

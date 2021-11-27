@@ -1,19 +1,23 @@
-import ActionInputs from './ActionInputs'
-import useCurrentInputs from './useCurrentInputs'
 import { useEffect } from 'react'
-import { Set } from 'immutable'
+import ActionInputs from './ActionInputs'
 import TouchButtons from './TouchButtons'
 
 export type OnAction = () => void
 
 const useOnAction = <Action extends string = string>(
-  actionKeys: ActionInputs<Action>,
-  touchButtons: TouchButtons<Action> | undefined,
+  touchButtonsOrActionInputs: TouchButtons<Action> | ActionInputs<Action>,
   action: Action,
   onAction: OnAction
 ): void => {
-  const [currentKeys] = useCurrentInputs(actionKeys)
-  const keys = currentKeys.get(action)?.keyboard as Set<string>
+  let touchButtons: TouchButtons<Action>
+  let actionInputs: ActionInputs<Action>
+  if ('actionInputs' in touchButtonsOrActionInputs) {
+    touchButtons = touchButtonsOrActionInputs
+    actionInputs = touchButtonsOrActionInputs.actionInputs
+  } else {
+    actionInputs = touchButtonsOrActionInputs
+  }
+  const keys = actionInputs.currentInputs.get(action)?.keyboard as Set<string>
 
   useEffect(() => {
     const handler = (e: KeyboardEvent): void => {
@@ -31,7 +35,7 @@ const useOnAction = <Action extends string = string>(
     return () => {
       touchButtons?.clickEmitter.off(handler)
     }
-  }, [touchButtons])
+  }, [touchButtonsOrActionInputs])
 }
 
 export default useOnAction

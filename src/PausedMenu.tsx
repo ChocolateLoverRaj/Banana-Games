@@ -20,7 +20,7 @@ const PausedMenu = (props: PausedMenuProps): ReturnType<FC> => {
 
   const [currentSubMenu, setCurrentSubMenu] = useState<string>()
 
-  useOnAction(actionInputs, undefined, action, () => {
+  useOnAction(actionInputs, action, () => {
     if (currentSubMenu !== undefined) setCurrentSubMenu(undefined)
     else setTimeout(onClose, 4)
   })

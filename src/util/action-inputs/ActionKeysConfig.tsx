@@ -2,8 +2,6 @@ import { FC, MouseEventHandler } from 'react'
 import ActionInputs from './ActionInputs'
 import { Table, Form, Button, Space } from 'antd'
 import KeyBindingsInput from '../KeyBindingInput'
-import useCurrentInputs from './useCurrentInputs'
-import { Set } from 'immutable'
 import { DeleteOutlined } from '@ant-design/icons'
 import Input from './types/Input'
 import { css } from '@emotion/css'
@@ -16,13 +14,12 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
   props: ActionKeysConfigProps<Action>
 ) => {
   const { actionInputs } = props
-
-  const [currentKeys, setCurrentKeys] = useCurrentInputs(actionInputs)
+  const { currentInputs } = actionInputs
 
   return (
     <Table
       title={() => 'Key Bindings'}
-      dataSource={[...currentKeys]}
+      dataSource={[...currentInputs]}
       columns={[{
         title: 'Action',
         render: ([action]) => <>{action}</>
@@ -32,10 +29,10 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
           <Form
             // TODO: use controlled form
             initialValues={{ keys: [...keys] }}
-            onValuesChange={(_, { keys }) => setCurrentKeys(currentKeys.set(action, {
+            onValuesChange={(_, { keys }) => currentInputs.set(action, {
               touch,
-              keyboard: Set(keys)
-            }))}
+              keyboard: new Set(keys)
+            })}
           >
             <Form.List name='keys'>
               {(fields, { add, remove }) => (
@@ -62,10 +59,10 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = <Action extends string = str
         title: 'Reset',
         render: ([action, { keyboard, touch }]: [Action, Input]) => {
           const handleClick: MouseEventHandler = () =>
-            setCurrentKeys(currentKeys.set(action, {
+            currentInputs.set(action, {
               touch,
               keyboard: actionInputs.defaultInputs.get(action)?.keyboard as Set<string>
-            }))
+            })
           return (
             <Button
               disabled={keyboard === actionInputs.defaultInputs.get(action)?.keyboard}

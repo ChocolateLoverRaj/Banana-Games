@@ -1,5 +1,5 @@
 import GameComponent from '../../types/GameComponent'
-import { forwardRef, useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Engine,
   Runner,
@@ -15,7 +15,7 @@ import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { blue, grey as gray } from '@ant-design/colors'
 import { GameWithActions, useScreen } from '../../util/game-with-actions'
-import { useActionsPressed } from '../../util/action-inputs'
+import { getActionsPressed } from '../../util/action-inputs'
 import useConstant from 'use-constant'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
 import { Screen } from '../../util/game-with-actions/useScreen'
@@ -27,10 +27,12 @@ import randomBoolean from 'random-boolean'
 import getBackgroundColor from '../../getBackgroundColor'
 import actionInputs from './actionInputs'
 import Description from './Description'
+import { observer } from 'mobx-react-lite'
+import KeysPressed from '../../util/KeysPressed'
 
 const aspectRatio = { width: 16, height: 9 }
 
-export const Game: GameComponent = forwardRef((_props, ref) => {
+export const Game: GameComponent = observer((_props, ref) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const componentSize = useComponentSize(ref as any)
   const useScreenResult = useScreen()
@@ -38,10 +40,7 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const [screen] = useScreenResult
   const [runnerEngine, setRunnerEngine] = useState<[Runner, Engine]>()
-  const actionsPressedState = useActionsPressed(actionInputs, touchButtons)
-  const actionsPressed = useRef(actionsPressedState)
-
-  actionsPressed.current = actionsPressedState
+  const [keysPressed] = useState(() => new KeysPressed())
 
   // Update engine
   useEffect(() => {
@@ -134,9 +133,10 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
       const minPaddleX = wallThickness + paddleHeight / 2
       const maxPaddleX = height - minPaddleX
       const handleTick = ({ source: { delta } }: any): void => {
+        const actionsPressed = getActionsPressed(touchButtons, keysPressed.keysPressed)
         for (const i of [0, 1] as const) {
-          const up = actionsPressed.current.has(`Paddle ${i} Up`)
-          const down = actionsPressed.current.has(`Paddle ${i} Down`)
+          const up = actionsPressed.has(`Paddle ${i} Up`)
+          const down = actionsPressed.has(`Paddle ${i} Down`)
           if (up || down) {
             Body.setPosition(paddles[i], {
               x: paddles[i].position.x,
@@ -190,17 +190,19 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
     if (runnerEngine !== undefined) {
       const [runner] = runnerEngine
       runner.enabled = screen === Screen.PLAYING
+      if (screen === Screen.PLAYING) keysPressed.start()
+      else keysPressed.stop()
     }
   }, [runnerEngine, screen])
 
   return (
     <GameWithActions
-      loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
+      loadedGameConfig={{ useScreenResult, inputs: { touchButtons, back: 'back' } }}
       {...{ aspectRatio, ref }}
     >
       <canvas ref={setCanvas} style={scaledSize} />
     </GameWithActions>
   )
-})
+}, { forwardRef: true })
 
 export const description = <Description />
