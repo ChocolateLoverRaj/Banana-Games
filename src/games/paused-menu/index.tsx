@@ -27,7 +27,7 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
   return (
     <GameWithActions
       {...{ size, ref }}
-      loadedGameConfig={{ useScreenResult, inputs: { actionInputs, touchButtons, back: 'back' } }}
+      inputs={{ touchButtons, back: 'back' }}
       className={css({ textAlign: 'center' })}
     >
       <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>

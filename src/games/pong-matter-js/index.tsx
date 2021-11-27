@@ -197,7 +197,7 @@ export const Game: GameComponent = observer((_props, ref) => {
 
   return (
     <GameWithActions
-      loadedGameConfig={{ useScreenResult, inputs: { touchButtons, back: 'back' } }}
+      inputs={{ touchButtons, back: 'back' }}
       {...{ aspectRatio, ref }}
     >
       <canvas ref={setCanvas} style={scaledSize} />

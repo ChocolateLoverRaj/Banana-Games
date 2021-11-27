@@ -2,14 +2,11 @@ import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { Spin, Typography } from 'antd'
 import config from '../../config.json'
-import { GameWithActions, useScreen } from '../../util/game-with-actions'
+import { GameWithActions } from '../../util/game-with-actions'
 
 export const Game: GameComponent = forwardRef((_props, ref) => {
-  // TODO: Optional useScreenResult
-  const useScreenResult = useScreen()
-
   return (
-    <GameWithActions loadedGameConfig={{ useScreenResult }} ref={ref}>
+    <GameWithActions ref={ref}>
       <Spin tip='Loading' size='large' />
     </GameWithActions>
   )

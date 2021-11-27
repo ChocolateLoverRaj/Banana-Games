@@ -12,13 +12,11 @@ import {
 } from '../../util/action-inputs'
 import Input from '../../util/action-inputs/types/Input'
 import TouchButtons from '../../util/action-inputs/TouchButtons'
-import useComponentSize from '@rehooks/component-size'
 import config from '../../config.json'
 import useConstant from 'use-constant'
-import { GameWithActions, useScreen } from '../../util/game-with-actions'
+import { GameWithActions } from '../../util/game-with-actions'
 import { css } from '@emotion/css'
 import defaultPauseInput from '../../defaultPauseInput'
-import getBackgroundColor from '../../getBackgroundColor'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
@@ -106,17 +104,14 @@ export const Game: GameComponent = observer((_props, ref) => {
   const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const actionsPressed =
     useLocalObservable(() => new MobxActionsPressed(touchButtons))
-  const size = useComponentSize(ref as any)
-  const useScreenResult = useScreen()
 
   // TODO - don't allow duplicate keybindings
   return (
     <GameWithActions
-      {...{ size, ref }}
-      loadedGameConfig={{ useScreenResult, inputs: { touchButtons, back: 'back' } }}
+      {...{ ref }}
+      inputs={{ touchButtons, back: 'back' }}
       className={css({
-        textAlign: 'center',
-        backgroundColor: getBackgroundColor()
+        textAlign: 'center'
       })}
     >
       <h1>Pressed Keys</h1>

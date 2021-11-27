@@ -10,15 +10,16 @@ import TouchInputs from '../../action-inputs/TouchInputs'
 import TouchButtonsConfig from '../../action-inputs/TouchButtonsConfig'
 import { detectTouch } from 'detect-touch'
 import bind from 'bind-args'
-import { Screen } from '../useScreen'
+import useScreen, { Screen } from '../useScreen'
 import useVisible from '../../useVisible'
-import { LoadedGameOptionalConfig, LoadedGameRequiredProps } from './LoadedGame'
+import { LoadedGameInputs, LoadedGameProps } from './LoadedGame'
 import { css } from '@emotion/css'
 import PausedContainer from '../PausedContainer'
 
-export interface LoadedGamePauseableProps<Action extends string = string> extends
-  LoadedGameRequiredProps,
-  LoadedGameOptionalConfig<Action> {}
+export interface LoadedGamePauseableProps<Action extends string = string>
+  extends LoadedGameProps<Action> {
+  inputs: LoadedGameInputs<Action>
+}
 
 const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string = string>
   (props: LoadedGamePauseableProps<Action>) => {
@@ -26,11 +27,10 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string
     children,
     size,
     inputs: { touchButtons, back },
-    useScreenResult,
     gameSettings: { pausedWhenNotVisible, touchScreen }
   } = props
 
-  const [screen, setScreen] = useScreenResult
+  const [screen, setScreen] = useScreen()
   useOnAction(touchButtons, back, setScreen.bind(undefined, Screen.PAUSED))
   const visible = useVisible()
 

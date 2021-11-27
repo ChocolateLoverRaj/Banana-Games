@@ -5,7 +5,7 @@ import getScaledSize from '../../util/getScaledSize'
 import Size from '../../util/types/Size'
 import sizeToString from '../../util/sizeToString'
 import { Typography } from 'antd'
-import { GameWithActions, useScreen } from '../../util/game-with-actions'
+import { GameWithActions } from '../../util/game-with-actions'
 import { css } from '@emotion/css'
 import borderStyles from '../../borderStyles'
 
@@ -16,13 +16,11 @@ const ratio: Size = {
 
 export const Game: GameComponent = forwardRef((_props, ref) => {
   const componentSize = useComponentSize(ref as any)
-  const useScreenResult = useScreen()
 
   const scaledSize = getScaledSize(componentSize, ratio)
 
   return (
     <GameWithActions
-      loadedGameConfig={{ useScreenResult }}
       aspectRatio={ratio}
       ref={ref}
       className={css(borderStyles)}

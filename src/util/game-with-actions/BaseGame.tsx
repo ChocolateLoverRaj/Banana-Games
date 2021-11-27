@@ -2,11 +2,11 @@ import { Spin } from 'antd'
 import { FC, ReactNode } from 'react'
 import ErrorResult from '../../ErrorResult'
 import Size from '../types/Size'
-import LoadedGame, { LoadedGameConfig } from './loaded-game'
+import LoadedGame, { LoadedGameInputs } from './loaded-game'
 import useGameSettings from './useGameSettings'
 
 export interface BaseGameProps<Action extends string = string> {
-  loadedGameConfig: LoadedGameConfig<Action>
+  inputs?: LoadedGameInputs<Action>
   size: Size
   children: ReactNode
 }
@@ -14,7 +14,7 @@ export interface BaseGameProps<Action extends string = string> {
 const BaseGame: FC<BaseGameProps> = <Action extends string = string>(
   props: BaseGameProps<Action>
 ) => {
-  const { loadedGameConfig, size, children } = props
+  const { inputs, size, children } = props
 
   const [gameSettings, error] = useGameSettings()
 
@@ -22,7 +22,7 @@ const BaseGame: FC<BaseGameProps> = <Action extends string = string>(
     <>
       {gameSettings !== undefined
         ? (
-          <LoadedGame {...loadedGameConfig} {...{ gameSettings, size }}>
+          <LoadedGame {...{ inputs, gameSettings, size }}>
             {children}
           </LoadedGame>)
         : error === undefined

@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import { UseScreenResult } from '../useScreen'
 import Size from '../../types/Size'
 import TouchButtons from '../../action-inputs/TouchButtons'
 import LoadedGameNotPauseable from './LoadedGameNotPauseable'
@@ -11,27 +10,12 @@ export interface LoadedGameInputs<Action extends string = string> {
   back: Action
 }
 
-export interface LoadedGameOptionalConfig<Action extends string = string> {
-  inputs: LoadedGameInputs<Action>
-}
-
-export interface LoadedGameRequiredConfig {
-  useScreenResult: UseScreenResult
-}
-
-export interface LoadedGameConfig <Action extends string = string> extends
-  Partial<LoadedGameOptionalConfig<Action>>, LoadedGameRequiredConfig {}
-
-export interface LoadedGameRequiredProps extends
-  LoadedGameRequiredConfig {
+export interface LoadedGameProps<Action extends string = string> {
   gameSettings: GameSettings
   size: Size
   children: ReactNode
+  inputs?: LoadedGameInputs<Action>
 }
-
-export interface LoadedGameProps<Action extends string = string> extends
-  LoadedGameRequiredProps,
-  Partial<LoadedGameOptionalConfig<Action>> {}
 
 const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
   props: LoadedGameProps<Action>
@@ -40,7 +24,6 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
     children,
     size,
     inputs,
-    useScreenResult,
     gameSettings,
     gameSettings: { touchScreen }
   } = props
@@ -50,7 +33,7 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
       {inputs !== undefined
         ? (
           <LoadedGamePauseable
-            {...{ inputs, gameSettings, size, useScreenResult, touchScreen }}
+            {...{ inputs, gameSettings, size, touchScreen }}
           >
             {children}
           </LoadedGamePauseable>)
