@@ -11,6 +11,7 @@ import useComponentSize from '@rehooks/component-size'
 import { GameWithActions } from '../../util/game-with-actions'
 import defaultPauseInput from '../../defaultPauseInput'
 import { css } from '@emotion/css'
+import centerStyles from '../../centerStyles'
 
 type Action = 'back'
 
@@ -28,7 +29,7 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
     <GameWithActions
       {...{ size, ref }}
       inputs={{ touchButtons, back: 'back' }}
-      className={css({ textAlign: 'center' })}
+      className={css(centerStyles)}
     >
       <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
       Press {arrayJoin(backButtons.map(key =>

@@ -13,6 +13,7 @@ import ErrorLogger from './ErrorLogger'
 import GameTags from './GameTags'
 import { css } from '@emotion/css'
 import { red } from '@ant-design/colors'
+import centerStyles from './centerStyles'
 
 const allTags = new Set([...games.values()].flatMap(({ tags }) => tags ?? []))
 
@@ -35,7 +36,7 @@ const AllGames: FC = () => {
         <title>{config.appName}</title>
       </Helmet>
       <div>
-        <h1 className={css({ textAlign: 'center' })}>All Games</h1>
+        <h1 className={css(centerStyles)}>All Games</h1>
         {downloadedGamesError === undefined
           ? <Table
               dataSource={[...games]}

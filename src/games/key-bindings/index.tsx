@@ -18,6 +18,7 @@ import { GameWithActions } from '../../util/game-with-actions'
 import { css } from '@emotion/css'
 import defaultPauseInput from '../../defaultPauseInput'
 import { observer, useLocalObservable } from 'mobx-react-lite'
+import centerStyles from '../../centerStyles'
 
 const actions = ['up', 'down', 'left', 'right', 'back'] as const
 type Action = typeof actions[number]
@@ -110,9 +111,7 @@ export const Game: GameComponent = observer((_props, ref) => {
     <GameWithActions
       {...{ ref }}
       inputs={{ touchButtons, back: 'back' }}
-      className={css({
-        textAlign: 'center'
-      })}
+      className={css(centerStyles)}
     >
       <h1>Pressed Keys</h1>
       {actions.map(action =>

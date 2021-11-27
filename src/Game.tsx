@@ -14,6 +14,7 @@ import GameTags from './GameTags'
 import WarnLeaveGame from './WarnLeaveGame'
 import { css } from '@emotion/css'
 import GameExports from './types/GameExports'
+import centerStyles from './centerStyles'
 
 export interface GameProps {
   id: string
@@ -103,7 +104,7 @@ const Game: FC<GameProps> = props => {
             )
           : state === 'pending'
             ? (
-              <div className={css({ textAlign: 'center' })}>
+              <div className={css(centerStyles)}>
                 <Spin size='large' tip='Downloading Game' />
               </div>
               )
