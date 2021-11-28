@@ -27,10 +27,11 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string
     children,
     size,
     inputs: { touchButtons, back },
-    gameSettings: { pausedWhenNotVisible, touchScreen }
+    gameSettings: { pausedWhenNotVisible, touchScreen },
+    useScreenResult
   } = props
 
-  const [screen, setScreen] = useScreen()
+  const [screen, setScreen] = useScreenResult ?? useScreen()
   useOnAction(touchButtons, back, setScreen.bind(undefined, Screen.PAUSED))
   const visible = useVisible()
 
@@ -42,9 +43,7 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = <Action extends string
 
   return (
     <>
-      <div>
-        {children}
-      </div>
+      {children}
       {showTouch && (screen === Screen.TOUCH_EDIT
         ? <TouchButtonsConfig
             actionInputs={touchButtons.actionInputs}

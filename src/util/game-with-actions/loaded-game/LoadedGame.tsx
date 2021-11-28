@@ -4,6 +4,7 @@ import TouchButtons from '../../action-inputs/TouchButtons'
 import LoadedGameNotPauseable from './LoadedGameNotPauseable'
 import LoadedGamePauseable from './LoadedGamePauseable'
 import { GameSettings } from '../useGameSettings'
+import { UseScreenResult } from '../useScreen'
 
 export interface LoadedGameInputs<Action extends string = string> {
   touchButtons: TouchButtons<Action>
@@ -15,6 +16,7 @@ export interface LoadedGameProps<Action extends string = string> {
   size: Size
   children: ReactNode
   inputs?: LoadedGameInputs<Action>
+  useScreenResult?: UseScreenResult
 }
 
 const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
@@ -25,7 +27,7 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
     size,
     inputs,
     gameSettings,
-    gameSettings: { touchScreen }
+    useScreenResult
   } = props
 
   return (
@@ -33,7 +35,7 @@ const LoadedGame: FC<LoadedGameProps> = <Action extends string = string>(
       {inputs !== undefined
         ? (
           <LoadedGamePauseable
-            {...{ inputs, gameSettings, size, touchScreen }}
+            {...{ inputs, gameSettings, size, useScreenResult }}
           >
             {children}
           </LoadedGamePauseable>)

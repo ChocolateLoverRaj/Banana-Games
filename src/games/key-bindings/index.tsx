@@ -113,11 +113,13 @@ export const Game: GameComponent = observer((_props, ref) => {
       inputs={{ touchButtons, back: 'back' }}
       className={css(centerStyles)}
     >
-      <h1>Pressed Keys</h1>
-      {actions.map(action =>
-        <Tag.CheckableTag key={action} checked={actionsPressed.actionsPressed.has(action)}>
-          {action}
-        </Tag.CheckableTag>)}
+      <div>
+        <h1>Pressed Keys</h1>
+        {actions.map(action =>
+          <Tag.CheckableTag key={action} checked={actionsPressed.actionsPressed.has(action)}>
+            {action}
+          </Tag.CheckableTag>)}
+      </div>
     </GameWithActions>
   )
 }, { forwardRef: true })

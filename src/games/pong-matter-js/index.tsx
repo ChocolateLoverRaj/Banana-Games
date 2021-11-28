@@ -189,6 +189,7 @@ export const Game: GameComponent = observer((_props, ref) => {
   useEffect(() => {
     if (runnerEngine !== undefined) {
       const [runner] = runnerEngine
+      console.log(screen, Screen)
       runner.enabled = screen === Screen.PLAYING
       if (screen === Screen.PLAYING) keysPressed.start()
       else keysPressed.stop()
@@ -198,7 +199,7 @@ export const Game: GameComponent = observer((_props, ref) => {
   return (
     <GameWithActions
       inputs={{ touchButtons, back: 'back' }}
-      {...{ aspectRatio, ref }}
+      {...{ aspectRatio, ref, useScreenResult }}
     >
       <canvas ref={setCanvas} style={scaledSize} />
     </GameWithActions>

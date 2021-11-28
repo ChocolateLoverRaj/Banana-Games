@@ -27,14 +27,16 @@ export const Game: GameComponent = forwardRef((_props, ref) => {
 
   return (
     <GameWithActions
-      {...{ size, ref }}
+      {...{ size, ref, useScreenResult }}
       inputs={{ touchButtons, back: 'back' }}
       className={css(centerStyles)}
     >
-      <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
-      Press {arrayJoin(backButtons.map(key =>
-        <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
-      {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+      <div>
+        <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
+        Press {arrayJoin(backButtons.map(key =>
+          <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
+        {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+      </div>
     </GameWithActions>
   )
 })

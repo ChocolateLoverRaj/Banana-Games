@@ -3,6 +3,8 @@ import { forwardRef, PropsWithChildren } from 'react'
 import getScaledSize from '../getScaledSize'
 import { css } from '@emotion/css'
 import cn from 'classnames'
+import farContainerStyles from '../../farContainerStyles'
+import farStyles from '../../farStyles'
 
 export type FixedAspectRatioProps = PropsWithChildren<{
   aspectRatio: Size
@@ -18,21 +20,10 @@ const FixedAspectRatioContainer = forwardRef<HTMLDivElement, FixedAspectRatioPro
   return (
     <div
       ref={ref}
-      className={css(`
-          width: 100%;
-          height: 100%;
-          overflow: hidden;
-          padding: 0;
-          position: relative;`)}
+      className={css(farContainerStyles)}
     >
       <div
-        className={cn(className, css(`
-          position: absolute;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          text-align: center;`))}
+        className={cn(className, css(farStyles))}
         style={scaledSize}
       >
         {children}
