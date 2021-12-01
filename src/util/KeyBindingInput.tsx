@@ -1,8 +1,8 @@
 import { Dispatch, FC, KeyboardEventHandler, useRef } from 'react'
-import { Input } from 'antd'
+import { Input, InputProps } from 'antd'
 import { css, keyframes } from '@emotion/css'
 
-interface KeyBindingInputProps {
+interface KeyBindingInputProps extends Omit<InputProps, 'value' | 'onChange'> {
   value?: string
   onChange?: Dispatch<string>
 }
@@ -25,9 +25,7 @@ const input = css`
   }
 `
 
-const KeyBindingInput: FC<KeyBindingInputProps> = props => {
-  const { value, onChange } = props
-
+const KeyBindingInput: FC<KeyBindingInputProps> = ({ value, onChange, ...restProps }) => {
   const ref = useRef<Input>(null)
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = ({ target, code }) => {
@@ -37,7 +35,16 @@ const KeyBindingInput: FC<KeyBindingInputProps> = props => {
     }
   }
 
-  return <Input ref={ref} readOnly value={value} className={input} onKeyDown={handleKeyDown} />
+  return (
+    <Input
+      {...restProps}
+      ref={ref}
+      readOnly
+      value={value}
+      className={input}
+      onKeyDown={handleKeyDown}
+    />
+  )
 }
 
 export default KeyBindingInput
