@@ -1,10 +1,10 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC } from 'react'
 import ActionInputs from './ActionInputs'
-import { Table, Button } from 'antd'
+import { Table } from 'antd'
 import Input from './types/Input'
 import { observer } from 'mobx-react-lite'
-import never from 'never'
 import KeyBindings from './KeyBindings'
+import ResetButton from './ResetButton'
 
 export interface ActionKeysConfigProps<Action extends string = string> {
   actionInputs: ActionInputs<Action>
@@ -28,21 +28,8 @@ const ActionKeysConfig: FC<ActionKeysConfigProps> = observer(<Action extends str
         render: ([, input]: [Action, Input]) => <KeyBindings keyboard={input.keyboard} />
       }, {
         title: 'Reset',
-        render: ([action, { keyboard, touch }]: [Action, Input]) => {
-          const handleClick: MouseEventHandler = () =>
-            currentInputs.set(action, {
-              touch,
-              keyboard: actionInputs.defaultInputs.get(action)?.keyboard as Set<string>
-            })
-          return (
-            <Button
-              disabled={[...keyboard].toString() === [...(actionInputs.defaultInputs.get(action) ?? never()).keyboard].toString()}
-              onClick={handleClick}
-            >
-              Reset to default
-            </Button>
-          )
-        }
+        render: ([action]: [Action, Input]) =>
+          <ResetButton {...{ action, actionInputs }} />
       }]}
       pagination={{ hideOnSinglePage: true }}
       rowKey={entry => entry.toString()}

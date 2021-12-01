@@ -13,10 +13,13 @@ class ActionInputs<Action extends string = string> {
 
   constructor (readonly defaultInputs: Inputs<Action> = new Map<Action, Input>()) {
     this.currentInputs = deepClone(defaultInputs)
-    this.currentInputs.forEach(input => {
-      makeObservable(input, {
-        keyboard: observable
+    this.currentInputs.forEach(({ touch }) => {
+      makeObservable(touch, {
+        buttonContents: observable.ref
       })
+    })
+    makeObservable(this, {
+      currentInputs: observable
     })
   }
 }
