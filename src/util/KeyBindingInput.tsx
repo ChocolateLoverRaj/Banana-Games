@@ -25,7 +25,7 @@ const input = css`
   }
 `
 
-const KeyBindingsInput: FC<KeyBindingInputProps> = props => {
+const KeyBindingInput: FC<KeyBindingInputProps> = props => {
   const { value, onChange } = props
 
   const ref = useRef<Input>(null)
@@ -40,4 +40,4 @@ const KeyBindingsInput: FC<KeyBindingInputProps> = props => {
   return <Input ref={ref} readOnly value={value} className={input} onKeyDown={handleKeyDown} />
 }
 
-export default KeyBindingsInput
+export default KeyBindingInput

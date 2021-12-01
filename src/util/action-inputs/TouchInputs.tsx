@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import TouchButtons from './TouchButtons'
-import TouchInput from './TouchInput'
+import TouchButton from './TouchButton'
 import { useLocalObservable } from 'mobx-react-lite'
 import { action } from 'mobx'
 
@@ -41,7 +41,7 @@ const TouchInputs: FC<TouchInputsProps> = <Action extends string = string>(
             }
 
             return (
-              <TouchInput
+              <TouchButton
                 key={`${x.value} ${Number(x.reverse)} ${y.value} ${Number(y.reverse)}`}
                 buttonProps={{
                   onTouchStart: handlePress,
@@ -53,7 +53,7 @@ const TouchInputs: FC<TouchInputsProps> = <Action extends string = string>(
                 absolutePosition={absolutePosition}
               >
                 {buttonContents}
-              </TouchInput>
+              </TouchButton>
             )
           }))}
     </>

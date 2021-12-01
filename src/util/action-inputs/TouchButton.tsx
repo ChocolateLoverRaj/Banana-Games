@@ -11,7 +11,7 @@ export interface TouchInputProps {
   buttonProps?: ButtonProps
 }
 
-const TouchInput = forwardRef<any, TouchInputProps>((props, ref) => {
+const TouchButton = forwardRef<any, TouchInputProps>((props, ref) => {
   const { children, absolutePosition, buttonProps } = props
 
   const absoluteCn = css({ '&&': { position: 'absolute' } })
@@ -28,4 +28,4 @@ const TouchInput = forwardRef<any, TouchInputProps>((props, ref) => {
   )
 })
 
-export default TouchInput
+export default TouchButton

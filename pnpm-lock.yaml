@@ -72,6 +72,7 @@ specifiers:
   react-router-dom: ^5.2.0
   react-router-hash-link: ^2.4.3
   react-use-promise: ^0.3.1
+  rfdc: ^1.3.0
   rn-randomnumber: ^1.0.2
   rooks: ChocolateLoverRaj/rooks#build/preview-531
   single-event-emitter: ^0.3.0
@@ -121,6 +122,7 @@ dependencies:
   react-helmet: 6.1.0_react@17.0.2
   react-router-dom: 5.2.0_react@17.0.2
   react-router-hash-link: 2.4.3_520bc78b4ba4065e7cfe4fe506865769
+  rfdc: 1.3.0
   rn-randomnumber: 1.0.2
   rooks: github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165_react-dom@17.0.2+react@17.0.2
   single-event-emitter: 0.3.0
@@ -7498,6 +7500,10 @@ packages:
     resolution: {integrity: sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: true
+
+  /rfdc/1.3.0:
+    resolution: {integrity: sha512-V2hovdzFbOi77/WajaSMXk2OLm+xNIeQdMMuB7icj7bk6zi2F8GGAxigcnDFpJHbNyNcgyJDiP+8nOrY5cZGrA==}
+    dev: false
 
   /rgb-regex/1.0.1:
     resolution: {integrity: sha1-wODWiC3w4jviVKR16O3UGRX+rrE=}
