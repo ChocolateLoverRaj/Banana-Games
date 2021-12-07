@@ -27,7 +27,7 @@ const GameWithActions = forwardRef<HTMLDivElement, GameWithActionsProps>((props,
       {aspectRatio !== undefined
         ? (
           <FixedAspectRatioContainer
-            {...{ aspectRatio, size, inputs, className }}
+            {...{ aspectRatio, size, className }}
             ref={ref}
           >
             {baseGame}
