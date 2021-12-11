@@ -1,45 +1,37 @@
-import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { Typography } from 'antd'
-import never from 'never'
 import arrayJoin from '../../util/arrayJoin'
-import { ActionInputs } from '../../util/action-inputs'
-import useConstant from 'use-constant'
-import TouchButtons from '../../util/action-inputs/TouchButtons'
-import useScreen, { Screen } from '../../util/game-with-actions/useScreen'
+import useScreen, { Screen } from '../../util/game-with-settings/useScreen'
 import useComponentSize from '@rehooks/component-size'
-import { GameWithActions } from '../../util/game-with-actions'
-import defaultPauseInput from '../../defaultPauseInput'
+import { GameWithActions } from '../../util/game-with-settings'
+import defaultPauseSetting from '../../defaultPauseSetting'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
+import { usePressEmitter } from '../../util/boolean-game-settings'
+import { observer } from 'mobx-react-lite'
 
-type Action = 'back'
+const settings = [defaultPauseSetting]
 
-const actionInputs = new ActionInputs<Action>(new Map([['back', defaultPauseInput]]))
-
-export const Game: GameComponent = forwardRef((_props, ref) => {
-  const touchButtons = useConstant(() => new TouchButtons(actionInputs))
+export const Game: GameComponent = observer((_props, ref) => {
   const useScreenResult = useScreen()
   const [screen] = useScreenResult
   const size = useComponentSize(ref as any)
-
-  const backButtons = [...actionInputs.currentInputs.get('back')?.keyboard ?? never('No input for back action')]
+  const pauseEmitter = usePressEmitter(defaultPauseSetting)
 
   return (
     <GameWithActions
-      {...{ size, ref, useScreenResult }}
-      inputs={{ touchButtons, back: 'back' }}
+      {...{ size, ref, useScreenResult, settings, pauseEmitter }}
       className={css(centerStyles)}
     >
       <div>
         <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
-        Press {arrayJoin(backButtons.map(key =>
+        Press {arrayJoin([...defaultPauseSetting.keyBindings].map(key =>
           <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
         {screen === Screen.PLAYING ? 'pause' : 'resume'} game
       </div>
     </GameWithActions>
   )
-})
+}, { forwardRef: true })
 
 export const description = (
   <>

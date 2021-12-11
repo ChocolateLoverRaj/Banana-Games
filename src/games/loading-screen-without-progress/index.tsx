@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import GameComponent from '../../types/GameComponent'
 import { Spin, Typography } from 'antd'
 import config from '../../config.json'
-import { GameWithActions } from '../../util/game-with-actions'
+import { GameWithActions } from '../../util/game-with-settings'
 
 export const Game: GameComponent = forwardRef((_props, ref) => {
   return (

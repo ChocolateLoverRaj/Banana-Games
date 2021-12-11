@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 
-export enum Screen { PLAYING, PAUSED, TOUCH_EDIT }
+export enum Screen { PLAYING, PAUSED, SCREEN_EDIT }
 
 export type UseScreenResult = [Screen, Dispatch<SetStateAction<Screen>>]
 

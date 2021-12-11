@@ -1,4 +1,4 @@
-import AbsolutePosition from './util/action-inputs/types/AbsolutePosition'
+import AbsolutePosition from './util/types/AbsolutePosition'
 import { CSSProperties } from 'react'
 import Size from './util/types/Size'
 

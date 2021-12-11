@@ -1,6 +1,7 @@
 import { ReactNode, FC, useState } from 'react'
 import { Button, Space } from 'antd'
-import { ActionInputs, useOnAction } from './util/action-inputs'
+import PauseEmitter from './util/PauseEmitter'
+import { useEmitHandler } from './util/emitter'
 
 export type OnClose = () => void
 export interface SubMenu {
@@ -10,17 +11,14 @@ export interface SubMenu {
 }
 export interface PausedMenuProps {
   onClose: OnClose
-  actionInputs: ActionInputs
-  action: string
   children: SubMenu[]
+  pauseEmitter: PauseEmitter
 }
 
-const PausedMenu = (props: PausedMenuProps): ReturnType<FC> => {
-  const { onClose, actionInputs, children, action } = props
-
+const PausedMenu: FC<PausedMenuProps> = ({ onClose, children, pauseEmitter }) => {
   const [currentSubMenu, setCurrentSubMenu] = useState<string>()
 
-  useOnAction(actionInputs, action, () => {
+  useEmitHandler(pauseEmitter, () => {
     if (currentSubMenu !== undefined) setCurrentSubMenu(undefined)
     else setTimeout(onClose, 4)
   })

@@ -1,22 +1,23 @@
 import { Spin } from 'antd'
 import { FC, ReactNode } from 'react'
 import ErrorResult from '../../ErrorResult'
+import { GameSetting } from '../game-setting'
+import PauseEmitter from '../PauseEmitter'
 import Size from '../types/Size'
-import LoadedGame, { LoadedGameInputs } from './loaded-game'
+import LoadedGame from './loaded-game'
 import useGameSettings from './useGameSettings'
 import { UseScreenResult } from './useScreen'
 
-export interface BaseGameProps<Action extends string = string> {
-  inputs?: LoadedGameInputs<Action>
+export interface BaseGameProps {
   size: Size
   children: ReactNode
   useScreenResult?: UseScreenResult
+  pauseEmitter?: PauseEmitter
+  settings: GameSetting[]
 }
 
-const BaseGame: FC<BaseGameProps> = <Action extends string = string>(
-  props: BaseGameProps<Action>
-) => {
-  const { inputs, size, children, useScreenResult } = props
+const BaseGame: FC<BaseGameProps> = props => {
+  const { size, children, useScreenResult, pauseEmitter, settings } = props
 
   const [gameSettings, error] = useGameSettings()
 
@@ -24,7 +25,7 @@ const BaseGame: FC<BaseGameProps> = <Action extends string = string>(
     <>
       {gameSettings !== undefined
         ? (
-          <LoadedGame {...{ inputs, gameSettings, size, useScreenResult }}>
+          <LoadedGame {...{ pauseEmitter, settings, gameSettings, size, useScreenResult }}>
             {children}
           </LoadedGame>)
         : error === undefined

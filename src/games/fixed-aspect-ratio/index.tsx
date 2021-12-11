@@ -5,7 +5,7 @@ import getScaledSize from '../../util/getScaledSize'
 import Size from '../../util/types/Size'
 import sizeToString from '../../util/sizeToString'
 import { Typography } from 'antd'
-import { GameWithActions } from '../../util/game-with-actions'
+import { GameWithActions } from '../../util/game-with-settings'
 import { css } from '@emotion/css'
 import borderStyles from '../../borderStyles'
 

@@ -84,7 +84,6 @@ const Canvas: FC<CanvasProps> = ({ size, playing }) => {
       ref={canvasRef}
       width={size}
       height={size}
-      style={{ width: size, height: size }}
     />
   )
 }

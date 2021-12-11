@@ -1,4 +1,3 @@
-
 class KeysPressed {
   readonly _keysPressed = new Set<string>()
   private readonly handleKeyDown = ({ code }: KeyboardEvent): void => {

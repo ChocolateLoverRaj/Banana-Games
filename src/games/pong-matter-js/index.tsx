@@ -14,21 +14,20 @@ import {
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { blue, grey as gray } from '@ant-design/colors'
-import { GameWithActions, useScreen } from '../../util/game-with-actions'
-import { getActionsPressed } from '../../util/action-inputs'
-import useConstant from 'use-constant'
-import TouchButtons from '../../util/action-inputs/TouchButtons'
-import { Screen } from '../../util/game-with-actions/useScreen'
+import { GameWithActions, useScreen } from '../../util/game-with-settings'
+import { Screen } from '../../util/game-with-settings/useScreen'
 import limit from 'limit-number'
 import toSigned from 'boolean-to-signed'
 import never from 'never'
 import random from 'rn-randomnumber'
 import randomBoolean from 'random-boolean'
 import getBackgroundColor from '../../getBackgroundColor'
-import actionInputs from './actionInputs'
+import { paddleSettings, pauseSetting, settings } from './settings'
 import Description from './Description'
 import { observer } from 'mobx-react-lite'
 import KeysPressed from '../../util/KeysPressed'
+import { usePressEmitter } from '../../util/boolean-game-settings'
+import isInputPressed from '../../util/boolean-game-settings/isInputPressed'
 
 const aspectRatio = { width: 16, height: 9 }
 
@@ -37,10 +36,10 @@ export const Game: GameComponent = observer((_props, ref) => {
   const componentSize = useComponentSize(ref as any)
   const useScreenResult = useScreen()
   const scaledSize = getScaledSize(componentSize, aspectRatio)
-  const touchButtons = useConstant(() => new TouchButtons(actionInputs))
   const [screen] = useScreenResult
   const [runnerEngine, setRunnerEngine] = useState<[Runner, Engine]>()
   const [keysPressed] = useState(() => new KeysPressed())
+  const pauseEmitter = usePressEmitter(pauseSetting)
 
   // Update engine
   useEffect(() => {
@@ -133,10 +132,9 @@ export const Game: GameComponent = observer((_props, ref) => {
       const minPaddleX = wallThickness + paddleHeight / 2
       const maxPaddleX = height - minPaddleX
       const handleTick = ({ source: { delta } }: any): void => {
-        const actionsPressed = getActionsPressed(touchButtons, keysPressed.keysPressed)
         for (const i of [0, 1] as const) {
-          const up = actionsPressed.has(`Paddle ${i} Up`)
-          const down = actionsPressed.has(`Paddle ${i} Down`)
+          const up = isInputPressed(paddleSettings[i].up, keysPressed)
+          const down = isInputPressed(paddleSettings[i].down, keysPressed)
           if (up || down) {
             Body.setPosition(paddles[i], {
               x: paddles[i].position.x,
@@ -197,8 +195,7 @@ export const Game: GameComponent = observer((_props, ref) => {
 
   return (
     <GameWithActions
-      inputs={{ touchButtons, back: 'back' }}
-      {...{ aspectRatio, ref, useScreenResult }}
+      {...{ aspectRatio, ref, useScreenResult, settings, pauseEmitter }}
     >
       <canvas ref={setCanvas} style={scaledSize} />
     </GameWithActions>
