@@ -1,4 +1,4 @@
-import { FC, useEffect, Fragment } from 'react'
+import { useEffect, Fragment } from 'react'
 import { Tabs, Button } from 'antd'
 import { ControlOutlined, SettingOutlined, GatewayOutlined } from '@ant-design/icons'
 import { EditGameSettings } from '../../game-with-settings'
@@ -12,18 +12,20 @@ import { css } from '@emotion/css'
 import PausedContainer from '../PausedContainer'
 import PauseEmitter from '../../PauseEmitter'
 import { useEmitHandler } from '../../emitter'
+import { observer } from 'mobx-react-lite'
 
 export interface LoadedGamePauseableProps extends LoadedGameProps {
   pauseEmitter: PauseEmitter
 }
 
-const LoadedGamePauseable: FC<LoadedGamePauseableProps> = ({
+const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
   children,
   size,
   gameSettings,
   useScreenResult,
   settings,
-  pauseEmitter
+  pauseEmitter,
+  containerRef
 }) => {
   const { pausedWhenNotVisible } = gameSettings
 
@@ -41,7 +43,7 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = ({
       {screen === Screen.SCREEN_EDIT
         ? (
           <SettingsRectsEdit
-            {...{ settings }}
+            {...{ settings, containerRef }}
             onExit={setScreen.bind(undefined, Screen.PAUSED)}
             boundary={size}
           />)
@@ -51,7 +53,11 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = ({
               <Fragment
                 key={JSON.stringify(screenRect)}
               >
-                {setting.renderScreenRect(screenRect, true)}
+                {setting.renderScreenRect({
+                  screenRect,
+                  container: containerRef.current as any,
+                  isPlaying: screen === Screen.PLAYING
+                })}
               </Fragment>
             ))}
           </Fragment>)}
@@ -89,6 +95,6 @@ const LoadedGamePauseable: FC<LoadedGamePauseableProps> = ({
       )}
     </>
   )
-}
+})
 
 export default LoadedGamePauseable

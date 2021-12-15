@@ -1,7 +1,7 @@
-import { ReactNode, HTMLProps } from 'react'
+import { ReactNode } from 'react'
 import AbsolutePosition from '../types/AbsolutePosition'
 import Size from '../types/Size'
-import { CSSInterpolation } from '@emotion/css'
+import RenderScreenRectOptions from './RenderScreenRectOptions'
 
 abstract class GameSetting {
   abstract readonly displayName: string
@@ -14,12 +14,7 @@ abstract class GameSetting {
 
   abstract screenRects: Array<AbsolutePosition & Size>
 
-  abstract renderScreenRect (
-    screenRect: AbsolutePosition & Size,
-    isPlaying: boolean,
-    htmlProps?: HTMLProps<HTMLElement>,
-    style?: CSSInterpolation
-  ): ReactNode
+  abstract renderScreenRect (options: RenderScreenRectOptions): ReactNode
 }
 
 export default GameSetting

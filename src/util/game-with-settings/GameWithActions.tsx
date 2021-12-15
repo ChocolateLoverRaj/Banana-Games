@@ -28,7 +28,13 @@ const GameWithActions = forwardRef<HTMLDivElement, GameWithActionsProps>(({
   const size = useComponentSize(ref as any)
 
   const baseGame = (
-    <BaseGame {...{ settings, pauseEmitter, size, useScreenResult }}>{children}</BaseGame>)
+    <BaseGame
+      {...{ settings, pauseEmitter, size, useScreenResult }}
+      containerRef={ref as any}
+    >
+      {children}
+    </BaseGame>
+  )
 
   return (
     <>

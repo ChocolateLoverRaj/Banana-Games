@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, RefObject } from 'react'
 import Size from '../../types/Size'
 import LoadedGamePauseable from './LoadedGamePauseable'
 import { GameSettings } from '../useGameSettings'
@@ -13,6 +13,7 @@ export interface LoadedGameProps {
   useScreenResult?: UseScreenResult
   settings: GameSetting[]
   pauseEmitter?: PauseEmitter
+  containerRef: RefObject<HTMLDivElement>
 }
 
 const LoadedGame: FC<LoadedGameProps> = ({
@@ -21,14 +22,15 @@ const LoadedGame: FC<LoadedGameProps> = ({
   gameSettings,
   useScreenResult,
   pauseEmitter,
-  settings
+  settings,
+  containerRef
 }) => {
   return (
     <>
       {pauseEmitter !== undefined
         ? (
           <LoadedGamePauseable
-            {...{ settings, pauseEmitter, gameSettings, size, useScreenResult }}
+            {...{ settings, pauseEmitter, gameSettings, size, useScreenResult, containerRef }}
           >
             {children}
           </LoadedGamePauseable>)

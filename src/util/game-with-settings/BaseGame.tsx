@@ -1,5 +1,5 @@
 import { Spin } from 'antd'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, RefObject } from 'react'
 import ErrorResult from '../../ErrorResult'
 import { GameSetting } from '../game-setting'
 import PauseEmitter from '../PauseEmitter'
@@ -14,10 +14,11 @@ export interface BaseGameProps {
   useScreenResult?: UseScreenResult
   pauseEmitter?: PauseEmitter
   settings: GameSetting[]
+  containerRef: RefObject<HTMLDivElement>
 }
 
 const BaseGame: FC<BaseGameProps> = props => {
-  const { size, children, useScreenResult, pauseEmitter, settings } = props
+  const { size, children, useScreenResult, pauseEmitter, settings, containerRef } = props
 
   const [gameSettings, error] = useGameSettings()
 
@@ -25,7 +26,9 @@ const BaseGame: FC<BaseGameProps> = props => {
     <>
       {gameSettings !== undefined
         ? (
-          <LoadedGame {...{ pauseEmitter, settings, gameSettings, size, useScreenResult }}>
+          <LoadedGame
+            {...{ pauseEmitter, settings, gameSettings, size, useScreenResult, containerRef }}
+          >
             {children}
           </LoadedGame>)
         : error === undefined

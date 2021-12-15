@@ -1,7 +1,7 @@
 import GameComponent from '../../types/GameComponent'
 import { observer } from 'mobx-react-lite'
 import { GameWithActions, useScreen } from '../../util/game-with-settings'
-import settings from './settings'
+import { settings } from './settings'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
 import useComponentSize from '@rehooks/component-size'

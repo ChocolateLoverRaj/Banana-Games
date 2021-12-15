@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react'
+import { FC, MouseEventHandler, RefObject } from 'react'
 import { DragOutlined, StopOutlined, CheckOutlined } from '@ant-design/icons'
 import { Space, Divider } from 'antd'
 import Draggable from 'react-draggable'
@@ -9,26 +9,32 @@ import { css } from '@emotion/css'
 import { useLocalObservable, observer } from 'mobx-react-lite'
 import { GameSetting } from '../game-setting'
 import clone from 'rfdc/default'
-import { ObservableMap } from 'mobx'
+import { ObservableMap, action } from 'mobx'
 
 export type OnExit = () => void
 export interface SettingRectsEdit {
   settings: GameSetting[]
   onExit: OnExit
   boundary: Size
+  containerRef: RefObject<HTMLDivElement>
 }
 
 const dragHandle = css({ cursor: 'move ' })
 
-const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({ settings, onExit, boundary }) => {
+const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({
+  settings,
+  onExit,
+  boundary,
+  containerRef
+}) => {
   const newScreenRects = useLocalObservable(() => new ObservableMap(settings.flatMap(setting => setting.screenRects.map(screenRect => [screenRect, clone(screenRect)]))))
 
-  const handleDone: MouseEventHandler = () => {
+  const handleDone = action<MouseEventHandler>(() => {
     onExit()
     settings.forEach(setting => {
       setting.screenRects = setting.screenRects.map(screenRect => newScreenRects.get(screenRect))
     })
-  }
+  })
 
   return (
     <>
@@ -40,7 +46,7 @@ const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({ settings, onExit, bo
               key={JSON.stringify(screenRect)}
               screenRect={newScreenRect}
               boundary={boundary}
-              {...{ setting }}
+              {...{ setting, containerRef }}
             />
           )
         }))}

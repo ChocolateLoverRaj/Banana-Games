@@ -1,11 +1,11 @@
 import { FC, useRef, useEffect } from 'react'
 import never from 'never'
 import { blue } from '@ant-design/colors'
-import MousePositionTracker from '../../util/MousePositionTracker'
-import EnsureRequestAnimationFrame from '../../util/EnsureRequestAnimationFrame'
-import getAngle from './getAngle'
 import { observable, autorun, runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
+import { autorunAnimationFrame, Fn, Stop } from '../../util/autorunAnimationFrame'
+import { MobxAngle } from './turret-setting'
+import { turretSetting } from './settings'
 
 const turretSize = 1 / 8
 const gunSize = 0.8
@@ -26,9 +26,15 @@ const Canvas: FC<CanvasProps> = ({ size, playing }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current ?? never()
-    const mouseTracker = new MousePositionTracker(canvas)
+    const mobxAngle = new MobxAngle(turretSetting, () => {
+      const { x, y } = canvas.getBoundingClientRect()
+      return {
+        x: x + size / 2,
+        y: y + size / 2
+      }
+    })
 
-    const ensureRaf = new EnsureRequestAnimationFrame(() => {
+    const fn: Fn = () => {
       const size = sizeBoxed.get()
       const ctx = (canvas).getContext('2d') ??
       never()
@@ -45,36 +51,29 @@ const Canvas: FC<CanvasProps> = ({ size, playing }) => {
       ctx.closePath()
       ctx.fill()
 
-      const angle = mouseTracker.e !== undefined
-        ? getAngle(mouseTracker.e, canvas, size)
-        : 0
-
       // Draw gun
       ctx.strokeStyle = blue.primary ?? never()
       ctx.lineWidth = size * gunThickness
       ctx.beginPath()
       ctx.moveTo(size / 2, size / 2)
       const r = size / 2 * gunSize
-      ctx.lineTo(size / 2 + Math.cos(angle) * r, size / 2 + Math.sin(angle) * r)
+      ctx.lineTo(size / 2 + Math.cos(mobxAngle.angle) * r, size / 2 + Math.sin(mobxAngle.angle) * r)
       ctx.closePath()
       ctx.stroke()
-    })
+    }
+    let stopAnimationFrame: Stop
 
-    mouseTracker.add(() => ensureRaf.request())
     const stop = autorun(() => {
       sizeBoxed.get()
       if (playingBoxed.get()) {
-        mouseTracker.start()
-        ensureRaf.request()
+        stopAnimationFrame = autorunAnimationFrame(fn)
       } else {
-        mouseTracker.stop()
-        ensureRaf.cancel()
+        stopAnimationFrame?.()
       }
     })
 
     return () => {
-      ensureRaf.cancel()
-      mouseTracker.stop()
+      stopAnimationFrame?.()
       stop()
     }
   }, [])

@@ -1,15 +1,14 @@
 import AbsolutePosition from '../types/AbsolutePosition'
-import { GameSetting } from '../game-setting'
+import { GameSetting, RenderScreenRectOptions } from '../game-setting'
 import Size from '../types/Size'
 import clone from 'rfdc/default'
-import { ReactNode, HTMLProps } from 'react'
+import { ReactNode } from 'react'
 import { GameSettings } from '../game-with-settings/useGameSettings'
 import TouchButton from './TouchButton'
 import { detectTouch } from 'detect-touch'
 import { makeObservable, observable, action } from 'mobx'
 import KeyBindings from './KeyBindings'
 import setSet from '../setSet'
-import { CSSInterpolation } from '@emotion/css'
 
 class BooleanGameSetting extends GameSetting {
   keyBindings = new Set<string>()
@@ -68,12 +67,12 @@ class BooleanGameSetting extends GameSetting {
     return <KeyBindings keyboard={this.keyBindings} />
   }
 
-  renderScreenRect (
-    screenRect: AbsolutePosition & Size,
-    isPlaying: boolean,
-    htmlProps?: HTMLProps<HTMLElement>,
-    style?: CSSInterpolation
-  ): ReactNode {
+  renderScreenRect ({
+    screenRect,
+    isPlaying,
+    htmlProps,
+    style
+  }: RenderScreenRectOptions): ReactNode {
     return (
       <TouchButton
         absolutePosition={screenRect}
