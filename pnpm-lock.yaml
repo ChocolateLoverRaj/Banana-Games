@@ -80,7 +80,6 @@ specifiers:
   rfdc: ^1.3.0
   rn-randomnumber: ^1.0.2
   rooks: ChocolateLoverRaj/rooks#build/preview-531
-  single-event-emitter: ^0.3.0
   style-loader: ^3.3.1
   terser-webpack-plugin: ^5.3.0
   tinycolor2: ^1.4.2
@@ -131,7 +130,6 @@ dependencies:
   rfdc: 1.3.0
   rn-randomnumber: 1.0.2
   rooks: github.com/ChocolateLoverRaj/rooks/2584eca87253b3b6bbaa096c2b63a9feeb4e2165_react-dom@17.0.2+react@17.0.2
-  single-event-emitter: 0.3.0
   tinycolor2: 1.4.2
   use-constant: 1.1.0_react@17.0.2
   webpack-stats-plugin: 1.0.3
@@ -7265,10 +7263,6 @@ packages:
     resolution: {integrity: sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=}
     dependencies:
       is-arrayish: 0.3.2
-    dev: false
-
-  /single-event-emitter/0.3.0:
-    resolution: {integrity: sha512-97C29ZNyRVaO50PzOKwdTOqTKD1ogQ5iWO2LggMZAdU5omzpxwOZPjDVZyunWnRAJ9RUqTQQyk8JyTcKGySxdQ==}
     dev: false
 
   /sirv/1.0.12:

@@ -49,7 +49,6 @@
     "rfdc": "^1.3.0",
     "rn-randomnumber": "^1.0.2",
     "rooks": "ChocolateLoverRaj/rooks#build/preview-531",
-    "single-event-emitter": "^0.3.0",
     "tinycolor2": "^1.4.2",
     "use-constant": "^1.1.0",
     "webpack-stats-plugin": "^1.0.3",
