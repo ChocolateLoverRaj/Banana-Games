@@ -27,6 +27,7 @@
   "include": [
     "./src/**/*.tsx",
     "./src/**/*.ts",
-    "./src/types.d.ts"
+    "./src/types.d.ts",
+    "./webpack.config.ts"
   ]
 }

@@ -1,26 +1,28 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+import { join, basename, resolve } from 'path'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 // TODO once https://github.com/mastilver/dynamic-cdn-webpack-plugin/pull/71 is merged, switch to main package
 // TODO make dynamic cdn plugin work with dependencies
 // const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { ProvidePlugin, BannerPlugin } = require('webpack')
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const { appName } = require('./src/config.json')
-const { description, version } = require('./package.json')
-const { StatsWriterPlugin } = require('webpack-stats-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const { readdirSync } = require('fs')
-const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import { ProvidePlugin, BannerPlugin, Configuration } from 'webpack'
+import FaviconsWebpackPlugin from 'favicons-webpack-plugin'
+import { appName } from './src/config.json'
+import { version } from './package.json'
+import { StatsWriterPlugin } from 'webpack-stats-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import { readdirSync } from 'fs'
+import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
+import 'webpack-dev-server'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 const subRoute = process.env.GITHUB_REPOSITORY !== undefined
   ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
   : '/'
-module.exports = {
+
+const config: Configuration = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     app: './src/index.tsx',
@@ -28,11 +30,14 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    hot: false
+    hot: true,
+    client: {
+      progress: true
+    }
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, './src/index.html'),
+      template: join(__dirname, './src/index.html'),
       chunks: ['app'],
       meta: {}
     }),
@@ -40,10 +45,9 @@ module.exports = {
       process: 'process/browser'
     }),
     new FaviconsWebpackPlugin({
-      logo: path.join(__dirname, './public/logo.svg'),
+      logo: join(__dirname, './public/logo.svg'),
       favicons: {
         appName,
-        appDescription: description,
         // For GitHub Pages deploy
         start_url: subRoute,
         version,
@@ -62,17 +66,17 @@ module.exports = {
     new StatsWriterPlugin({
       stats: 'chunkGroup',
       transform: ({ namedChunkGroups }) => {
-        const games = new Set(readdirSync(path.join(__dirname, './src/games')))
-        const getName = ({ name }) => name
-        const getAssets = ({ assets }) => assets.map(getName)
+        const games = new Set(readdirSync(join(__dirname, './src/games')))
+        const getName = ({ name }): string => name
+        const getAssets = ({ assets }): string[] => assets.map(getName)
         return JSON.stringify({
           app: getAssets(namedChunkGroups.app),
-          games: Object.fromEntries(Object.entries(namedChunkGroups)
-            .map(([name, v]) => [path.basename(name), v])
+          games: Object.fromEntries(Object.entries<any>(namedChunkGroups)
+            .map(([name, v]) => [basename(name), v])
             .filter(([name]) => games.has(name)).map(([name, value]) => [name, getAssets(value)]))
         })
       }
-    }),
+    }) as any,
     ...isProduction
       ? [
           /* new DynamicCdnPlugin(),  */
@@ -86,7 +90,7 @@ module.exports = {
   output: {
     filename: ({ runtime }) =>
       runtime !== 'serviceWorker' ? '[name].[contenthash].js' : '[name].js',
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve(__dirname, 'dist'),
     clean: true
   },
   module: {
@@ -145,3 +149,5 @@ module.exports = {
     }
   }
 }
+
+export = config
