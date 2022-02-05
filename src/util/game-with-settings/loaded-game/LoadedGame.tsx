@@ -1,36 +1,26 @@
-import { FC, ReactNode, RefObject } from 'react'
-import Size from '../../types/Size'
+import { FC } from 'react'
 import LoadedGamePauseable from './LoadedGamePauseable'
-import { GameSettings } from '../useGameSettings'
-import { UseScreenResult } from '../useScreen'
-import { GameSetting } from '../../game-setting'
-import PauseEmitter from '../../PauseEmitter'
+import { GameSettings as AllGameSettings } from '../useGameSettings'
+import { BaseGameProps } from '../BaseGame'
 
-export interface LoadedGameProps {
-  gameSettings: GameSettings
-  size: Size
-  children: ReactNode
-  useScreenResult?: UseScreenResult
-  settings: GameSetting[]
-  pauseEmitter?: PauseEmitter
-  containerRef: RefObject<HTMLDivElement>
+export interface LoadedGameProps extends BaseGameProps {
+  allGameSettings: AllGameSettings
 }
 
 const LoadedGame: FC<LoadedGameProps> = ({
   children,
   size,
-  gameSettings,
-  useScreenResult,
-  pauseEmitter,
+  allGameSettings: gameSettings,
+  screen,
   settings,
   containerRef
 }) => {
   return (
     <>
-      {pauseEmitter !== undefined
+      {screen !== undefined
         ? (
           <LoadedGamePauseable
-            {...{ settings, pauseEmitter, gameSettings, size, useScreenResult, containerRef }}
+            {...{ settings, allGameSettings: gameSettings, size, screen, containerRef }}
           >
             {children}
           </LoadedGamePauseable>)

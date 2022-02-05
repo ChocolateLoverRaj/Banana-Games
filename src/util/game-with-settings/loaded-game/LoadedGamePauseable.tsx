@@ -4,64 +4,72 @@ import { ControlOutlined, SettingOutlined, GatewayOutlined } from '@ant-design/i
 import { EditGameSettings } from '../../game-with-settings'
 import PausedMenu from '../../../PausedMenu'
 import SettingsRectsEdit from '../SettingRectsEdit'
-import bind from 'bind-args'
-import useScreen, { Screen } from '../useScreen'
 import useVisible from '../../useVisible'
 import { LoadedGameProps } from './LoadedGame'
 import { css } from '@emotion/css'
 import PausedContainer from '../PausedContainer'
-import PauseEmitter from '../../PauseEmitter'
-import { useEmitHandler } from '../../emitter'
 import { observer } from 'mobx-react-lite'
+import CommonParam from '../../game-setting/CommonParam'
+import { Context, Data } from '../../boolean-game-settings'
+import Screen from '../Screen'
+import { get } from '../../mobx-emitter-value'
+import ScreenEnum from '../ScreenEnum'
+import { emit } from 'emitter2'
 
 export interface LoadedGamePauseableProps extends LoadedGameProps {
-  pauseEmitter: PauseEmitter
+  screen: Screen
 }
 
 const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
   children,
   size,
-  gameSettings,
-  useScreenResult,
+  allGameSettings: gameSettings,
+  screen,
   settings,
-  pauseEmitter,
   containerRef
 }) => {
   const { pausedWhenNotVisible } = gameSettings
 
-  const [screen, setScreen] = useScreenResult ?? useScreen()
-  useEmitHandler(pauseEmitter, setScreen.bind(undefined, Screen.PAUSED))
   const visible = useVisible()
+  const [currentScreen] = get(screen.mobx)
 
   useEffect(() => {
-    if (!visible && pausedWhenNotVisible && screen === Screen.PLAYING) setScreen(Screen.PAUSED)
-  }, [pausedWhenNotVisible, visible])
+    if (!visible && pausedWhenNotVisible && currentScreen === ScreenEnum.PLAYING) {
+      emit(screen.emitter, ScreenEnum.PAUSED)
+    }
+  }, [pausedWhenNotVisible, visible, currentScreen])
 
   return (
     <>
       {children}
-      {screen === Screen.SCREEN_EDIT
+      {currentScreen === ScreenEnum.SCREEN_EDIT
         ? (
           <SettingsRectsEdit
             {...{ settings, containerRef }}
-            onExit={setScreen.bind(undefined, Screen.PAUSED)}
+            onExit={() => emit(screen.emitter, ScreenEnum.PAUSED)}
             boundary={size}
           />)
-        : settings.map(setting =>
-          <Fragment key={setting.displayName}>
-            {setting.screenRects.map(screenRect => (
-              <Fragment
-                key={JSON.stringify(screenRect)}
-              >
-                {setting.renderScreenRect({
-                  screenRect,
-                  container: containerRef.current as any,
-                  isPlaying: screen === Screen.PLAYING
-                })}
-              </Fragment>
-            ))}
-          </Fragment>)}
-      {screen === Screen.PAUSED && (
+        : settings.map(({ fns, data, context }) => {
+          const param: CommonParam<Data, Context> = { data, context }
+          return (
+            <Fragment key={fns.getName(param)}>
+              {fns.screenRects?.getSet.get(param).map(screenRect => {
+                return (
+                  <Fragment
+                    key={JSON.stringify(screenRect)}
+                  >
+                    {fns.screenRects?.render(param, {
+                      screenRect,
+                      container: containerRef.current as any,
+                      isPlaying: currentScreen === ScreenEnum.PLAYING
+                    })}
+                  </Fragment>
+                )
+              })}
+            </Fragment>
+          )
+        })}
+      {currentScreen === ScreenEnum.PAUSED && (
         <PausedContainer>
           <div
             className={css({
@@ -70,8 +78,8 @@ const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
             })}
           >
             <PausedMenu
-              onClose={bind(setScreen, Screen.PLAYING)}
-              {...{ pauseEmitter }}
+              onClose={() => emit(screen.emitter, ScreenEnum.PLAYING)}
+              screenEmitter={screen.emitter}
             >
               {[{
                 title: 'Settings',
@@ -81,7 +89,7 @@ const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
                       <EditGameSettings {...{ settings }} />
                     </Tabs.TabPane>
                     <Tabs.TabPane key='configure screen' tab={<><GatewayOutlined />Configure Screen</>}>
-                      <Button onClick={setScreen.bind(undefined, Screen.SCREEN_EDIT)}>
+                      <Button onClick={() => emit(screen.emitter, ScreenEnum.SCREEN_EDIT)}>
                         Edit Buttons
                       </Button>
                     </Tabs.TabPane>

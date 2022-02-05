@@ -1,11 +1,12 @@
 import { FC, useRef, useEffect } from 'react'
 import never from 'never'
 import { blue } from '@ant-design/colors'
-import { observable, autorun, runInAction } from 'mobx'
+import { observable, runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
-import { autorunAnimationFrame, Fn, Stop } from '../../util/autorunAnimationFrame'
-import { MobxAngle } from './turret-setting'
-import { turretSetting } from './settings'
+import { getDataFromSetting, getAngle, start, stop } from './turret-setting/get-angle'
+import turretSetting from './turretSetting'
+import { Screen } from '../../util/game-with-settings'
+import { repeatedAnimationFrame } from 'repeated-animation-frame'
 
 const turretSize = 1 / 8
 const gunSize = 0.8
@@ -13,28 +14,29 @@ const gunThickness = 1 / 30
 
 export interface CanvasProps {
   size: number
-  playing: boolean
+  screen: Screen
 }
-const Canvas: FC<CanvasProps> = ({ size, playing }) => {
+
+const Canvas: FC<CanvasProps> = ({ size, screen }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sizeBoxed = useLocalObservable(() => observable.box(size))
-  const playingBoxed = useLocalObservable(() => observable.box(playing))
   runInAction(() => {
     sizeBoxed.set(size)
-    playingBoxed.set(playing)
   })
 
   useEffect(() => {
     const canvas = canvasRef.current ?? never()
-    const mobxAngle = new MobxAngle(turretSetting, () => {
+    const mobxAngle = getDataFromSetting(turretSetting, () => {
       const { x, y } = canvas.getBoundingClientRect()
       return {
         x: x + size / 2,
         y: y + size / 2
       }
     })
+    start(mobxAngle)
 
-    const fn: Fn = () => {
+    // FIXME: Pause when game is paused
+    const stopRaf = repeatedAnimationFrame(() => {
       const size = sizeBoxed.get()
       const ctx = (canvas).getContext('2d') ??
       never()
@@ -57,24 +59,15 @@ const Canvas: FC<CanvasProps> = ({ size, playing }) => {
       ctx.beginPath()
       ctx.moveTo(size / 2, size / 2)
       const r = size / 2 * gunSize
-      ctx.lineTo(size / 2 + Math.cos(mobxAngle.angle) * r, size / 2 + Math.sin(mobxAngle.angle) * r)
+      const angle = getAngle(mobxAngle) ?? 0
+      ctx.lineTo(size / 2 + Math.cos(angle) * r, size / 2 + Math.sin(angle) * r)
       ctx.closePath()
       ctx.stroke()
-    }
-    let stopAnimationFrame: Stop
-
-    const stop = autorun(() => {
-      sizeBoxed.get()
-      if (playingBoxed.get()) {
-        stopAnimationFrame = autorunAnimationFrame(fn)
-      } else {
-        stopAnimationFrame?.()
-      }
     })
 
     return () => {
-      stopAnimationFrame?.()
-      stop()
+      stop(mobxAngle)
+      stopRaf()
     }
   }, [])
 

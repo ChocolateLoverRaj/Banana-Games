@@ -13,16 +13,34 @@
     "fullhash",
     "ghaction",
     "hookplus",
+    "Hypixel",
     "IDBP",
+    "Keypoint",
+    "keypoints",
+    "movenet",
     "nipplejs",
     "Paranjpe",
     "pnpm",
     "Popconfirm",
     "randomnumber",
     "rehooks",
+    "tfjs",
     "tinycolor",
     "wireframes"
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.format.semicolons": "remove"
+  "typescript.format.semicolons": "remove",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true,
+    "**/node_modules": true
+  }
 }

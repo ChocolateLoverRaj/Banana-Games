@@ -147,7 +147,10 @@ const config: Configuration = {
         }
       }
     }
-  }
+  },
+  ignoreWarnings: [
+    /not found/
+  ]
 }
 
 export = config

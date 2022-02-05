@@ -4,7 +4,7 @@ import ResetButton from './ResetButton'
 import { GameSetting } from '../game-setting'
 
 export interface EditGameSettingsProps {
-  settings: GameSetting[]
+  settings: ReadonlyArray<GameSetting<any, any>>
 }
 
 const EditGameSettings = observer<EditGameSettingsProps>(({ settings }) => {
@@ -14,16 +14,17 @@ const EditGameSettings = observer<EditGameSettingsProps>(({ settings }) => {
       dataSource={[...settings]}
       columns={[{
         title: 'Name',
-        render: (setting: GameSetting) => setting.displayName
+        render: ({ fns, data, context }: GameSetting<any, any>) => fns.getName({ data, context })
       }, {
         title: 'Edit',
-        render: (setting: GameSetting) => setting.renderEdit()
+        render: ({ fns, data, context }: GameSetting<any, any>) => fns.renderEdit({ data, context })
       }, {
         title: 'Reset',
-        render: (setting: GameSetting) => <ResetButton {...{ setting }} />
+        render: (setting: GameSetting<any, any>) => setting.fns.reset !== undefined &&
+          <ResetButton {...{ setting }} />
       }]}
       pagination={{ hideOnSinglePage: true }}
-      rowKey={setting => setting.displayName}
+      rowKey={({ fns, data, context }) => fns.getName({ data, context })}
     />
   )
 })

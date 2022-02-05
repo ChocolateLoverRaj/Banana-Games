@@ -1,2 +1,5 @@
-export { default as GameSetting } from './GameSetting'
 export { default as ScreenRect } from './ScreenRect'
+export { default as RenderScreenRectOptions } from './RenderScreenRectOptions'
+export { default as GameSettingFns } from './GameSettingFns'
+export { default as GameSetting } from './GameSetting'
+export { default as CommonParam } from './CommonParam'

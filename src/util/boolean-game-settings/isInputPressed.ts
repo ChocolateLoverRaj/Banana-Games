@@ -1,8 +1,13 @@
+import { Data as EmitterValue } from '../emitter-value'
 import KeysPressed from '../KeysPressed'
-import BooleanGameSetting from './BooleanGameSetting'
+import SettingData from './Data'
 
-const isInputPressed = (input: BooleanGameSetting, keysPressed: KeysPressed): boolean =>
-  input.isTouchButtonPressed ||
-  [...input.keyBindings].some(key => keysPressed.keysPressed.has(key))
+const isInputPressed = (
+  data: SettingData,
+  touchButtonPressed: EmitterValue<[boolean]>,
+  keysPressed: KeysPressed
+): boolean =>
+  touchButtonPressed.value?.[0] === true ||
+  [...data.keyBindings].some(key => keysPressed.keysPressed.has(key))
 
 export default isInputPressed

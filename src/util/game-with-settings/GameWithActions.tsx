@@ -4,14 +4,12 @@ import useComponentSize from '@rehooks/component-size'
 import FixedAspectRatioContainer from './FixedAspectRatioContainer'
 import DynamicAspectRatioContainer from './DynamicAspectRatioContainer'
 import BaseGame from './BaseGame'
-import { UseScreenResult } from './useScreen'
 import { GameSetting } from '../game-setting'
-import PauseEmitter from '../PauseEmitter'
+import Screen from './Screen'
 
 export interface GameWithActionsProps {
-  settings?: GameSetting[]
-  pauseEmitter?: PauseEmitter
-  useScreenResult?: UseScreenResult
+  settings?: ReadonlyArray<GameSetting<any, any>>
+  screen?: Screen
   aspectRatio?: Size
   children: ReactNode
   className?: string
@@ -22,14 +20,13 @@ const GameWithActions = forwardRef<HTMLDivElement, GameWithActionsProps>(({
   aspectRatio,
   children,
   className,
-  useScreenResult,
-  pauseEmitter
+  screen
 }, ref) => {
   const size = useComponentSize(ref as any)
 
   const baseGame = (
     <BaseGame
-      {...{ settings, pauseEmitter, size, useScreenResult }}
+      {...{ settings, size, screen }}
       containerRef={ref as any}
     >
       {children}

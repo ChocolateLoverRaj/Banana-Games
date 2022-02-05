@@ -9,14 +9,14 @@ import { GameSetting } from '../game-setting'
 import Position from '../types/Position'
 
 export interface MoveSettingRectProps {
-  setting: GameSetting
+  setting: GameSetting<any, any>
   screenRect: AbsolutePosition & Size
   boundary: Size
   containerRef: RefObject<HTMLDivElement>
 }
 
 const MoveSettingRect = observer<MoveSettingRectProps>(props => {
-  const { screenRect, setting, boundary, containerRef } = props
+  const { screenRect, setting: { fns, data, context }, boundary, containerRef } = props
 
   const touchPosition = useRef<Position>()
 
@@ -48,7 +48,7 @@ const MoveSettingRect = observer<MoveSettingRectProps>(props => {
 
   return (
     <>
-      {setting.renderScreenRect({
+      {fns.screenRects?.render({ data, context }, {
         screenRect,
         isPlaying: false,
         htmlProps: {

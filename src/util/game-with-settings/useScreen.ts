@@ -1,9 +1,22 @@
-import { Dispatch, SetStateAction, useState } from 'react'
+import Screen from './Screen'
+import { useEmitHandler, emit, Data as Emitter } from 'emitter2'
+import { useState } from 'react'
+import ScreenEmitter from './ScreenEmitter'
+import { Data as MobxEmitterData, initialize } from '../mobx-emitter-value'
+import ScreenEnum from './ScreenEnum'
 
-export enum Screen { PLAYING, PAUSED, SCREEN_EDIT }
-
-export type UseScreenResult = [Screen, Dispatch<SetStateAction<Screen>>]
-
-const useScreen = (): UseScreenResult => useState(Screen.PLAYING)
+const useScreen = (pauseEmitter: Emitter<[]>): Screen => {
+  const [screen] = useState(() => {
+    const screenEmitter: ScreenEmitter = new Set()
+    const screenMobx: MobxEmitterData<[ScreenEnum]> = initialize(screenEmitter, [ScreenEnum.PLAYING], 'Screen Emitter')
+    const screen: Screen = {
+      emitter: screenEmitter,
+      mobx: screenMobx
+    }
+    return screen
+  })
+  useEmitHandler(pauseEmitter, () => emit(screen.emitter, ScreenEnum.PAUSED))
+  return screen
+}
 
 export default useScreen

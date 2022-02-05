@@ -1,20 +1,9 @@
-import { ReactNode } from 'react'
-import AbsolutePosition from '../types/AbsolutePosition'
-import Size from '../types/Size'
-import RenderScreenRectOptions from './RenderScreenRectOptions'
+import GameSettingFns from './GameSettingFns'
 
-abstract class GameSetting {
-  abstract readonly displayName: string
-
-  abstract renderEdit (): ReactNode
-
-  abstract resetToDefault (): void
-
-  abstract get isSameAsDefault (): boolean
-
-  abstract screenRects: Array<AbsolutePosition & Size>
-
-  abstract renderScreenRect (options: RenderScreenRectOptions): ReactNode
+interface GameSetting<Data, Context> {
+  data: Data
+  fns: GameSettingFns<Data, Context>
+  context: Context
 }
 
 export default GameSetting

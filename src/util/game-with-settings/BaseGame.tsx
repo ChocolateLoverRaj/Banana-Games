@@ -2,35 +2,30 @@ import { Spin } from 'antd'
 import { FC, ReactNode, RefObject } from 'react'
 import ErrorResult from '../../ErrorResult'
 import { GameSetting } from '../game-setting'
-import PauseEmitter from '../PauseEmitter'
 import Size from '../types/Size'
 import LoadedGame from './loaded-game'
+import Screen from './Screen'
 import useGameSettings from './useGameSettings'
-import { UseScreenResult } from './useScreen'
 
 export interface BaseGameProps {
   size: Size
   children: ReactNode
-  useScreenResult?: UseScreenResult
-  pauseEmitter?: PauseEmitter
-  settings: GameSetting[]
+  settings: ReadonlyArray<GameSetting<any, any>>
   containerRef: RefObject<HTMLDivElement>
+  screen?: Screen
 }
 
 const BaseGame: FC<BaseGameProps> = props => {
-  const { size, children, useScreenResult, pauseEmitter, settings, containerRef } = props
-
-  const [gameSettings, error] = useGameSettings()
+  const [allGameSettings, error] = useGameSettings()
 
   return (
     <>
-      {gameSettings !== undefined
+      {allGameSettings !== undefined
         ? (
           <LoadedGame
-            {...{ pauseEmitter, settings, gameSettings, size, useScreenResult, containerRef }}
-          >
-            {children}
-          </LoadedGame>)
+            {...props}
+            allGameSettings={allGameSettings}
+          />)
         : error === undefined
           ? <Spin tip='Loading Settings' size='large' />
           : <ErrorResult error={error} title='Error Loading Settings' />}

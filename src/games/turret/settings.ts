@@ -1,24 +1,10 @@
-import defaultPauseSetting from '../../defaultPauseSetting'
+import pauseSetting from './pauseSetting'
 import { GameSetting } from '../../util/game-setting'
-import TurretSetting from './turret-setting/TurretSetting'
+import turretSetting from './turretSetting'
 
-export const turretSetting = new TurretSetting(
-  'Turret Rotation',
-  {
-    height: 100,
-    width: 100,
-    x: {
-      reverse: true,
-      value: 50
-    },
-    y: {
-      reverse: true,
-      value: 50
-    }
-  }
-)
-
-export const settings: GameSetting[] = [
-  defaultPauseSetting,
+const settings: ReadonlyArray<GameSetting<any, any>> = [
+  pauseSetting,
   turretSetting
 ]
+
+export default settings

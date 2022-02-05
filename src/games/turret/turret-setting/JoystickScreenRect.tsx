@@ -4,14 +4,15 @@ import { useLayoutEffect } from 'react'
 import { css } from '@emotion/css'
 import cn from 'classnames'
 import absolutePositionToCss from '../../../absolutePositionToCss'
-import TurretSetting from './TurretSetting'
 import { action } from 'mobx'
 import { purple } from '@ant-design/colors'
 import RenderScreenRectOptions from '../../../util/game-setting/RenderScreenRectOptions'
+import { CommonParam } from '../../../util/game-setting'
+import Data from './Data'
+import Context from './Context'
+import { emit } from 'emitter2'
 
-export interface JoystickScreenRectProps extends RenderScreenRectOptions {
-  turretSetting: TurretSetting
-}
+export type JoystickScreenRectProps = RenderScreenRectOptions & CommonParam<Data, Context>
 
 const JoystickScreenRect = observer<JoystickScreenRectProps>(({
   screenRect,
@@ -19,7 +20,7 @@ const JoystickScreenRect = observer<JoystickScreenRectProps>(({
   isPlaying,
   htmlProps,
   style,
-  turretSetting
+  context
 }) => {
   useLayoutEffect(() => {
     if (isPlaying) {
@@ -37,7 +38,7 @@ const JoystickScreenRect = observer<JoystickScreenRectProps>(({
       })
       manager.on('move', action(e => {
         const [{ frontPosition: { x, y } }] = e.target.actives
-        turretSetting.angle = Math.atan2(y, x)
+        emit(context, Math.atan2(y, x))
       }))
 
       return () => manager.destroy()

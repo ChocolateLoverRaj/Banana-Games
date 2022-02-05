@@ -4,13 +4,13 @@ import { action as mobxAction } from 'mobx'
 import { GameSetting } from '../game-setting'
 
 export interface ResetButtonProps {
-  setting: GameSetting
+  setting: GameSetting<any, any>
 }
-const ResetButton = observer<ResetButtonProps>(({ setting }) => {
+const ResetButton = observer<ResetButtonProps>(({ setting: { fns, data, context } }) => {
   return (
     <Button
-      disabled={setting.isSameAsDefault}
-      onClick={mobxAction(() => setting.resetToDefault())}
+      disabled={fns.reset?.isSameAsDefault({ data, context })}
+      onClick={mobxAction(() => fns.reset?.resetToDefault({ data, context }))}
     >
       Reset to default
     </Button>

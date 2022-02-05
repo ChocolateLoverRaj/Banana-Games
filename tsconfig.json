@@ -17,7 +17,9 @@
       "ES2019"
     ],
     "target": "ES5",
-    "strictBindCallApply": true
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   },
   "ts-node": {
     "compilerOptions": {

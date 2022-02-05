@@ -14,32 +14,36 @@ import {
 import useComponentSize from '@rehooks/component-size'
 import getScaledSize from '../../util/getScaledSize'
 import { blue, grey as gray } from '@ant-design/colors'
-import { GameWithActions, useScreen } from '../../util/game-with-settings'
-import { Screen } from '../../util/game-with-settings/useScreen'
+import { GameWithActions, ScreenEnum, useScreen } from '../../util/game-with-settings'
 import limit from 'limit-number'
 import toSigned from 'boolean-to-signed'
 import never from 'never'
 import random from 'rn-randomnumber'
 import randomBoolean from 'random-boolean'
 import getBackgroundColor from '../../getBackgroundColor'
-import { paddleSettings, pauseSetting, settings } from './settings'
 import Description from './Description'
 import { observer } from 'mobx-react-lite'
 import KeysPressed from '../../util/KeysPressed'
-import { usePressEmitter } from '../../util/boolean-game-settings'
-import isInputPressed from '../../util/boolean-game-settings/isInputPressed'
+import { isInputPressed, usePressEmitter } from '../../util/boolean-game-settings'
+import pauseSetting from './pauseSetting'
+import settings from './settings'
+import mapValues from 'map-values'
+import { get } from '../../util/mobx-emitter-value'
+import paddleSettings from './paddleSettings'
+import { initialize, start, stop } from '../../util/emitter-value'
 
 const aspectRatio = { width: 16, height: 9 }
 
 export const Game: GameComponent = observer((_props, ref) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const componentSize = useComponentSize(ref as any)
-  const useScreenResult = useScreen()
+  const pauseEmitter = usePressEmitter(pauseSetting)
+  const screen = useScreen(pauseEmitter)
   const scaledSize = getScaledSize(componentSize, aspectRatio)
-  const [screen] = useScreenResult
   const [runnerEngine, setRunnerEngine] = useState<[Runner, Engine]>()
   const [keysPressed] = useState(() => new KeysPressed())
-  const pauseEmitter = usePressEmitter(pauseSetting)
+  const [touchInputsPressed] = useState(() =>
+    paddleSettings.map(setting => mapValues(setting, ({ context }) => initialize(context))))
 
   // Update engine
   useEffect(() => {
@@ -133,8 +137,8 @@ export const Game: GameComponent = observer((_props, ref) => {
       const maxPaddleX = height - minPaddleX
       const handleTick = ({ source: { delta } }: any): void => {
         for (const i of [0, 1] as const) {
-          const up = isInputPressed(paddleSettings[i].up, keysPressed)
-          const down = isInputPressed(paddleSettings[i].down, keysPressed)
+          const up = isInputPressed(paddleSettings[i].up.data, touchInputsPressed[i].up, keysPressed)
+          const down = isInputPressed(paddleSettings[i].down.data, touchInputsPressed[i].down, keysPressed)
           if (up || down) {
             Body.setPosition(paddles[i], {
               x: paddles[i].position.x,
@@ -184,18 +188,29 @@ export const Game: GameComponent = observer((_props, ref) => {
   }, [runnerEngine])
 
   // Pause game
+  const [currentScreen] = get(screen.mobx)
   useEffect(() => {
     if (runnerEngine !== undefined) {
       const [runner] = runnerEngine
-      runner.enabled = screen === Screen.PLAYING
-      if (screen === Screen.PLAYING) keysPressed.start()
-      else keysPressed.stop()
+      runner.enabled = currentScreen === ScreenEnum.PLAYING
+      if (currentScreen === ScreenEnum.PLAYING) {
+        keysPressed.start()
+        touchInputsPressed.forEach(obj =>
+          Object.values(obj).forEach(emitterValue => start(emitterValue as any)))
+      } else {
+        keysPressed.stop()
+        touchInputsPressed.forEach(obj =>
+          Object.values(obj).forEach((emitterValue) => {
+            stop(emitterValue as any)
+            ;(emitterValue as any).value = undefined
+          }))
+      }
     }
-  }, [runnerEngine, screen])
+  }, [runnerEngine, currentScreen])
 
   return (
     <GameWithActions
-      {...{ aspectRatio, ref, useScreenResult, settings, pauseEmitter }}
+      {...{ aspectRatio, ref, screen, settings, pauseEmitter }}
     >
       <canvas ref={setCanvas} style={scaledSize} />
     </GameWithActions>

@@ -1,33 +1,39 @@
 import GameComponent from '../../types/GameComponent'
 import { Typography } from 'antd'
 import arrayJoin from '../../util/arrayJoin'
-import useScreen, { Screen } from '../../util/game-with-settings/useScreen'
+import { GameWithActions, ScreenEnum, useScreen } from '../../util/game-with-settings'
 import useComponentSize from '@rehooks/component-size'
-import { GameWithActions } from '../../util/game-with-settings'
-import defaultPauseSetting from '../../defaultPauseSetting'
+import pauseSettingData from '../../pauseSettingData'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
-import { usePressEmitter } from '../../util/boolean-game-settings'
 import { observer } from 'mobx-react-lite'
+import { GameSetting } from '../../util/game-setting'
+import { Context, Data as BooleanSettingData, booleanGameSettingFns, usePressEmitter } from '../../util/boolean-game-settings'
+import { get } from '../../util/mobx-emitter-value'
 
-const settings = [defaultPauseSetting]
+const context: Context = new Set()
+const settings: Array<GameSetting<BooleanSettingData, Context>> = [{
+  data: pauseSettingData,
+  fns: booleanGameSettingFns,
+  context
+}]
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const useScreenResult = useScreen()
-  const [screen] = useScreenResult
   const size = useComponentSize(ref as any)
-  const pauseEmitter = usePressEmitter(defaultPauseSetting)
+  const pauseEmitter = usePressEmitter({ data: pauseSettingData, context })
+  const screen = useScreen(pauseEmitter)
+  const [currentScreen] = get(screen.mobx)
 
   return (
     <GameWithActions
-      {...{ size, ref, useScreenResult, settings, pauseEmitter }}
+      {...{ size, ref, screen, settings }}
       className={css(centerStyles)}
     >
       <div>
-        <h1>{screen === Screen.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
-        Press {arrayJoin([...defaultPauseSetting.keyBindings].map(key =>
+        <h1>{currentScreen === ScreenEnum.PLAYING ? 'Playing Game' : 'Game Blurred'}</h1>
+        Press {arrayJoin([...pauseSettingData.keyBindings].map(key =>
           <Typography.Text keyboard key={key}>{key}</Typography.Text>), ' or ')} to {' '}
-        {screen === Screen.PLAYING ? 'pause' : 'resume'} game
+        {currentScreen === ScreenEnum.PLAYING ? 'pause' : 'resume'} game
       </div>
     </GameWithActions>
   )
