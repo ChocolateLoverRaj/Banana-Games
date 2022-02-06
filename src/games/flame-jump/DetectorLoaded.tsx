@@ -29,10 +29,11 @@ import { autorunCleanup } from 'mobx-autorun-cleanup'
 import { get } from '../../util/mobx-emitter-value'
 import { ScreenEnum } from '../../util/game-with-settings'
 import { message } from 'antd'
+import { initialize, estimatePoses } from './detector-worker/estimate-poses'
 
 const aspectRatio = { width: 16, height: 9 }
 
-const DetectorLoaded = observer<DetectorLoadedProps>(({ detector, videoRef }) => {
+const DetectorLoaded = observer<DetectorLoadedProps>(({ detectorWorker, videoRef }) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
   const { gameRef, screen } = useContext(GameContext)
   const componentSize = useComponentSize(gameRef)
@@ -89,12 +90,13 @@ const DetectorLoaded = observer<DetectorLoadedProps>(({ detector, videoRef }) =>
         fire.position.z = -fireDistance + timeSinceLastTick * 0.1
         player.object3D.position.y = jump.data.distanceFromGround
       })
+      const video = videoRef.current ?? never()
+      const poseDetector = initialize(detectorWorker, video)
       const cleanupTick = autorunCleanup(() => {
         if (get(screen.mobx)[0] === ScreenEnum.PLAYING) {
           const cleanupTick = repeatedAnimationFrame(async () => {
-            const video = videoRef.current ?? never()
             console.time('estimatePoses')
-            const estimatePromise = detector.estimatePoses(video, { flipHorizontal: false })
+            const estimatePromise = await estimatePoses(poseDetector)
             console.timeEnd('estimatePoses')
             const [pose] = await estimatePromise
             const now = Date.now()

@@ -14,16 +14,19 @@
     "resolveJsonModule": true,
     "lib": [
       "DOM",
-      "ES2019"
+      "ES2019",
+      "WebWorker"
     ],
     "target": "ES5",
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true
+    "noEmit": true,
+    "module": "es2020"
   },
   "ts-node": {
     "compilerOptions": {
-      "jsx": "react"
+      "jsx": "react",
+      "module": "CommonJS"
     }
   },
   "include": [
