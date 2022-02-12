@@ -9,6 +9,7 @@ import { GameSetting } from '../../util/game-setting'
 import pauseContext from './pauseContext'
 import { Data, fns as cameraFns } from '../../util/camera-game-setting'
 import cameraSettingData from './cameraSetting'
+import modelTypeSetting from './modelTypeSetting'
 
 const pauseGameSetting: GameSetting<BooleanData, BooleanContext> = {
   data: pauseSettingData,
@@ -22,7 +23,8 @@ const cameraSetting: GameSetting<Data, undefined> = {
 }
 const settings = [
   pauseGameSetting,
-  cameraSetting
+  cameraSetting,
+  modelTypeSetting
 ] as const
 
 export default settings

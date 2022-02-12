@@ -2,8 +2,7 @@ import {
   createDetector,
   Pose,
   PoseDetector,
-  SupportedModels,
-  movenet
+  SupportedModels
 } from '@tensorflow-models/pose-detection'
 import '@tensorflow/tfjs-backend-webgl'
 import { setBackend } from '@tensorflow/tfjs-core'
@@ -14,9 +13,6 @@ import WorkerToPage from './WorkerToPage'
   let detector: PoseDetector
   try {
     await setBackend('webgl')
-    detector = await createDetector(SupportedModels.MoveNet, {
-      modelType: movenet.modelType.SINGLEPOSE_THUNDER
-    })
   } catch (e) {
     postMessage(WorkerToPage.ERROR)
     console.error(e)
@@ -24,14 +20,27 @@ import WorkerToPage from './WorkerToPage'
   }
   postMessage(WorkerToPage.SUCCESS)
   onmessage = async ({ data }) => {
-    let poses: Pose[]
-    try {
-      poses = await detector.estimatePoses(data, { flipHorizontal: true })
-    } catch (e) {
-      postMessage(WorkerToPage.ERROR)
-      console.error(e)
-      return
+    if (typeof data === 'string') {
+      try {
+        detector?.dispose()
+        detector = await createDetector(SupportedModels.MoveNet, {
+          modelType: data
+        })
+      } catch (e) {
+        postMessage(WorkerToPage.ERROR)
+        console.error(e)
+      }
+      postMessage(WorkerToPage.SUCCESS)
+    } else {
+      let poses: Pose[]
+      try {
+        poses = await detector.estimatePoses(data, { flipHorizontal: true })
+      } catch (e) {
+        postMessage(WorkerToPage.ERROR)
+        console.error(e)
+        return
+      }
+      postMessage(poses)
     }
-    postMessage(poses)
   }
 })()

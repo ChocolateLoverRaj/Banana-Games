@@ -5,7 +5,9 @@ import '@tensorflow/tfjs-backend-webgl'
 import DetectorStarterProps from './DetectorStarterProps'
 import DetectorLoaded from './DetectorLoaded'
 import { useCleanupLater } from '../../util/use-cleanup-later'
-import WorkerToPage from './detector-worker/WorkerToPage'
+import { autorun } from 'mobx'
+import modelTypeSetting from './modelTypeSetting'
+import awaitWorkerSuccess from './awaitWorkerSuccess'
 
 // TODO: Start mediaStream > play video and do this at same time
 const DetectorStarter = observer<DetectorStarterProps>(props => {
@@ -15,18 +17,15 @@ const DetectorStarter = observer<DetectorStarterProps>(props => {
   useEffect(() => setPromise(initialize((async () => {
     const worker = new Worker(new URL(
       './detector-worker/detectorWorker.ts', import.meta.url), { type: 'module' })
-    await new Promise<void>((resolve, reject) => {
-      worker.onerror = reject
-      worker.onmessageerror = reject
-      worker.onmessage = ({ data }) => {
-        if (data === WorkerToPage.SUCCESS) {
-          resolve()
-        } else {
-          reject(new Error('Error setting up detector'))
-        }
-      }
+    await awaitWorkerSuccess(worker)
+    const stopAutorun = autorun(() => {
+      worker.postMessage(modelTypeSetting.data.selectedOption)
     })
-    cleanupLater(() => worker.terminate())
+    await awaitWorkerSuccess(worker)
+    cleanupLater(() => {
+      worker.terminate()
+      stopAutorun()
+    })
     return worker
   })())), [])
 
