@@ -17,10 +17,10 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
       - uses: pnpm/action-setup@v2.0.1
         with:
-          version: 6.7.6
+          version: 6.31.0
           run_install: true
       - run: |
           pnpm build:logo
