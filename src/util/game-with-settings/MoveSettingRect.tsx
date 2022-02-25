@@ -7,16 +7,24 @@ import { observer } from 'mobx-react-lite'
 import { action } from 'mobx'
 import { GameSetting } from '../game-setting'
 import Position from '../types/Position'
+import { GameSettings } from './useGameSettings'
 
 export interface MoveSettingRectProps {
   setting: GameSetting<any, any>
   screenRect: AbsolutePosition & Size
   boundary: Size
   containerRef: RefObject<HTMLDivElement>
+  allGameSettings: GameSettings
 }
 
 const MoveSettingRect = observer<MoveSettingRectProps>(props => {
-  const { screenRect, setting: { fns, data, context }, boundary, containerRef } = props
+  const {
+    screenRect,
+    setting: { fns, data, context },
+    boundary,
+    containerRef,
+    allGameSettings: { touchScreen }
+  } = props
 
   const touchPosition = useRef<Position>()
 
@@ -65,7 +73,8 @@ const MoveSettingRect = observer<MoveSettingRectProps>(props => {
           background-color: change-color($color: green, $alpha: 0.5);
           box-sizing: content-box;
         `,
-        container: containerRef.current as any
+        container: containerRef.current as any,
+        touchScreen
       })}
     </>
   )

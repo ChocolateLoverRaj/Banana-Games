@@ -21,8 +21,9 @@ const booleanGameSettingFns: GameSettingFns<Data, Context> = {
       screenRect,
       isPlaying,
       htmlProps,
-      style
-    }) => (
+      style,
+      touchScreen
+    }) => touchScreen && (
       <TouchButton
         absolutePosition={screenRect}
         buttonProps={{

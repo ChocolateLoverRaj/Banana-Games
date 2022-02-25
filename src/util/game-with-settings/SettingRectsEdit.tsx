@@ -12,6 +12,7 @@ import clone from 'rfdc/default'
 import { ObservableMap, action } from 'mobx'
 import CommonParam from '../game-setting/CommonParam'
 import { Context, Data } from '../boolean-game-settings'
+import { GameSettings } from './useGameSettings'
 
 export type OnExit = () => void
 export interface SettingRectsEdit {
@@ -19,6 +20,7 @@ export interface SettingRectsEdit {
   onExit: OnExit
   boundary: Size
   containerRef: RefObject<HTMLDivElement>
+  allGameSettings: GameSettings
 }
 
 const dragHandle = css({ cursor: 'move ' })
@@ -27,7 +29,8 @@ const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({
   settings,
   onExit,
   boundary,
-  containerRef
+  containerRef,
+  allGameSettings
 }) => {
   const newScreenRects = useLocalObservable(() => new ObservableMap(settings.flatMap(({ fns, data, context }) =>
     fns.screenRects?.getSet.get({ data, context }).map(screenRect => [screenRect, clone(screenRect)]))))
@@ -52,7 +55,7 @@ const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({
                 key={JSON.stringify(screenRect)}
                 screenRect={newScreenRect}
                 boundary={boundary}
-                {...{ setting, containerRef }}
+                {...{ setting, containerRef, allGameSettings }}
               />
             )
           })

@@ -5,30 +5,25 @@ import { EditGameSettings } from '../../game-with-settings'
 import PausedMenu from '../../../PausedMenu'
 import SettingsRectsEdit from '../SettingRectsEdit'
 import useVisible from '../../useVisible'
-import { LoadedGameProps } from './LoadedGame'
 import { css } from '@emotion/css'
 import PausedContainer from '../PausedContainer'
 import { observer } from 'mobx-react-lite'
 import CommonParam from '../../game-setting/CommonParam'
 import { Context, Data } from '../../boolean-game-settings'
-import Screen from '../Screen'
 import { get } from '../../mobx-emitter-value'
 import ScreenEnum from '../ScreenEnum'
 import { emit } from 'emitter2'
-
-export interface LoadedGamePauseableProps extends LoadedGameProps {
-  screen: Screen
-}
+import LoadedGamePauseableProps from './LoadedGamePauseableProps'
 
 const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
   children,
   size,
-  allGameSettings: gameSettings,
+  allGameSettings,
   screen,
   settings,
   containerRef
 }) => {
-  const { pausedWhenNotVisible } = gameSettings
+  const { pausedWhenNotVisible, touchScreen } = allGameSettings
 
   const visible = useVisible()
   const [currentScreen] = get(screen.mobx)
@@ -45,7 +40,7 @@ const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
       {currentScreen === ScreenEnum.SCREEN_EDIT
         ? (
           <SettingsRectsEdit
-            {...{ settings, containerRef }}
+            {...{ settings, containerRef, allGameSettings }}
             onExit={() => emit(screen.emitter, ScreenEnum.PAUSED)}
             boundary={size}
           />)
@@ -61,7 +56,8 @@ const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
                     {fns.screenRects?.render(param, {
                       screenRect,
                       container: containerRef.current as any,
-                      isPlaying: currentScreen === ScreenEnum.PLAYING
+                      isPlaying: currentScreen === ScreenEnum.PLAYING,
+                      touchScreen
                     })}
                   </Fragment>
                 )

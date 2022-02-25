@@ -9,6 +9,7 @@ interface RenderScreenRectOptions {
   htmlProps?: HTMLProps<HTMLElement>
   style?: CSSInterpolation
   container: HTMLDivElement
+  touchScreen: boolean
 }
 
 export default RenderScreenRectOptions
