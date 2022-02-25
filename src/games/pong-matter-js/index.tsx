@@ -86,7 +86,11 @@ export const Game: GameComponent = observer((_props, ref) => {
 
       const scores = [0, 0] as [number, number]
 
-      const render = Render.create({ canvas, engine, options: { width, height, wireframes: false, background: getBackgroundColor() } })
+      const render = Render.create({
+        canvas,
+        engine,
+        options: { width, height, wireframes: false, background: getBackgroundColor() }
+      })
 
       const ball = Bodies.circle(width / 2, height / 2, ballRadius, {
         friction: 0,
@@ -102,8 +106,18 @@ export const Game: GameComponent = observer((_props, ref) => {
         render: { fillStyle: wallColor },
         isStatic: true
       }
-      const topWall = Bodies.rectangle(width / 2, wallThickness / 2, width, wallThickness, wallOptions)
-      const bottomWall = Bodies.rectangle(width / 2, height - wallThickness / 2, width, wallThickness, wallOptions)
+      const topWall = Bodies.rectangle(
+        width / 2,
+        wallThickness / 2,
+        width,
+        wallThickness,
+        wallOptions)
+      const bottomWall = Bodies.rectangle(
+        width / 2,
+        height - wallThickness / 2,
+        width,
+        wallThickness,
+        wallOptions)
 
       // Paddles
       const paddleOptions: IChamferableBodyDefinition = {
@@ -111,14 +125,26 @@ export const Game: GameComponent = observer((_props, ref) => {
         isStatic: true
       }
       const startingPaddleY = height / 2
-      const leftPaddle = Bodies.rectangle(paddleWidth / 2, startingPaddleY, paddleWidth, paddleHeight, paddleOptions)
-      const rightPaddle = Bodies.rectangle(width - paddleWidth / 2, startingPaddleY, paddleWidth, paddleHeight, paddleOptions)
+      const leftPaddle = Bodies.rectangle(
+        paddleWidth / 2,
+        startingPaddleY,
+        paddleWidth,
+        paddleHeight,
+        paddleOptions)
+      const rightPaddle = Bodies.rectangle(
+        width - paddleWidth / 2,
+        startingPaddleY,
+        paddleWidth,
+        paddleHeight,
+        paddleOptions)
       const paddles = [leftPaddle, rightPaddle] as const
 
       const reset = (): void => {
         Body.setPosition(ball, { x: width / 2, y: height / 2 })
         Body.setVelocity(ball, getStartingVelocity())
-        for (const paddle of paddles) Body.setPosition(paddle, { x: paddle.position.x, y: startingPaddleY })
+        for (const paddle of paddles) {
+          Body.setPosition(paddle, { x: paddle.position.x, y: startingPaddleY })
+        }
       }
       reset()
 
@@ -137,8 +163,14 @@ export const Game: GameComponent = observer((_props, ref) => {
       const maxPaddleX = height - minPaddleX
       const handleTick = ({ source: { delta } }: any): void => {
         for (const i of [0, 1] as const) {
-          const up = isInputPressed(paddleSettings[i].up.data, touchInputsPressed[i].up, keysPressed)
-          const down = isInputPressed(paddleSettings[i].down.data, touchInputsPressed[i].down, keysPressed)
+          const up = isInputPressed(
+            paddleSettings[i].up.data,
+            touchInputsPressed[i].up,
+            keysPressed)
+          const down = isInputPressed(
+            paddleSettings[i].down.data,
+            touchInputsPressed[i].down,
+            keysPressed)
           if (up || down) {
             Body.setPosition(paddles[i], {
               x: paddles[i].position.x,

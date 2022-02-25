@@ -7,14 +7,15 @@ export type DynamicAspectRatioProps = PropsWithChildren<{
   className?: string
 }>
 
-const DynamicAspectRatioContainer = forwardRef<HTMLDivElement, DynamicAspectRatioProps>((props, ref) => {
-  const { children, className } = props
+const DynamicAspectRatioContainer = forwardRef<HTMLDivElement, DynamicAspectRatioProps>(
+  (props, ref) => {
+    const { children, className } = props
 
-  return (
-    <div ref={ref} className={cn(css(dynamicAspectRatioStyles), className)}>
-      {children}
-    </div>
-  )
-})
+    return (
+      <div ref={ref} className={cn(css(dynamicAspectRatioStyles), className)}>
+        {children}
+      </div>
+    )
+  })
 
 export default DynamicAspectRatioContainer

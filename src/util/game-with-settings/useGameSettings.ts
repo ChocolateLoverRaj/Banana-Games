@@ -8,7 +8,8 @@ export interface GameSettings {
   touchScreen: boolean
 }
 
-export type UsePausedWhenNotVisibleResult = [GameSettings | undefined, Error | undefined, PromiseState]
+export type UsePausedWhenNotVisibleResult =
+  [GameSettings | undefined, Error | undefined, PromiseState]
 
 const usePausedWhenNotVisible = (): UsePausedWhenNotVisibleResult => {
   const createTransaction = useTransaction(settingsDb)

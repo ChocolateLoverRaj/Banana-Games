@@ -84,7 +84,10 @@ const LoadedGamePauseable = observer<LoadedGamePauseableProps>(({
                     <Tabs.TabPane key='controls' tab={<><ControlOutlined />Controls</>}>
                       <EditGameSettings {...{ settings }} />
                     </Tabs.TabPane>
-                    <Tabs.TabPane key='configure screen' tab={<><GatewayOutlined />Configure Screen</>}>
+                    <Tabs.TabPane
+                      key='configure screen'
+                      tab={<><GatewayOutlined />Configure Screen</>}
+                    >
                       <Button onClick={() => emit(screen.emitter, ScreenEnum.SCREEN_EDIT)}>
                         Edit Buttons
                       </Button>

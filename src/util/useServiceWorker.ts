@@ -28,8 +28,8 @@ const useServiceWorker = (
   serviceWorkerUrl: string,
   onNoUpdatesFound: OnNoUpdatesFound
 ): UseServiceWorkerResult => {
-  const [registerPromise, setRegisterPromise] = useState<Promise<ServiceWorkerRegistration | undefined>>(
-    Promise.resolve(undefined))
+  const [registerPromise, setRegisterPromise] =
+    useState<Promise<ServiceWorkerRegistration | undefined>>(Promise.resolve(undefined))
   // TODO
   const [registration, registrationError, registrationState] =
     usePromise(registerPromise, [registerPromise])
@@ -70,13 +70,16 @@ const useServiceWorker = (
   const [checkForUpdatesPromise, setCheckForUpdatesPromise] = useState(Promise.resolve(false))
 
   const checkForUpdates = useCallback(() => {
-    if (registration !== undefined) setCheckForUpdatesPromise(registration.update().then(() => true))
+    if (registration !== undefined) {
+      setCheckForUpdatesPromise(registration.update().then(() => true))
+    }
   }, [registration])
 
   const [actuallyCheckedForUpdates, checkForUpdatesError, checkForUpdatesState] =
     usePromise(checkForUpdatesPromise, [checkForUpdatesPromise])
 
-  const resetCheckForUpdates = useCallback(() => setCheckForUpdatesPromise(Promise.resolve(false)), [])
+  const resetCheckForUpdates = useCallback(() =>
+    setCheckForUpdatesPromise(Promise.resolve(false)), [])
 
   // Notify on no updates found
   useEffect(() => {

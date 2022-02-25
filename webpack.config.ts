@@ -1,8 +1,5 @@
 import { join, basename, resolve } from 'path'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-// TODO once https://github.com/mastilver/dynamic-cdn-webpack-plugin/pull/71 is merged, switch to main package
-// TODO make dynamic cdn plugin work with dependencies
-// const DynamicCdnPlugin = require('@effortlessmotion/dynamic-cdn-webpack-plugin')
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'

@@ -8,7 +8,12 @@ import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
 import { observer } from 'mobx-react-lite'
 import { GameSetting } from '../../util/game-setting'
-import { Context, Data as BooleanSettingData, booleanGameSettingFns, usePressEmitter } from '../../util/boolean-game-settings'
+import {
+  Context,
+  Data as BooleanSettingData,
+  booleanGameSettingFns,
+  usePressEmitter
+} from '../../util/boolean-game-settings'
 import { get } from '../../util/mobx-emitter-value'
 
 const context: Context = new Set()

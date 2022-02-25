@@ -14,15 +14,16 @@ const requestToPromise = async <T>(request: IDBRequest<T>): Promise<T> =>
   })
 
 const storeName = 'Downloaded Games'
-const getDb = async (): Promise<IDBDatabase> => await new Promise<IDBDatabase>((resolve, reject) => {
-  const request = indexedDB.open('Downloaded Games', 2)
-  request.addEventListener('error', () => reject(request.error))
-  request.addEventListener('upgradeneeded', ({ target: { result } }: any) => {
-    const db = result as IDBDatabase
-    db.createObjectStore(storeName)
+const getDb = async (): Promise<IDBDatabase> =>
+  await new Promise<IDBDatabase>((resolve, reject) => {
+    const request = indexedDB.open('Downloaded Games', 2)
+    request.addEventListener('error', () => reject(request.error))
+    request.addEventListener('upgradeneeded', ({ target: { result } }: any) => {
+      const db = result as IDBDatabase
+      db.createObjectStore(storeName)
+    })
+    request.addEventListener('success', () => resolve(request.result))
   })
-  request.addEventListener('success', () => resolve(request.result))
-})
 
 const getCurrentlyCached = async (cache: Cache): Promise<string[]> =>
   (await cache.keys()).map(({ url }) => url)
@@ -106,7 +107,9 @@ const removeUnusedAssets = async (stats: Stats, usedGameAssets: string[]): Promi
 
 self.addEventListener('message', e => {
   const [type, ...args] = e.data
-  const respond = <T extends unknown[]>(promise: Promise<T extends [] ? T | undefined : T>): void => {
+  const respond = <T extends unknown[]>(
+    promise: Promise<T extends [] ? T | undefined : T>
+  ): void => {
     promise.then(
       result => e.ports[0].postMessage([undefined, ...result ?? []]),
       error => e.ports[0].postMessage([error]))

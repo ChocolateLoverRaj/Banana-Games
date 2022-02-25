@@ -77,7 +77,8 @@ const DetectorLoaded = observer<DetectorLoadedProps>(({ detectorWorker, videoRef
       camera.updateMatrix()
       camera.updateMatrixWorld()
       const frustum = new Frustum()
-      frustum.setFromProjectionMatrix(new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse))
+      frustum.setFromProjectionMatrix(
+        new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse))
 
       const jump = initializeJump()
 

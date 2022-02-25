@@ -20,7 +20,9 @@ const tick = ({
         : 0
       : 0
     const ySpeed = yOffset !== 0
-      ? yOffset / (timeNow - (data.recordedYs.reverse().find(({ value }) => value === (yOffset > 0 ? leastY : greatestY)) ?? never()).time)
+      ? yOffset /
+        (timeNow - (data.recordedYs.reverse()
+          .find(({ value }) => value === (yOffset > 0 ? leastY : greatestY)) ?? never()).time)
       : 0
 
     data.distanceFromGround = data.isInAir
@@ -30,13 +32,15 @@ const tick = ({
     // REMEMBER: +speed means moving 'down', and -speed means moving 'up'
     if (!data.isInAir && Math.abs(data.lastSpeed) < deadZoneSpeed && yOffset < -deadZoneJump) {
       data.isInAir = true
-      data.recordedYs = [data.recordedYs.reverse().find(({ value }) => value === greatestY) ?? never()]
+      data.recordedYs =
+        [data.recordedYs.reverse().find(({ value }) => value === greatestY) ?? never()]
     } else if (
       data.isInAir && ((
         // Has stopped moving
         Math.abs(ySpeed) < deadZoneSpeed &&
         // Is close to where jumped from
-        // This prevents it from touching the ground if they are actually at the highest point in their jump in the dead zone speed
+        // This prevents it from touching the ground if they are actually at the highest point
+        // in their jump in the dead zone speed
         Math.abs(yNow - previousYs[0]) <= maxLandingDiff
       ) || (
         timeNow - data.recordedYs[0].time > maxJumpDuration

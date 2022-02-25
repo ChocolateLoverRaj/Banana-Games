@@ -26,7 +26,9 @@ export type UseFullScreenResult = [
   state: PromiseState
 ]
 
-const useFullScreen = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>): UseFullScreenResult => {
+const useFullScreen = <T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T>
+): UseFullScreenResult => {
   // If the element is currently full screen
   const [fullScreen, _setFullScreen] = useState(false)
   // Update fullScreen if the browser exits it
@@ -47,17 +49,18 @@ const useFullScreen = <T extends HTMLElement = HTMLElement>(ref: RefObject<T>): 
   const [error, state] = usePromise(promise, []).slice(1) as
     [Error, PromiseState]
   // Actually make the element enter / exit full screen
-  const setFullScreen = useCallback<Dispatch<SetStateAction<boolean>>>(value => _setFullScreen(wasFullScreen => {
-    const willBeFullScreen = typeof value === 'function' ? value(wasFullScreen) : value
-    if (!wasFullScreen && willBeFullScreen) {
-      setOperation(FullScreenOperation.ENTERING)
-      setPromise((ref.current ?? never('ref.current is null')).requestFullscreen())
-    } else if (wasFullScreen && !willBeFullScreen) {
-      setOperation(FullScreenOperation.EXITING)
-      setPromise(document.exitFullscreen())
-    }
-    return willBeFullScreen
-  }), [])
+  const setFullScreen = useCallback<Dispatch<SetStateAction<boolean>>>(value =>
+    _setFullScreen(wasFullScreen => {
+      const willBeFullScreen = typeof value === 'function' ? value(wasFullScreen) : value
+      if (!wasFullScreen && willBeFullScreen) {
+        setOperation(FullScreenOperation.ENTERING)
+        setPromise((ref.current ?? never('ref.current is null')).requestFullscreen())
+      } else if (wasFullScreen && !willBeFullScreen) {
+        setOperation(FullScreenOperation.EXITING)
+        setPromise(document.exitFullscreen())
+      }
+      return willBeFullScreen
+    }), [])
   return [fullScreen, setFullScreen, operation, error, state]
 }
 

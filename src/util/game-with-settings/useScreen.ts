@@ -8,7 +8,8 @@ import ScreenEnum from './ScreenEnum'
 const useScreen = (pauseEmitter: Emitter<[]>): Screen => {
   const [screen] = useState(() => {
     const screenEmitter: ScreenEmitter = new Set()
-    const screenMobx: MobxEmitterData<[ScreenEnum]> = initialize(screenEmitter, [ScreenEnum.PLAYING], 'Screen Emitter')
+    const screenMobx: MobxEmitterData<[ScreenEnum]> =
+      initialize(screenEmitter, [ScreenEnum.PLAYING], 'Screen Emitter')
     const screen: Screen = {
       emitter: screenEmitter,
       mobx: screenMobx

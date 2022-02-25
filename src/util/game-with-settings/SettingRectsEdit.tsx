@@ -32,14 +32,17 @@ const SettingsRectsEdit: FC<SettingRectsEdit> = observer(({
   containerRef,
   allGameSettings
 }) => {
-  const newScreenRects = useLocalObservable(() => new ObservableMap(settings.flatMap(({ fns, data, context }) =>
-    fns.screenRects?.getSet.get({ data, context }).map(screenRect => [screenRect, clone(screenRect)]))))
+  const newScreenRects = useLocalObservable(() =>
+    new ObservableMap(settings.flatMap(({ fns, data, context }) =>
+      fns.screenRects?.getSet.get({ data, context })
+        .map(screenRect => [screenRect, clone(screenRect)]))))
 
   const handleDone = action<MouseEventHandler>(() => {
     onExit()
     settings.forEach(({ fns, data, context }) => {
       const param: CommonParam<Data, Context> = { data, context }
-      fns.screenRects?.getSet.set(param, fns.screenRects?.getSet.get(param).map(screenRect => newScreenRects.get(screenRect)))
+      fns.screenRects?.getSet.set(param, fns.screenRects?.getSet.get(param)
+        .map(screenRect => newScreenRects.get(screenRect)))
     })
   })
 

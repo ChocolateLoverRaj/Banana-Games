@@ -38,10 +38,16 @@ const MoveSettingRect = observer<MoveSettingRectProps>(props => {
     const { x, y } = touchPosition.current
     const oldX = screenRect.x.value
     const xDiffMultiplier = toSigned(!screenRect.x.reverse)
-    const newX = limitNumber(0, boundary.width - screenRect.width, oldX + (clientX - x) * xDiffMultiplier)
+    const newX = limitNumber(
+      0,
+      boundary.width - screenRect.width,
+      oldX + (clientX - x) * xDiffMultiplier)
     const oldY = screenRect.y.value
     const yDiffMultiplier = toSigned(!screenRect.y.reverse)
-    const newY = limitNumber(0, boundary.height - screenRect.height, oldY + (clientY - y) * yDiffMultiplier)
+    const newY = limitNumber(
+      0,
+      boundary.height - screenRect.height,
+      oldY + (clientY - y) * yDiffMultiplier)
     screenRect.x.value = newX
     screenRect.y.value = newY
     touchPosition.current = {

@@ -12,24 +12,25 @@ export type FixedAspectRatioProps = PropsWithChildren<{
   size: Size
 }>
 
-const FixedAspectRatioContainer = forwardRef<HTMLDivElement, FixedAspectRatioProps>((props, ref) => {
-  const { size, aspectRatio, children, className } = props
+const FixedAspectRatioContainer = forwardRef<HTMLDivElement, FixedAspectRatioProps>(
+  (props, ref) => {
+    const { size, aspectRatio, children, className } = props
 
-  const scaledSize = getScaledSize(size, aspectRatio)
+    const scaledSize = getScaledSize(size, aspectRatio)
 
-  return (
-    <div
-      ref={ref}
-      className={css(farContainerStyles)}
-    >
+    return (
       <div
-        className={cn(className, css(farStyles))}
-        style={scaledSize}
+        ref={ref}
+        className={css(farContainerStyles)}
       >
-        {children}
+        <div
+          className={cn(className, css(farStyles))}
+          style={scaledSize}
+        >
+          {children}
+        </div>
       </div>
-    </div>
-  )
-})
+    )
+  })
 
 export default FixedAspectRatioContainer

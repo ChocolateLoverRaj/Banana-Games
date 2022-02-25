@@ -15,7 +15,8 @@ import { initialize } from '../../util/mobx-emitter-value'
 export const Game: GameComponent = observer((_props, ref) => {
   const pauseEmitter = usePressEmitter(pauseSetting)
   const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
-  const [touchButtonsPressed] = useState(() => settings.map(({ context }) => initialize<[boolean]>(context, [false])))
+  const [touchButtonsPressed] = useState(() =>
+    settings.map(({ context }) => initialize<[boolean]>(context, [false])))
   const screen = useScreen(pauseEmitter)
 
   // TODO - don't allow duplicate keybindings

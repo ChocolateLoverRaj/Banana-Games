@@ -32,17 +32,22 @@ const serviceWorkerRoute: FC = () => {
       {serviceWorkerSupported
         ? active !== undefined
           ? waiting !== undefined
-            ? <Result
+            ? (
+              <Result
                 status='info'
                 title='New Service Worker Ready'
                 extra={
-                  <Popconfirm title='Updating the service worker will require a reload' onConfirm={update}>
+                  <Popconfirm
+                    title='Updating the service worker will require a reload'
+                    onConfirm={update}
+                  >
                     <Button type='primary'>Update Now</Button>
                   </Popconfirm>
                 }
-              />
+              />)
             : checkForUpdatesError === undefined
-              ? <Result
+              ? (
+                <Result
                   status='success'
                   title='Registered Service Worker'
                   subTitle={
@@ -50,7 +55,7 @@ const serviceWorkerRoute: FC = () => {
                       Main website components are are available offline. Go to {' '}
                       <Link to=''>all games</Link> to download games.
                     </>
-                }
+                  }
                   extra={
                     <Button
                       onClick={checkForUpdates}
@@ -58,17 +63,23 @@ const serviceWorkerRoute: FC = () => {
                     >
                       Check for updates
                     </Button>
-                }
-                />
-              : <ErrorResult
+                  }
+                />)
+              : (
+                <ErrorResult
                   error={checkForUpdatesError}
                   title='Error Checking For Updates'
                   retry={checkForUpdates}
                   cancel={resetCheckForUpdates}
-                />
+                />)
           : state !== 'rejected'
             ? <Result icon={<LoadingOutlined />} title='Registering Service Worker' />
-            : <ErrorResult error={error ?? new window.Error('hi')} title='Error Registering Service Worker' retry={retry} />
+            : (
+              <ErrorResult
+                error={error ?? new window.Error('hi')}
+                title='Error Registering Service Worker'
+                retry={retry}
+              />)
         : <ServiceWorkerNotSupported />}
     </>
   )

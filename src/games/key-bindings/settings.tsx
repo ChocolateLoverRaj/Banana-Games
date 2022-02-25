@@ -1,4 +1,9 @@
-import { booleanGameSettingFns, Context, Data, initializeData } from '../../util/boolean-game-settings'
+import {
+  booleanGameSettingFns,
+  Context,
+  Data,
+  initializeData
+} from '../../util/boolean-game-settings'
 import {
   UpOutlined,
   DownOutlined,

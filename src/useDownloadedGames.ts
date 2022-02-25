@@ -57,7 +57,8 @@ const useDownloadedGames = (
     }
   }, [downloadedGamesPromise])
 
-  const retry = useCallback<Retry>(() => setDownloadedGamesPromise(getDownloadedGames()), [getDownloadedGames])
+  const retry = useCallback<Retry>(() =>
+    setDownloadedGamesPromise(getDownloadedGames()), [getDownloadedGames])
 
   // Load initially
   useEffect(retry, [retry])

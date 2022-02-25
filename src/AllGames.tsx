@@ -8,7 +8,12 @@ import { Link } from 'react-router-dom'
 import GlobalStateContext from './GlobalStateContext'
 import ErrorResult from './ErrorResult'
 import { DownloadState } from './useDownloadedGames'
-import { CheckOutlined, LoadingOutlined, DownloadOutlined, CloseCircleFilled } from '@ant-design/icons'
+import {
+  CheckOutlined,
+  LoadingOutlined,
+  DownloadOutlined,
+  CloseCircleFilled
+} from '@ant-design/icons'
 import ErrorLogger from './ErrorLogger'
 import GameTags from './GameTags'
 import { css } from '@emotion/css'
@@ -79,7 +84,10 @@ const AllGames: FC = () => {
                   switch (downloadedGames?.get(url)) {
                     case DownloadState.DOWNLOADED:
                       return (
-                        <Popconfirm title='Remove game?' onConfirm={removeGame.bind(undefined, url)}>
+                        <Popconfirm
+                          title='Remove game?'
+                          onConfirm={removeGame.bind(undefined, url)}
+                        >
                           <Button type='text'><CheckOutlined /></Button>
                         </Popconfirm>
                       )
