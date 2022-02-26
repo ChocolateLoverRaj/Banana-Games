@@ -17,6 +17,12 @@ interface GameSettingFns<Data, Context> {
     render: (param: CommonParam<Data, Context>, options: RenderScreenRectOptions) =>
     ReactNode
   }
+  save?: {
+    getDbVersion: (param: CommonParam<Data, Context>) => number
+    upgrade: (param: CommonParam<Data, Context>, previousVersion: number) => Promise<void>
+    save: (param: CommonParam<Data, Context>) => Promise<void>
+    load: (param: CommonParam<Data, Context>) => Promise<void>
+  }
 }
 
 export default GameSettingFns
