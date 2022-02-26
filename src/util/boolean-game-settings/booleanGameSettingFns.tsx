@@ -55,7 +55,6 @@ const booleanGameSettingFns: GameSettingFns<Data, Context> = {
       data.screenRects = clone(defaultButtons)
     }
   },
-
   renderEdit: ({ data: { keyBindings } }) => <KeyBindings keyboard={keyBindings} />
 }
 
