@@ -10,8 +10,10 @@ const message = 'Are you sure you want to exit the game?'
 const WarnLeaveGame: FC = () => {
   const [warnBeforeLeavingGame] = usePromise<boolean>(async () => {
     const db = (await openDb(settingsDbOptions))
-    return await db.transaction(['settings'], 'readonly').objectStore('settings')
+    const settingPromise = db.transaction(['settings'], 'readonly').objectStore('settings')
       .get('warnBeforeLeavingGame')
+    db.close()
+    return await settingPromise
   }, [])
 
   useBeforeunload(() => warnBeforeLeavingGame === true ? message : undefined)

@@ -15,13 +15,15 @@ const usePausedWhenNotVisible = (): UsePausedWhenNotVisibleResult => {
   return usePromise<GameSettings>(async () => {
     const db = await openDb(settingsDbOptions)
     const store = db.transaction(['settings'], 'readonly').objectStore('settings')
-    const [
-      pausedWhenNotVisible,
-      touchScreen
-    ] = await Promise.all([
+    const settingsPromise = Promise.all([
       store.get('pausedWhenNotVisible'),
       store.get('touchScreen')
     ])
+    db.close()
+    const [
+      pausedWhenNotVisible,
+      touchScreen
+    ] = await settingsPromise
     return {
       pausedWhenNotVisible,
       touchScreen

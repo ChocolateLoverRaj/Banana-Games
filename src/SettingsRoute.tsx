@@ -14,16 +14,21 @@ import settingsDbOptions from './settingsDbOptions'
 const SettingsRoute: FC = () => {
   const [settings, error] = usePromise<object>(async () => {
     const db = await openDb(settingsDbOptions)
-    return await storeToObject(
+    const settingsPromise = storeToObject(
       db.transaction(['settings'], 'readonly').objectStore('settings'))
+    db.close()
+    return await settingsPromise
   }, [])
   const savePromises = useMapState(new Map<string, Promise<void>>())
   const saveErrors = useMapState(new Map<string, Error>())
   const handleChange: FormProps['onFieldsChange'] = ([{ name, value }]) => {
     const key = (name as NamePath)[0]
     savePromises.set(key, (async () => {
-      const transaction = (await openDb(settingsDbOptions)).transaction(['settings'], 'readwrite')
-      await transaction.objectStore('settings').put?.(value, key)
+      const db = await openDb(settingsDbOptions)
+      const transaction = db.transaction(['settings'], 'readwrite')
+      const writePromise = transaction.objectStore('settings').put?.(value, key)
+      db.close()
+      await writePromise
     })())
   }
   useEffect(() => {
