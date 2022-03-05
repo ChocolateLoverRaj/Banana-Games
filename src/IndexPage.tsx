@@ -6,8 +6,6 @@ import GlobalStateContext from './GlobalStateContext'
 import useServiceWorker from './util/useServiceWorker'
 import { message } from 'antd'
 import useDownloadedGames from './useDownloadedGames'
-import { IndexedDbProvider } from './util/use-indexed-db'
-import settingsDb from './settingsDb'
 import { css } from '@emotion/css'
 
 const IndexPage: FC = () => {
@@ -18,30 +16,9 @@ const IndexPage: FC = () => {
   const downloadedGames = useDownloadedGames(serviceWorker[10])
 
   return (
-    <IndexedDbProvider
-      dbs={new Map([[settingsDb, {
-        version: 3,
-        upgrade: async (db, previousVersion, _currentVersion, transaction) => {
-          if (previousVersion === 0) {
-            const store = db.createObjectStore('settings')
-            await Promise.all([
-              store.add(true, 'pausedWhenNotVisible'),
-              store.add(true, 'warnBeforeLeavingGame'),
-              store.add(true, 'touchScreen')
-            ])
-          } else {
-            const store = transaction.objectStore('settings')
-            await Promise.all([
-              ...previousVersion === 1 ? [store.add(true, 'warnBeforeLeavingGame')] : [],
-              store.add(true, 'touchScreen')
-            ])
-          }
-        }
-      }]])}
-    >
-      <HashRouter hashType='noslash'>
-        <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
-          <div className={css`
+    <HashRouter hashType='noslash'>
+      <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
+        <div className={css`
             width: 100vw;
             height: 100vh;
             display: flex;
@@ -55,15 +32,14 @@ const IndexPage: FC = () => {
             > :nth-child(2) {
               flex: 1 1 auto;
             }`}
-          >
-            <div>
-              <Menu />
-            </div>
-            <Content />
+        >
+          <div>
+            <Menu />
           </div>
-        </GlobalStateContext.Provider>
-      </HashRouter>
-    </IndexedDbProvider>
+          <Content />
+        </div>
+      </GlobalStateContext.Provider>
+    </HashRouter>
   )
 }
 

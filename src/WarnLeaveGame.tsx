@@ -1,18 +1,18 @@
 import { FC } from 'react'
-import settingsDb from './settingsDb'
-import { useTransaction } from './util/use-indexed-db'
+import { openDb } from './util/indexed-db'
 import { useBeforeunload } from 'react-beforeunload'
 import usePromise from 'react-use-promise'
 import { Prompt } from 'react-router-dom'
+import settingsDbOptions from './settingsDbOptions'
 
 const message = 'Are you sure you want to exit the game?'
 
 const WarnLeaveGame: FC = () => {
-  const createTransaction = useTransaction(settingsDb)
-  // TODO: Show loading
-  const [warnBeforeLeavingGame] = usePromise<boolean>(async () =>
-    await (await createTransaction(['settings'], 'readonly')).objectStore('settings')
-      .get('warnBeforeLeavingGame'), [createTransaction])
+  const [warnBeforeLeavingGame] = usePromise<boolean>(async () => {
+    const db = (await openDb(settingsDbOptions))
+    return await db.transaction(['settings'], 'readonly').objectStore('settings')
+      .get('warnBeforeLeavingGame')
+  }, [])
 
   useBeforeunload(() => warnBeforeLeavingGame === true ? message : undefined)
 

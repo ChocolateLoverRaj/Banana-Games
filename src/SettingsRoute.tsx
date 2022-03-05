@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Form, Switch, Typography, Spin, FormProps } from 'antd'
-import { useTransaction } from './util/use-indexed-db'
-import settingsDb from './settingsDb'
+import { openDb } from './util/indexed-db'
 import usePromise from 'react-use-promise'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'
@@ -10,17 +9,20 @@ import storeToObject from './util/storeToObject'
 import { useMapState } from 'rooks'
 import { NamePath } from 'rc-field-form/lib/interface'
 import ThemeChooser from './ThemeChooser'
+import settingsDbOptions from './settingsDbOptions'
 
 const SettingsRoute: FC = () => {
-  const createTransaction = useTransaction(settingsDb)
-  const [settings, error] = usePromise<object>(async () => await storeToObject(
-    (await createTransaction(['settings'], 'readonly')).objectStore('settings')), [])
+  const [settings, error] = usePromise<object>(async () => {
+    const db = await openDb(settingsDbOptions)
+    return await storeToObject(
+      db.transaction(['settings'], 'readonly').objectStore('settings'))
+  }, [])
   const savePromises = useMapState(new Map<string, Promise<void>>())
   const saveErrors = useMapState(new Map<string, Error>())
   const handleChange: FormProps['onFieldsChange'] = ([{ name, value }]) => {
     const key = (name as NamePath)[0]
     savePromises.set(key, (async () => {
-      const transaction = await createTransaction(['settings'], 'readwrite')
+      const transaction = (await openDb(settingsDbOptions)).transaction(['settings'], 'readwrite')
       await transaction.objectStore('settings').put?.(value, key)
     })())
   }
@@ -68,8 +70,7 @@ const SettingsRoute: FC = () => {
                 >
                   <Switch loading={savePromises.has('touchScreen')} />
                 </Form.Item>
-              </Form>
-              )
+              </Form>)
             : <ErrorResult title='Error saving settings' error={new Error('not implemented')} />
           : error === undefined
             ? <Spin tip='Loading Settings' />
