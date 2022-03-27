@@ -30,13 +30,13 @@ const booleanGameSettingFns: GameSettingFns<Data, Context> = {
           ...htmlProps as any,
           ...isPlaying
             ? {
-              onTouchStart: action(() => {
-                emit(context, true)
-              }),
-              onTouchEnd: action(() => {
-                emit(context, false)
-              })
-            }
+                onTouchStart: action(() => {
+                  emit(context, true)
+                }),
+                onTouchEnd: action(() => {
+                  emit(context, false)
+                })
+              }
             : undefined
         }}
         {...{ style }}
