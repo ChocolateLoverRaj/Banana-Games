@@ -26,5 +26,7 @@ jobs:
         with:
           version: 6.31.0
           run_install: true
+      - name: Create index.js Files
+        run: pnpm run build:index-js
       - name: Run Lint
         run: pnpm run lint
