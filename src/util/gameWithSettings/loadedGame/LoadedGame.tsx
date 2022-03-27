@@ -1,11 +1,5 @@
 import { FC } from 'react'
-import LoadedGamePauseable from './LoadedGamePauseable'
-import { GameSettings as AllGameSettings } from '../useGameSettings'
-import { BaseGameProps } from '../BaseGame'
-
-export interface LoadedGameProps extends BaseGameProps {
-  allGameSettings: AllGameSettings
-}
+import { LoadedGamePauseable, LoadedGameProps } from '.'
 
 const LoadedGame: FC<LoadedGameProps> = ({
   children,
