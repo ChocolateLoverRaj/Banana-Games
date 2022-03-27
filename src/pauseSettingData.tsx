@@ -1,5 +1,5 @@
 import { PauseOutlined } from '@ant-design/icons'
-import { initializeData } from './util/boolean-game-settings'
+import { initializeData } from './util/booleanGameSettings'
 
 const pauseSettingData = initializeData(
   'Pause',

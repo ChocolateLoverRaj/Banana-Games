@@ -1,6 +1,6 @@
-import { initialize, Data, fns } from '../../util/select-game-setting'
+import { initialize, Data, fns } from '../../util/selectGameSetting'
 import { movenet } from '@tensorflow-models/pose-detection'
-import { GameSetting } from '../../util/game-setting'
+import { GameSetting } from '../../util/gameSetting'
 
 type TModelType = typeof movenet['modelType']
 type TData = TModelType[keyof TModelType]

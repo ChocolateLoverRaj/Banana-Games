@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Form, Switch, Typography, Spin, FormProps } from 'antd'
-import { openDb } from './util/indexed-db'
+import { openDb } from './util/indexedDb'
 import usePromise from 'react-use-promise'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'

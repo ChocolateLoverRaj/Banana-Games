@@ -1,4 +1,4 @@
-import { initialize } from '../../util/camera-game-setting'
+import { initialize } from '../../util/cameraGameSetting'
 
 const cameraSetting = initialize('Camera')
 

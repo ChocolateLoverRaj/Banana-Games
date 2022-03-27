@@ -3,14 +3,14 @@ import {
   Context,
   Data,
   initializeData
-} from '../../util/boolean-game-settings'
+} from '../../util/booleanGameSettings'
 import {
   UpOutlined,
   DownOutlined,
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons'
-import { GameSetting } from '../../util/game-setting'
+import { GameSetting } from '../../util/gameSetting'
 import pauseSetting from './pauseSetting'
 
 const arrowSize = 50

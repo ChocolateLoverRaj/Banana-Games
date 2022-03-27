@@ -108,3 +108,6 @@ public
 
 # Icons
 icons.html
+
+# Automatically Generated
+src/**/index.js

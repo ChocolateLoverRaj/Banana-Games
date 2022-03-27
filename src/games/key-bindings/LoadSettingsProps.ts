@@ -1,4 +1,4 @@
-import { Data as BooleanGameSettingData } from '../../util/boolean-game-settings'
+import { Data as BooleanGameSettingData } from '../../util/booleanGameSettings'
 import { PropsWithChildren } from 'react'
 
 type LoadSettingsProps = PropsWithChildren<{

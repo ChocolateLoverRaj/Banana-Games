@@ -1,10 +1,10 @@
 import pauseSetting from './pauseSetting'
-import { GameSetting } from '../../util/game-setting'
-import turretSetting from './turretSetting'
+import { GameSetting } from '../../util/gameSetting'
+import turretGameSetting from './turretGameSetting'
 
 const settings: ReadonlyArray<GameSetting<any, any>> = [
   pauseSetting,
-  turretSetting
+  turretGameSetting
 ]
 
 export default settings

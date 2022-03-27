@@ -1,20 +1,20 @@
 import GameComponent from '../../types/GameComponent'
 import { Typography } from 'antd'
 import arrayJoin from '../../util/arrayJoin'
-import { GameWithActions, ScreenEnum, useScreen } from '../../util/game-with-settings'
+import { GameWithActions, ScreenEnum, useScreen } from '../../util/gameWithSettings'
 import useComponentSize from '@rehooks/component-size'
 import pauseSettingData from '../../pauseSettingData'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
 import { observer } from 'mobx-react-lite'
-import { GameSetting } from '../../util/game-setting'
+import { GameSetting } from '../../util/gameSetting'
 import {
   Context,
   Data as BooleanSettingData,
   booleanGameSettingFns,
   usePressEmitter
-} from '../../util/boolean-game-settings'
-import { get } from '../../util/mobx-emitter-value'
+} from '../../util/booleanGameSettings'
+import { get } from '../../util/mobxEmitterValue'
 
 const context: Context = new Set()
 const settings: Array<GameSetting<BooleanSettingData, Context>> = [{

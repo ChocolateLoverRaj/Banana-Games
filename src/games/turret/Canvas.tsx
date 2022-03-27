@@ -3,9 +3,9 @@ import never from 'never'
 import { blue } from '@ant-design/colors'
 import { observable, runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
-import { getDataFromSetting, getAngle, start, stop } from './turret-setting/get-angle'
-import turretSetting from './turretSetting'
-import { Screen } from '../../util/game-with-settings'
+import { getDataFromSetting, getAngle, start, stop } from './turretSetting/getAngle'
+import turretGameSetting from './turretGameSetting'
+import { Screen } from '../../util/gameWithSettings'
 import { repeatedAnimationFrame } from 'repeated-animation-frame'
 
 const turretSize = 1 / 8
@@ -26,7 +26,7 @@ const Canvas: FC<CanvasProps> = ({ size, screen }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current ?? never()
-    const mobxAngle = getDataFromSetting(turretSetting, () => {
+    const mobxAngle = getDataFromSetting(turretGameSetting, () => {
       const { x, y } = canvas.getBoundingClientRect()
       return {
         x: x + size / 2,
@@ -39,7 +39,7 @@ const Canvas: FC<CanvasProps> = ({ size, screen }) => {
     const stopRaf = repeatedAnimationFrame(() => {
       const size = sizeBoxed.get()
       const ctx = (canvas).getContext('2d') ??
-      never()
+        never()
       ctx.fillStyle = blue.primary ?? never()
 
       ctx.clearRect(0, 0, size, size)

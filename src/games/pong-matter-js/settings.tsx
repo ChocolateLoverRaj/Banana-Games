@@ -1,5 +1,5 @@
-import { Context, Data } from '../../util/boolean-game-settings'
-import { GameSetting } from '../../util/game-setting'
+import { Context, Data } from '../../util/booleanGameSettings'
+import { GameSetting } from '../../util/gameSetting'
 import paddle0Down from './paddle0Down'
 import paddle0Up from './paddle0Up'
 import paddle1Down from './paddle1Down'

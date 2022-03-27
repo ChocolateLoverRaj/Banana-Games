@@ -1,4 +1,4 @@
-import { Context } from '../../util/boolean-game-settings'
+import { Context } from '../../util/booleanGameSettings'
 
 const pauseContext: Context = new Set()
 

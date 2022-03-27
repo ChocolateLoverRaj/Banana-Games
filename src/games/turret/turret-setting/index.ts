@@ -1,6 +1,0 @@
-export { default as fns } from './fns'
-export { default as ControlType } from './ControlType'
-export * as getAngle from './get-angle'
-export { default as initialize } from './initialize'
-export { default as Data } from './Data'
-export { default as Context } from './Context'

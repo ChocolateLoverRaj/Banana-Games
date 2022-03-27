@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import useComponentSize from '@rehooks/component-size'
 import GameComponent from '../../types/GameComponent'
-import { GameWithActions } from '../../util/game-with-settings'
+import { GameWithActions } from '../../util/gameWithSettings'
 import { css } from '@emotion/css'
 import borderStyles from '../../borderStyles'
 

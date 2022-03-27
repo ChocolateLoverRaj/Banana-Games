@@ -10,6 +10,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "webpack serve",
+    "build:index-js": "create-index-js -i \"\" src -c dirs.txt --filesConfig files.txt",
     "build:logo": "node -r ts-node/register src/buildLogo",
     "build:webpack": "webpack --progress"
   },
@@ -72,6 +73,7 @@
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@programmerraj/create-index-js": "^5.0.0",
     "@types/appgeist__ensure-dir": "^1.1.0",
     "@types/arr-diff": "^4.0.0",
     "@types/bind-args": "^0.2.0",

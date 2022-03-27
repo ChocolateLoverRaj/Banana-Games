@@ -1,5 +1,5 @@
 import { RefObject } from 'react'
-import { Screen } from '../../util/game-with-settings'
+import { Screen } from '../../util/gameWithSettings'
 
 interface IGameContext {
   gameRef: RefObject<HTMLDivElement>

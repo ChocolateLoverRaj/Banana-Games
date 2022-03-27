@@ -1,0 +1,2 @@
+**/*.+(js|jsx|ts|tsx)
+!/games/flame-jump/detectorWorker/detectorWorker.ts

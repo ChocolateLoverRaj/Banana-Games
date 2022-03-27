@@ -1,6 +1,6 @@
 import { ReactNode, FC, useState } from 'react'
 import { Button, Space } from 'antd'
-import ScreenEmitter from './util/game-with-settings/ScreenEmitter'
+import ScreenEmitter from './util/gameWithSettings/ScreenEmitter'
 import { useEmitHandler } from 'emitter2'
 
 export type OnClose = () => void
@@ -35,8 +35,7 @@ const PausedMenu: FC<PausedMenuProps> = ({ onClose, children, screenEmitter }) =
           <Space direction='vertical'>
             {subMenu.content}
             <Button onClick={setCurrentSubMenu.bind(undefined, undefined)}>Back</Button>
-          </Space>
-          )
+          </Space>)
         : (
           <Space direction='vertical'>
             {children.map(({ title, icon }) =>
@@ -48,8 +47,7 @@ const PausedMenu: FC<PausedMenuProps> = ({ onClose, children, screenEmitter }) =
                 {title}
               </Button>)}
             <Button onClick={onClose}>Resume</Button>
-          </Space>
-          )}
+          </Space>)}
     </>
   )
 }

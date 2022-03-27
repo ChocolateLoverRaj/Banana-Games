@@ -1,5 +1,5 @@
 import settingsDb from './settingsDb'
-import { Db } from './util/indexed-db'
+import { Db } from './util/indexedDb'
 
 const settingsDbOptions: Db<any> = {
   name: settingsDb,

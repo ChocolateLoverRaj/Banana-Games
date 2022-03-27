@@ -21,7 +21,8 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "module": "es2020"
+    "module": "ES2020",
+    "checkJs": true
   },
   "ts-node": {
     "compilerOptions": {

@@ -1,5 +1,0 @@
-export { default as Data } from './Data'
-export { default as Edit } from './Edit'
-export { default as requestCamera } from './requestCamera'
-export { default as fns } from './fns'
-export { default as initialize } from './initialize'

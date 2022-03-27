@@ -19,17 +19,17 @@ import {
 import { repeatedAnimationFrame } from 'repeated-animation-frame'
 import DetectorLoadedProps from './DetectorLoadedProps'
 import GameContext from './GameContext'
-import { initialize as initializeJump } from '../../util/pose-detection-jump'
+import { initialize as initializeJump } from '../../util/poseDetectionJump'
 import never from 'never'
-import tick from '../../util/pose-detection-jump/tick'
-import { initialize as initializeThreePose, update } from './three-pose'
+import tick from '../../util/poseDetectionJump/tick'
+import { initialize as initializeThreePose, update } from './threePose'
 import { SupportedModels, calculators } from '@tensorflow-models/pose-detection'
 import flipKeypointsX from '../../util/flipKeypointsX'
 import { autorunCleanup } from 'mobx-autorun-cleanup'
-import { get } from '../../util/mobx-emitter-value'
-import { ScreenEnum } from '../../util/game-with-settings'
+import { get } from '../../util/mobxEmitterValue'
+import { ScreenEnum } from '../../util/gameWithSettings'
 import { message } from 'antd'
-import { initialize, estimatePoses } from './detector-worker/estimate-poses'
+import { initialize, estimatePoses } from './detectorWorker/estimatePoses'
 
 const aspectRatio = { width: 16, height: 9 }
 

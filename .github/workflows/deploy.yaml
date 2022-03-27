@@ -24,6 +24,7 @@ jobs:
           run_install: true
       - run: |
           pnpm build:logo
+          pnpm build:index-js
           pnpm build:webpack
         env:
           NODE_ENV: production

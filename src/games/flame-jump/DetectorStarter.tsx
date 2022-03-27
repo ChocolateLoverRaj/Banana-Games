@@ -1,10 +1,10 @@
 import { useEffect, useState, ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
-import { Data, initialize, switchCase } from '../../util/mobx-observable-promise'
+import { Data, initialize, switchCase } from '../../util/mobxObservablePromise'
 import '@tensorflow/tfjs-backend-webgl'
 import DetectorStarterProps from './DetectorStarterProps'
 import DetectorLoaded from './DetectorLoaded'
-import { useCleanupLater } from '../../util/use-cleanup-later'
+import { useCleanupLater } from '../../util/useCleanupLater'
 import { autorun } from 'mobx'
 import modelTypeSetting from './modelTypeSetting'
 import awaitWorkerSuccess from './awaitWorkerSuccess'
@@ -16,7 +16,7 @@ const DetectorStarter = observer<DetectorStarterProps>(props => {
   const cleanupLater = useCleanupLater()
   useEffect(() => setPromise(initialize((async () => {
     const worker = new Worker(new URL(
-      './detector-worker/detectorWorker.ts', import.meta.url), { type: 'module' })
+      './detectorWorker/detectorWorker.ts', import.meta.url), { type: 'module' })
     await awaitWorkerSuccess(worker)
     const stopAutorun = autorun(() => {
       worker.postMessage(modelTypeSetting.data.selectedOption)

@@ -3,11 +3,11 @@ import {
   booleanGameSettingFns,
   Context as BooleanContext,
   Data as BooleanData
-} from '../../util/boolean-game-settings'
+} from '../../util/booleanGameSettings'
 import pauseSettingData from '../../pauseSettingData'
-import { GameSetting } from '../../util/game-setting'
+import { GameSetting } from '../../util/gameSetting'
 import pauseContext from './pauseContext'
-import { Data, fns as cameraFns } from '../../util/camera-game-setting'
+import { Data, fns as cameraFns } from '../../util/cameraGameSetting'
 import cameraSettingData from './cameraSetting'
 import modelTypeSetting from './modelTypeSetting'
 

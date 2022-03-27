@@ -1,4 +1,4 @@
-import { WorkerToPage } from './detector-worker'
+import { WorkerToPage } from './detectorWorker'
 
 const awaitWorkerSuccess = async (worker: Worker): Promise<void> => {
   await new Promise<void>((resolve, reject) => {

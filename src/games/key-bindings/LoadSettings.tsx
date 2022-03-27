@@ -3,9 +3,9 @@ import LoadSettingsProps from './LoadSettingsProps'
 import { Progress } from 'antd'
 import { css } from '@emotion/css'
 import { useState, useEffect } from 'react'
-import { AutoSaveData, start, stop } from '../../util/boolean-game-settings/auto-save'
-import { initialize, getState, PromiseState } from '../../util/mobx-observable-promise'
-import { load } from '../../util/boolean-game-settings/save'
+import { AutoSaveData, start, stop } from '../../util/booleanGameSettings/autoSave'
+import { initialize, getState, PromiseState } from '../../util/mobxObservablePromise'
+import { load } from '../../util/booleanGameSettings/save'
 
 const LoadSettings = observer<LoadSettingsProps>(({ settings, idPrefix, children }) => {
   const [autoSaves] = useState<readonly AutoSaveData[]>(() => settings.map(setting => ({

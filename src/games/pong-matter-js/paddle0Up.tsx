@@ -3,8 +3,8 @@ import {
   Context,
   Data,
   initializeData
-} from '../../util/boolean-game-settings'
-import { GameSetting } from '../../util/game-setting'
+} from '../../util/booleanGameSettings'
+import { GameSetting } from '../../util/gameSetting'
 import { CaretUpOutlined } from '@ant-design/icons'
 import buttonSize from './buttonSize'
 

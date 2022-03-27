@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { openDb } from './util/indexed-db'
+import { openDb } from './util/indexedDb'
 import { useBeforeunload } from 'react-beforeunload'
 import usePromise from 'react-use-promise'
 import { Prompt } from 'react-router-dom'

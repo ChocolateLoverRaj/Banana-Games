@@ -22,7 +22,7 @@ const subRoute = process.env.GITHUB_REPOSITORY !== undefined
 const config: Configuration = {
   mode: isProduction ? 'production' : 'development',
   entry: {
-    app: './src/index.tsx',
+    app: './src/main.tsx',
     serviceWorker: './src/serviceWorker.ts'
   },
   devtool: 'source-map',

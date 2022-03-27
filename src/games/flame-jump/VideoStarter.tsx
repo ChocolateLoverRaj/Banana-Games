@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import VideoStarterProps from './VideoStarterProps'
 import { useRef, useState, useEffect } from 'react'
-import { Data, initialize, switchCase } from '../../util/mobx-observable-promise'
+import { Data, initialize, switchCase } from '../../util/mobxObservablePromise'
 import never from 'never'
 import { Typography } from 'antd'
 import DetectorStarter from './DetectorStarter'

@@ -1,6 +1,6 @@
 import GameComponent from '../../types/GameComponent'
 import { observer } from 'mobx-react-lite'
-import { GameWithActions, useScreen } from '../../util/game-with-settings'
+import { GameWithActions, useScreen } from '../../util/gameWithSettings'
 import settings from './settings'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
@@ -9,7 +9,7 @@ import getScaledSize from '../../util/getScaledSize'
 import farContainerStyles from '../../farContainerStyles'
 import farStyles from '../../farStyles'
 import Canvas from './Canvas'
-import { usePressEmitter } from '../../util/boolean-game-settings'
+import { usePressEmitter } from '../../util/booleanGameSettings'
 import pauseSetting from './pauseSetting'
 
 export const Game: GameComponent = observer((_props, ref) => {
