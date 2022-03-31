@@ -3,26 +3,22 @@ import LoadSettingsProps from './LoadSettingsProps'
 import { Progress } from 'antd'
 import { css } from '@emotion/css'
 import { useState, useEffect } from 'react'
-import { AutoSaveData, start, stop } from '../../util/booleanGameSettings/autoSave'
-import { initialize, getState, PromiseState } from '../../util/mobxObservablePromise'
-import { load } from '../../util/booleanGameSettings/save'
+import { initialize, getState, PromiseState } from '../mobxObservablePromise'
 
-const LoadSettings = observer<LoadSettingsProps>(({ settings, idPrefix, children }) => {
-  const [autoSaves] = useState<readonly AutoSaveData[]>(() => settings.map(setting => ({
-    saveData: {
-      settings: setting,
-      id: `${idPrefix}-${setting.name}`
-    }
-  })))
+const LoadSettings = observer<LoadSettingsProps>(({ settings, children }) => {
   useEffect(() => {
-    autoSaves.map(start)
+    settings.forEach(({ autoSaveData, saveFns: { autoSave: { start } } }) => {
+      start(autoSaveData)
+    })
     return () => {
-      autoSaves.map(stop)
+      settings.forEach(({ autoSaveData, saveFns: { autoSave: { stop } } }) => {
+        stop(autoSaveData)
+      })
     }
   }, [])
 
   const [loadPromises] = useState(() =>
-    autoSaves.map(autoSave => initialize(load(autoSave.saveData))))
+    settings.map(({ saveData, saveFns: { load } }) => initialize(load(saveData))))
 
   const nLoaded = loadPromises.reduce(
     (count, loadPromise) => count + Number(getState(loadPromise) === PromiseState.RESOLVED), 0)

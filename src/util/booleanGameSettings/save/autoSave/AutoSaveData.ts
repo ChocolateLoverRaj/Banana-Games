@@ -1,5 +1,5 @@
 import { IReactionDisposer } from 'mobx'
-import { SaveData } from '../save'
+import { SaveData } from '..'
 import { IDBPDatabase } from 'idb'
 
 interface AutoSaveData {

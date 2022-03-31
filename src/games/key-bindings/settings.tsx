@@ -1,7 +1,5 @@
 import {
-  booleanGameSettingFns,
-  Context,
-  Data,
+  allFns,
   initializeData
 } from '../../util/booleanGameSettings'
 import {
@@ -10,14 +8,15 @@ import {
   LeftOutlined,
   RightOutlined
 } from '@ant-design/icons'
-import { GameSetting } from '../../util/gameSetting'
+import { GameSettingDataAndAllFns } from '../../util/gameSetting'
 import pauseSetting from './pauseSetting'
 
 const arrowSize = 50
 const arrowSpace = 10
 
-const settings: ReadonlyArray<GameSetting<Data, Context>> = [
-  pauseSetting, {
+const settings: Map<string, GameSettingDataAndAllFns> = new Map([
+  ['pause', pauseSetting],
+  ['up', {
     data: initializeData(
       'Up',
       new Set(['ArrowUp', 'KeyW']),
@@ -34,9 +33,9 @@ const settings: ReadonlyArray<GameSetting<Data, Context>> = [
         width: arrowSize,
         height: arrowSize
       }]),
-    context: new Set(),
-    fns: booleanGameSettingFns
-  }, {
+    fns: allFns
+  }],
+  ['down', {
     data: initializeData(
       'Down',
       new Set(['ArrowDown', 'KeyS']),
@@ -53,9 +52,9 @@ const settings: ReadonlyArray<GameSetting<Data, Context>> = [
         width: arrowSize,
         height: arrowSize
       }]),
-    context: new Set(),
-    fns: booleanGameSettingFns
-  }, {
+    fns: allFns
+  }],
+  ['left', {
     data: initializeData(
       'Left',
       new Set(['ArrowLeft', 'KeyA']),
@@ -72,9 +71,9 @@ const settings: ReadonlyArray<GameSetting<Data, Context>> = [
         width: arrowSize,
         height: arrowSize
       }]),
-    context: new Set(),
-    fns: booleanGameSettingFns
-  }, {
+    fns: allFns
+  }],
+  ['right', {
     data: initializeData(
       'Right',
       new Set(['ArrowRight', 'KeyD']),
@@ -92,8 +91,8 @@ const settings: ReadonlyArray<GameSetting<Data, Context>> = [
         height: arrowSize
       }]
     ),
-    context: new Set(),
-    fns: booleanGameSettingFns
+    fns: allFns
   }]
+])
 
 export default settings

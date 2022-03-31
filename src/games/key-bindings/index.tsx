@@ -6,33 +6,58 @@ import { css } from '@emotion/css'
 import { observer } from 'mobx-react-lite'
 import centerStyles from '../../centerStyles'
 import settings from './settings'
-import { mobxIsInputPressed, usePressEmitter } from '../../util/booleanGameSettings'
+import {
+  mobxIsInputPressed,
+  usePressEmitter
+} from '../../util/booleanGameSettings'
 import pauseSetting from './pauseSetting'
 import MobxKeysPressed from '../../util/MobxKeysPressed'
 import { useState } from 'react'
 import { initialize as initializeEmitterValue } from '../../util/mobxEmitterValue'
-import LoadSettings from './LoadSettings'
+import { LoadSettings, SavableGameSetting } from '../../util/loadSettings'
+import { mapMapValues } from '../../util/mapMapValues'
+import never from 'never'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const pauseEmitter = usePressEmitter(pauseSetting)
+  const [contextSettings] = useState(() =>
+    mapMapValues(settings, ({ data, fns }) => ({ context: fns.initializeContext(), data, fns })))
+  const pauseEmitter = usePressEmitter({
+    context: new Set(),
+    data: pauseSetting.data
+  })
   const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
-  const [touchButtonsPressed] = useState(() =>
-    settings.map(({ context }) => initializeEmitterValue<[boolean]>(context, [false])))
+  const [touchButtonsPressed] = useState(() => mapMapValues(contextSettings, ({ context }) =>
+    initializeEmitterValue<[boolean]>(context, [false])))
   const screen = useScreen(pauseEmitter)
+
+  const [savableGameSettings] = useState((): ReadonlyArray<SavableGameSetting<any, any>> =>
+    [...settings].map(([id, { data, fns }]) => {
+      const saveData = fns.initializeSaveData({ settingData: data, id: `key-bindings-${id}` })
+      return {
+        saveFns: fns.saveFns,
+        saveData: saveData,
+        autoSaveData: fns.initializeAutoSaveData(saveData)
+      }
+    }))
 
   // TODO - don't allow duplicate keybindings
   return (
     <GameWithActions
-      {...{ ref, settings, screen }}
+      {...{ ref, screen }}
+      settings={[...contextSettings.values()].map(({ context, data, fns }) =>
+        ({ context, data, fns: fns.coreFns }))}
       className={css(centerStyles)}
     >
-      <LoadSettings settings={settings.map(setting => setting.data)} idPrefix='key-bindings'>
+      <LoadSettings settings={savableGameSettings}>
         <div>
           <h1>Pressed Keys</h1>
-          {settings.map(({ data }, index) =>
+          {[...contextSettings].map(([key, { data }]) =>
             <Tag.CheckableTag
-              key={data.name}
-              checked={mobxIsInputPressed(data, touchButtonsPressed[index], mobxKeysPressed)}
+              key={key}
+              checked={mobxIsInputPressed(
+                data,
+                touchButtonsPressed.get(key) ?? never(),
+                mobxKeysPressed)}
             >
               {data.name}
             </Tag.CheckableTag>)}

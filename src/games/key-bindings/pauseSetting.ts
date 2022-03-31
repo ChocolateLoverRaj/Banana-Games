@@ -1,11 +1,10 @@
 import pauseSettingData from '../../pauseSettingData'
-import { booleanGameSettingFns, Context, Data } from '../../util/booleanGameSettings'
-import { GameSetting } from '../../util/gameSetting'
+import { allFns } from '../../util/booleanGameSettings'
+import { GameSettingDataAndAllFns } from '../../util/gameSetting'
 
-const pauseSetting: GameSetting<Data, Context> = {
+const pauseSetting: GameSettingDataAndAllFns = {
   data: pauseSettingData,
-  context: new Set(),
-  fns: booleanGameSettingFns
+  fns: allFns
 }
 
 export default pauseSetting

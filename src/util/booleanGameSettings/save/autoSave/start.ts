@@ -1,6 +1,6 @@
 import { reaction, toJS } from 'mobx'
 import AutoSaveData from './AutoSaveData'
-import { openSettingDb } from '../save'
+import { openSettingDb } from '..'
 
 const start = (autoSave: AutoSaveData): void => {
   const { saveData: { settings }, saveData } = autoSave
