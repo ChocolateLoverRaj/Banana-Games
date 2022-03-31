@@ -16,10 +16,10 @@ import { initialize as initializeEmitterValue } from '../../util/mobxEmitterValu
 import { LoadSettings, SavableGameSetting } from '../../util/loadSettings'
 import { mapMapValues } from '../../util/mapMapValues'
 import never from 'never'
+import { useSettingsWithContext } from '../../util/useSettingsWithContext'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const [settingsWithContext] = useState(() =>
-    mapMapValues(settings, ({ data, fns }) => ({ context: fns.initializeContext(), data, fns })))
+  const settingsWithContext = useSettingsWithContext(settings)
   const pauseSettingWithContext = settingsWithContext.get('pause') ?? never()
   const pauseEmitter = usePressEmitter({
     context: pauseSettingWithContext.context,
