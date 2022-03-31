@@ -9,13 +9,13 @@ import {
   RightOutlined
 } from '@ant-design/icons'
 import { GameSettingDataAndAllFns } from '../../util/gameSetting'
-import pauseSetting from './pauseSetting'
+import pauseSettingDataAndAllFns from '../../pauseSettingDataAndAllFns'
 
 const arrowSize = 50
 const arrowSpace = 10
 
 const settings: Map<string, GameSettingDataAndAllFns> = new Map([
-  ['pause', pauseSetting],
+  ['pause', pauseSettingDataAndAllFns],
   ['up', {
     data: initializeData(
       'Up',

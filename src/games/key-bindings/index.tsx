@@ -10,7 +10,6 @@ import {
   mobxIsInputPressed,
   usePressEmitter
 } from '../../util/booleanGameSettings'
-import pauseSetting from './pauseSetting'
 import MobxKeysPressed from '../../util/MobxKeysPressed'
 import { useState } from 'react'
 import { initialize as initializeEmitterValue } from '../../util/mobxEmitterValue'
@@ -21,9 +20,10 @@ import never from 'never'
 export const Game: GameComponent = observer((_props, ref) => {
   const [contextSettings] = useState(() =>
     mapMapValues(settings, ({ data, fns }) => ({ context: fns.initializeContext(), data, fns })))
+  const pauseSettingWithContext = contextSettings.get('pause') ?? never()
   const pauseEmitter = usePressEmitter({
-    context: new Set(),
-    data: pauseSetting.data
+    context: pauseSettingWithContext.context,
+    data: pauseSettingWithContext.data
   })
   const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
   const [touchButtonsPressed] = useState(() => mapMapValues(contextSettings, ({ context }) =>
