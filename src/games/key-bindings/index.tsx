@@ -18,15 +18,15 @@ import { mapMapValues } from '../../util/mapMapValues'
 import never from 'never'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const [contextSettings] = useState(() =>
+  const [settingsWithContext] = useState(() =>
     mapMapValues(settings, ({ data, fns }) => ({ context: fns.initializeContext(), data, fns })))
-  const pauseSettingWithContext = contextSettings.get('pause') ?? never()
+  const pauseSettingWithContext = settingsWithContext.get('pause') ?? never()
   const pauseEmitter = usePressEmitter({
     context: pauseSettingWithContext.context,
     data: pauseSettingWithContext.data
   })
   const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
-  const [touchButtonsPressed] = useState(() => mapMapValues(contextSettings, ({ context }) =>
+  const [touchButtonsPressed] = useState(() => mapMapValues(settingsWithContext, ({ context }) =>
     initializeEmitterValue<[boolean]>(context, [false])))
   const screen = useScreen(pauseEmitter)
 
@@ -44,14 +44,14 @@ export const Game: GameComponent = observer((_props, ref) => {
   return (
     <GameWithActions
       {...{ ref, screen }}
-      settings={[...contextSettings.values()].map(({ context, data, fns }) =>
+      settings={[...settingsWithContext.values()].map(({ context, data, fns }) =>
         ({ context, data, fns: fns.coreFns }))}
       className={css(centerStyles)}
     >
       <LoadSettings settings={savableGameSettings}>
         <div>
           <h1>Pressed Keys</h1>
-          {[...contextSettings].map(([key, { data }]) =>
+          {[...settingsWithContext].map(([key, { data }]) =>
             <Tag.CheckableTag
               key={key}
               checked={mobxIsInputPressed(
