@@ -6,46 +6,33 @@ import { css } from '@emotion/css'
 import { observer } from 'mobx-react-lite'
 import centerStyles from '../../centerStyles'
 import settings from './settings'
-import {
-  mobxIsInputPressed,
-  usePressEmitter
-} from '../../util/booleanGameSettings'
+import { mobxIsInputPressed } from '../../util/booleanGameSettings'
 import MobxKeysPressed from '../../util/MobxKeysPressed'
 import { useState } from 'react'
 import { initialize as initializeEmitterValue } from '../../util/mobxEmitterValue'
-import { LoadSettings, SavableGameSetting } from '../../util/loadSettings'
+import { LoadSettings } from '../../util/loadSettings'
 import { mapMapValues } from '../../util/mapMapValues'
 import never from 'never'
 import { useSettingsWithContext } from '../../util/useSettingsWithContext'
+import usePauseEmitter from '../../util/usePauseEmitter'
+import getSettingsForGame from '../../util/getSettingForGame'
+import useSavableGameSettings from '../../util/useSavableGameSettings'
 
 export const Game: GameComponent = observer((_props, ref) => {
   const settingsWithContext = useSettingsWithContext(settings)
-  const pauseSettingWithContext = settingsWithContext.get('pause') ?? never()
-  const pauseEmitter = usePressEmitter({
-    context: pauseSettingWithContext.context,
-    data: pauseSettingWithContext.data
-  })
+  const pauseEmitter = usePauseEmitter(settingsWithContext, 'pause')
   const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
   const [touchButtonsPressed] = useState(() => mapMapValues(settingsWithContext, ({ context }) =>
     initializeEmitterValue<[boolean]>(context, [false])))
   const screen = useScreen(pauseEmitter)
 
-  const [savableGameSettings] = useState((): ReadonlyArray<SavableGameSetting<any, any>> =>
-    [...settings].map(([id, { data, fns }]) => {
-      const saveData = fns.initializeSaveData({ settingData: data, id: `key-bindings-${id}` })
-      return {
-        saveFns: fns.saveFns,
-        saveData: saveData,
-        autoSaveData: fns.initializeAutoSaveData(saveData)
-      }
-    }))
+  const savableGameSettings = useSavableGameSettings(settings, 'key-bindings')
 
   // TODO - don't allow duplicate keybindings
   return (
     <GameWithActions
       {...{ ref, screen }}
-      settings={[...settingsWithContext.values()].map(({ context, data, fns }) =>
-        ({ context, data, fns: fns.coreFns }))}
+      settings={getSettingsForGame(settingsWithContext)}
       className={css(centerStyles)}
     >
       <LoadSettings settings={savableGameSettings}>

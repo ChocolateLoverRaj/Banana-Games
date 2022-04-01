@@ -1,7 +1,7 @@
-import { GameSetting } from '../../util/gameSetting'
-import { Context, Data, fns, initialize } from './turretSetting'
+import { GameSettingDataAndAllFns } from '../../util/gameSetting'
+import { allFns, initialize } from './turretSetting'
 
-const turretGameSetting: GameSetting<Data, Context> = {
+const turretGameSetting: GameSettingDataAndAllFns = {
   data: initialize(
     'Turret Rotation',
     {
@@ -16,8 +16,7 @@ const turretGameSetting: GameSetting<Data, Context> = {
         value: 50
       }
     }),
-  context: new Set(),
-  fns
+  fns: allFns
 }
 
 export default turretGameSetting

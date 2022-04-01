@@ -1,12 +1,12 @@
-import { FC, useRef, useEffect } from 'react'
+import { FC, useRef, useEffect, useContext } from 'react'
 import never from 'never'
 import { blue } from '@ant-design/colors'
 import { observable, runInAction } from 'mobx'
 import { useLocalObservable } from 'mobx-react-lite'
 import { getDataFromSetting, getAngle, start, stop } from './turretSetting/getAngle'
-import turretGameSetting from './turretGameSetting'
 import { Screen } from '../../util/gameWithSettings'
 import { repeatedAnimationFrame } from 'repeated-animation-frame'
+import GameContext from './GameContext'
 
 const turretSize = 1 / 8
 const gunSize = 0.8
@@ -18,6 +18,8 @@ export interface CanvasProps {
 }
 
 const Canvas: FC<CanvasProps> = ({ size, screen }) => {
+  const settingsWithContext = useContext(GameContext)
+
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const sizeBoxed = useLocalObservable(() => observable.box(size))
   runInAction(() => {
@@ -26,7 +28,11 @@ const Canvas: FC<CanvasProps> = ({ size, screen }) => {
 
   useEffect(() => {
     const canvas = canvasRef.current ?? never()
-    const mobxAngle = getDataFromSetting(turretGameSetting, () => {
+    const turretSetting = settingsWithContext.get('turret') ?? never()
+    const mobxAngle = getDataFromSetting({
+      data: turretSetting.data,
+      context: turretSetting.context
+    }, () => {
       const { x, y } = canvas.getBoundingClientRect()
       return {
         x: x + size / 2,

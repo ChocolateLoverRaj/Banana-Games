@@ -9,27 +9,40 @@ import getScaledSize from '../../util/getScaledSize'
 import farContainerStyles from '../../farContainerStyles'
 import farStyles from '../../farStyles'
 import Canvas from './Canvas'
-import { usePressEmitter } from '../../util/booleanGameSettings'
-import pauseSetting from './pauseSetting'
+import { useSettingsWithContext } from '../../util/useSettingsWithContext'
+import usePauseEmitter from '../../util/usePauseEmitter'
+import getSettingsForGame from '../../util/getSettingForGame'
+import GameContext from './GameContext'
+import { LoadSettings } from '../../util/loadSettings'
+import useSavableGameSettings from '../../util/useSavableGameSettings'
 
 export const Game: GameComponent = observer((_props, ref) => {
   const size = useComponentSize(ref as any)
   const scaledSize = getScaledSize(size, { width: 1, height: 1 })
-  const pauseEmitter = usePressEmitter(pauseSetting)
+
+  const settingsWithContext = useSettingsWithContext(settings)
+  const pauseEmitter = usePauseEmitter(settingsWithContext, 'pause')
   const screen = useScreen(pauseEmitter)
 
+  const savableGameSettings = useSavableGameSettings(settings, 'turret')
+
   return (
-    <GameWithActions
-      {...{ ref, settings, screen }}
-      className={css(centerStyles, farContainerStyles)}
-    >
-      <div
-        className={css(farStyles)}
-        style={scaledSize}
+    <GameContext.Provider value={settingsWithContext}>
+      <GameWithActions
+        {...{ ref, screen }}
+        className={css(centerStyles, farContainerStyles)}
+        settings={getSettingsForGame(settingsWithContext)}
       >
-        <Canvas size={scaledSize.width} screen={screen} />
-      </div>
-    </GameWithActions>
+        <LoadSettings settings={savableGameSettings}>
+          <div
+            className={css(farStyles)}
+            style={scaledSize}
+          >
+            <Canvas size={scaledSize.width} screen={screen} />
+          </div>
+        </LoadSettings>
+      </GameWithActions>
+    </GameContext.Provider>
   )
 }, { forwardRef: true })
 
