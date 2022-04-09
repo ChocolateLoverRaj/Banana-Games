@@ -30,7 +30,6 @@ const useServiceWorker = (
 ): UseServiceWorkerResult => {
   const [registerPromise, setRegisterPromise] =
     useState<Promise<ServiceWorkerRegistration | undefined>>(Promise.resolve(undefined))
-  // TODO
   const [registration, registrationError, registrationState] =
     usePromise(registerPromise, [registerPromise])
 
