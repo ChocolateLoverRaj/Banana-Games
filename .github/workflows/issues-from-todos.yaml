@@ -1,0 +1,14 @@
+name: Create Issues From TODO Comments
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: alstr/todo-to-issue-action@v4.6.3
+        id: todo
+        with:
+          AUTO_P: false
