@@ -59,7 +59,6 @@ const config: Configuration = {
       include: 'serviceWorker',
       raw: true
     }),
-    // TODO: Only use necessary stats
     new StatsWriterPlugin({
       stats: 'chunkGroup',
       transform: ({ namedChunkGroups }) => {
