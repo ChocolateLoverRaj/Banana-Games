@@ -1,55 +1,40 @@
 import GameComponent from '../../types/GameComponent'
-import { Tag, Typography } from 'antd'
+import { Typography } from 'antd'
 import config from '../../config.json'
-import { GameWithActions, useScreen } from '../../util/gameWithSettings'
+import { GameWithActions } from '../../util/gameWithSettings'
 import { css } from '@emotion/css'
 import { observer } from 'mobx-react-lite'
 import centerStyles from '../../centerStyles'
 import settings from './settings'
-import { mobxIsInputPressed } from '../../util/booleanGameSettings'
-import MobxKeysPressed from '../../util/MobxKeysPressed'
-import { useState } from 'react'
-import { initialize as initializeEmitterValue } from '../../util/mobxEmitterValue'
-import { LoadSettings } from '../../util/loadSettings'
-import { mapMapValues } from '../../util/mapMapValues'
-import never from 'never'
-import { useSettingsWithContext } from '../../util/useSettingsWithContext'
-import usePauseEmitter from '../../util/usePauseEmitter'
-import getSettingsForGame from '../../util/getSettingForGame'
-import useSavableGameSettings from '../../util/useSavableGameSettings'
+import { useGameWithSettings } from '../../util/gameWithSettings/useGameWithSettings'
+import pauseSetting from './pauseSetting'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const settingsWithContext = useSettingsWithContext(settings)
-  const pauseEmitter = usePauseEmitter(settingsWithContext, 'pause')
-  const [mobxKeysPressed] = useState(() => new MobxKeysPressed())
-  const [touchButtonsPressed] = useState(() => mapMapValues(settingsWithContext, ({ context }) =>
-    initializeEmitterValue<[boolean]>(context, [false])))
-  const screen = useScreen(pauseEmitter)
-
-  const savableGameSettings = useSavableGameSettings(settings, 'key-bindings')
+  const game = useGameWithSettings({
+    settings,
+    pauseSetting,
+    idPrefix: 'key-bindings'
+  })
 
   // TODO - don't allow duplicate keybindings
   return (
     <GameWithActions
-      {...{ ref, screen }}
-      settings={getSettingsForGame(settingsWithContext)}
+      {...{ ref, game }}
       className={css(centerStyles)}
     >
-      <LoadSettings settings={savableGameSettings}>
-        <div>
-          <h1>Pressed Keys</h1>
-          {[...settingsWithContext].map(([key, { data }]) =>
-            <Tag.CheckableTag
-              key={key}
-              checked={mobxIsInputPressed(
-                data,
-                touchButtonsPressed.get(key) ?? never(),
-                mobxKeysPressed)}
-            >
-              {data.name}
-            </Tag.CheckableTag>)}
-        </div>
-      </LoadSettings>
+      <div>
+        <h1>Pressed Keys</h1>
+        {/* {[...settingsWithContext].map(([key, { defaultData: data }]) =>
+          <Tag.CheckableTag
+            key={key}
+            checked={mobxIsInputPressed(
+              data,
+              touchButtonsPressed.get(key) ?? never(),
+              mobxKeysPressed)}
+          >
+            {data.name}
+          </Tag.CheckableTag>)} */}
+      </div>
     </GameWithActions>
   )
 }, { forwardRef: true })

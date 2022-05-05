@@ -17,7 +17,7 @@ import { LoadSettings } from '../../util/loadSettings'
 import useSavableGameSettings from '../../util/useSavableGameSettings'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const size = useComponentSize(ref as any)
+  const size = useComponentSize(ref)
   const scaledSize = getScaledSize(size, { width: 1, height: 1 })
 
   const settingsWithContext = useSettingsWithContext(settings)

@@ -1,23 +1,24 @@
 import { FC } from 'react'
-import { LoadedGamePauseable, LoadedGameProps } from '.'
+import { LoadedGameProps } from '.'
+import { Pauseable } from './Pauseable'
 
 const LoadedGame: FC<LoadedGameProps> = ({
   children,
   size,
   allGameSettings: gameSettings,
-  screen,
-  settings,
+  game,
   containerRef
 }) => {
   return (
     <>
-      {screen !== undefined
+      {game.referencePauseEmitter !== undefined
         ? (
-          <LoadedGamePauseable
-            {...{ settings, allGameSettings: gameSettings, size, screen, containerRef }}
+          <Pauseable
+            {...{ game, size, containerRef }}
+            allGameSettings={gameSettings}
           >
             {children}
-          </LoadedGamePauseable>)
+          </Pauseable>)
         : children}
     </>
   )

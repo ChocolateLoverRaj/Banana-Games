@@ -1,18 +1,15 @@
 import { openDb } from '../indexedDb'
-import usePromise from 'react-use-promise'
-import PromiseState from '../../types/PromiseState'
 import settingsDbOptions from '../../settingsDbOptions'
+import { create, ObservablePromise } from '../ObservablePromise'
+import useConstant from 'use-constant'
 
 export interface GameSettings {
   pausedWhenNotVisible: boolean
   touchScreen: boolean
 }
 
-export type UsePausedWhenNotVisibleResult =
-  [GameSettings | undefined, Error | undefined, PromiseState]
-
-const usePausedWhenNotVisible = (): UsePausedWhenNotVisibleResult => {
-  return usePromise<GameSettings>(async () => {
+const usePausedWhenNotVisible = (): ObservablePromise<GameSettings> => {
+  return useConstant(() => create((async () => {
     const db = await openDb(settingsDbOptions)
     const store = db.transaction(['settings'], 'readonly').objectStore('settings')
     const settingsPromise = Promise.all([
@@ -28,8 +25,7 @@ const usePausedWhenNotVisible = (): UsePausedWhenNotVisibleResult => {
       pausedWhenNotVisible,
       touchScreen
     }
-  },
-  [])
+  })()))
 }
 
 export default usePausedWhenNotVisible

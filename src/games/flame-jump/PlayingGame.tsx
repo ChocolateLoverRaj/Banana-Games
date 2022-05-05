@@ -22,7 +22,7 @@ const PlayingGame: GameComponent = observer((_props, ref) => {
     <GameWithActions
       {...{ aspectRatio, ref, settings, pauseEmitter, screen }}
     >
-      <GameRefContext.Provider value={{ gameRef: ref as any, screen }}>
+      <GameRefContext.Provider value={{ gameRef: ref, screen }}>
         {switchCase<MediaStream, ReactNode>(
           getMediaStream(cameraSetting),
           mediaStream => <VideoStarter mediaStream={mediaStream} />,

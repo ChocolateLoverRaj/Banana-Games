@@ -30,7 +30,7 @@ const Canvas: FC<CanvasProps> = ({ size, screen }) => {
     const canvas = canvasRef.current ?? never()
     const turretSetting = settingsWithContext.get('turret') ?? never()
     const mobxAngle = getDataFromSetting({
-      data: turretSetting.data,
+      data: turretSetting.defaultData,
       context: turretSetting.context
     }, () => {
       const { x, y } = canvas.getBoundingClientRect()

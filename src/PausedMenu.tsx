@@ -1,7 +1,7 @@
 import { ReactNode, FC, useState } from 'react'
 import { Button, Space } from 'antd'
-import ScreenEmitter from './util/gameWithSettings/ScreenEmitter'
-import { useEmitHandler } from 'emitter2'
+import { useReferenceManagerEmitter } from './util/ReferenceManager/Emitter'
+import { PauseEmitter } from './util'
 
 export type OnClose = () => void
 export interface SubMenu {
@@ -12,13 +12,13 @@ export interface SubMenu {
 export interface PausedMenuProps {
   onClose: OnClose
   children: SubMenu[]
-  screenEmitter: ScreenEmitter
+  pauseEmitter: PauseEmitter
 }
 
-const PausedMenu: FC<PausedMenuProps> = ({ onClose, children, screenEmitter }) => {
+const PausedMenu: FC<PausedMenuProps> = ({ onClose, children, pauseEmitter }) => {
   const [currentSubMenu, setCurrentSubMenu] = useState<string>()
 
-  useEmitHandler(screenEmitter, () => {
+  useReferenceManagerEmitter(pauseEmitter, () => {
     if (currentSubMenu !== undefined) setCurrentSubMenu(undefined)
     else setTimeout(onClose, 4)
   })

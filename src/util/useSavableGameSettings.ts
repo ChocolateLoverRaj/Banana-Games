@@ -7,7 +7,7 @@ const useSavableGameSettings = (
   indexedDbPrefix: string
 ): ReadonlyArray<SavableGameSetting<any, any>> => {
   const [savableGameSettings] = useState((): ReadonlyArray<SavableGameSetting<any, any>> =>
-    [...settings].map(([id, { data, fns }]) => {
+    [...settings].map(([id, { defaultData: data, fns }]) => {
       const saveData = fns.initializeSaveData({ settingData: data, id: `${indexedDbPrefix}-${id}` })
       return {
         saveFns: fns.saveFns,

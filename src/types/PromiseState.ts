@@ -1,3 +1,7 @@
-type PromiseState = 'pending' | 'resolved' | 'rejected'
+enum PromiseState {
+  PENDING,
+  RESOLVED,
+  REJECTED
+}
 
 export default PromiseState

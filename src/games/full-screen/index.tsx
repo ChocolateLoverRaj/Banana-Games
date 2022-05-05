@@ -8,7 +8,7 @@ import getBackgroundColor from '../../getBackgroundColor'
 import { observer } from 'mobx-react-lite'
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref as any)
+  const [fullScreen, setFullScreen, operation, error] = useFullScreen(ref)
   useEffect(() => {
     // eslint-disable-next-line no-extra-boolean-cast
     if (Boolean(error)) console.error(error)

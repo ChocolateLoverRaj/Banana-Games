@@ -4,9 +4,9 @@ import setSet from '../setSet'
 import clone from 'rfdc/default'
 import { action } from 'mobx'
 import TouchButton from './TouchButton'
-import KeyBindings from './KeyBindings'
 import Context from './Context'
 import { emit } from 'emitter2'
+import Edit from './Edit'
 
 const booleanGameSettingFns: GameSettingFns<Data, Context> = {
   getName: ({ data: { name } }) => name,
@@ -30,13 +30,13 @@ const booleanGameSettingFns: GameSettingFns<Data, Context> = {
           ...htmlProps as any,
           ...isPlaying
             ? {
-                onTouchStart: action(() => {
-                  emit(context, true)
-                }),
-                onTouchEnd: action(() => {
-                  emit(context, false)
-                })
-              }
+              onTouchStart: action(() => {
+                emit(context, true)
+              }),
+              onTouchEnd: action(() => {
+                emit(context, false)
+              })
+            }
             : undefined
         }}
         {...{ style }}
@@ -55,7 +55,7 @@ const booleanGameSettingFns: GameSettingFns<Data, Context> = {
       data.screenRects = clone(defaultButtons)
     }
   },
-  renderEdit: ({ data: { keyBindings } }) => <KeyBindings keyboard={keyBindings} />
+  renderEdit: commonParam => <Edit {...{ commonParam }} />
 }
 
 export default booleanGameSettingFns

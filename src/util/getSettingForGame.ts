@@ -8,7 +8,7 @@ import { SettingWithContext } from './useSettingsWithContext'
 const getSettingsForGame = (
   settingsWithContext: Map<string, SettingWithContext>
 ): ReadonlyArray<GameSetting<any, any>> =>
-  [...settingsWithContext.values()].map(({ context, data, fns }) =>
+  [...settingsWithContext.values()].map(({ context, defaultData: data, fns }) =>
     ({ context, data, fns: fns.coreFns }))
 
 export default getSettingsForGame

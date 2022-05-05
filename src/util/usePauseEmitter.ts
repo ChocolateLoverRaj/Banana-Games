@@ -10,7 +10,7 @@ const usePauseEmitter = (
   const pauseSettingWithContext = settingsWithContext.get(pauseKey) ?? never()
   const pauseEmitter = usePressEmitter({
     context: pauseSettingWithContext.context,
-    data: pauseSettingWithContext.data
+    data: pauseSettingWithContext.defaultData
   })
   return pauseEmitter
 }

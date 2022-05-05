@@ -2,7 +2,7 @@ import { GameSettingDataAndAllFns } from '../../util/gameSetting'
 import { allFns, initialize } from './turretSetting'
 
 const turretGameSetting: GameSettingDataAndAllFns = {
-  data: initialize(
+  defaultData: initialize(
     'Turret Rotation',
     {
       height: 100,

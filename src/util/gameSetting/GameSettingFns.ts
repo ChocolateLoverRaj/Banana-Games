@@ -7,7 +7,10 @@ import RenderScreenRectOptions from './RenderScreenRectOptions'
 
 interface GameSettingFns<Data, Context> {
   getName: (param: CommonParam<Data, Context>) => string
-  renderEdit: (param: CommonParam<Data, Context>) => ReactNode
+  /**
+   * @returns If `param` is undefined, it should render a skeleton
+   */
+  renderEdit: (param: CommonParam<Data, Context> | undefined) => ReactNode
   reset?: {
     isSameAsDefault: (param: CommonParam<Data, Context>) => boolean
     resetToDefault: (param: CommonParam<Data, Context>) => void

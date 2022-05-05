@@ -13,7 +13,7 @@ const useSettingsWithContext = (
   settings: Map<string, GameSettingDataAndAllFns>
 ): Map<string, SettingWithContext> => {
   const [settingsWithContext] = useState(() =>
-    mapMapValues(settings, ({ data, fns }) => ({ context: fns.initializeContext(), data, fns })))
+    mapMapValues(settings, ({ defaultData: data, fns }) => ({ context: fns.initializeContext(), data, fns })))
   return settingsWithContext
 }
 

@@ -1,37 +1,38 @@
 import GameComponent from '../../types/GameComponent'
 import { Typography } from 'antd'
 import arrayJoin from '../../util/arrayJoin'
-import { GameWithActions, ScreenEnum, useScreen } from '../../util/gameWithSettings'
-import useComponentSize from '@rehooks/component-size'
+import {
+  GameWithActions,
+  ScreenEnum,
+  useGameWithSettings
+} from '../../util/gameWithSettings'
 import pauseSettingData from '../../pauseSettingData'
 import { css } from '@emotion/css'
 import centerStyles from '../../centerStyles'
 import { observer } from 'mobx-react-lite'
-import { GameSetting } from '../../util/gameSetting'
-import {
-  Context,
-  Data as BooleanSettingData,
-  booleanGameSettingFns,
-  usePressEmitter
-} from '../../util/booleanGameSettings'
-import { get } from '../../util/mobxEmitterValue'
+import { GameSettingDataAndAllFns } from '../../util/gameSetting'
+import pauseSettingDataAndAllFns from '../../pauseSettingDataAndAllFns'
+import { useEmitters } from '../../util'
 
-const context: Context = new Set()
-const settings: Array<GameSetting<BooleanSettingData, Context>> = [{
-  data: pauseSettingData,
-  fns: booleanGameSettingFns,
-  context
-}]
+const pauseSetting = {
+  id: 'pause',
+  ...pauseSettingDataAndAllFns
+}
+const settings: GameSettingDataAndAllFns[] = [pauseSetting]
 
 export const Game: GameComponent = observer((_props, ref) => {
-  const size = useComponentSize(ref as any)
-  const pauseEmitter = usePressEmitter({ data: pauseSettingData, context })
-  const screen = useScreen(pauseEmitter)
-  const [currentScreen] = get(screen.mobx)
+  const game = useGameWithSettings.useGameWithSettings({
+    settings,
+    pauseSetting,
+    idPrefix: 'paused-menu'
+  })
+  const { value: currentScreen, emitter } = game.screen
+
+  useEmitters([emitter])
 
   return (
     <GameWithActions
-      {...{ size, ref, screen, settings }}
+      {...{ game, ref }}
       className={css(centerStyles)}
     >
       <div>

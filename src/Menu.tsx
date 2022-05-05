@@ -18,22 +18,29 @@ const Menu: FC = () => {
       mode='inline'
       selectedKeys={[pathname]}
       defaultOpenKeys={['games']}
-    >
-      <AntdMenu.Item key='/'><Link to='/'>All Games</Link></AntdMenu.Item>
-      <AntdMenu.SubMenu key='games' title='Games'>
-        {[...games].map(([url, { name }]) =>
-          <AntdMenu.Item key={`/${url}`}><Link to={`/${url}`}>{name}</Link></AntdMenu.Item>)}
-      </AntdMenu.SubMenu>
-      <AntdMenu.Item key='settings'>
-        <Link to='/settings'>Settings</Link>
-      </AntdMenu.Item>
-      <AntdMenu.Item key='serviceWorker'>
-        <Link to='/service-worker'>Service Worker</Link>
-      </AntdMenu.Item>
-      <AntdMenu.Item key='gh' icon={<GithubOutlined />}>
-        <a href={config.ghUrl}>GitHub</a>
-      </AntdMenu.Item>
-    </AntdMenu>
+      items={[{
+        key: '/',
+        label: <Link to='/'>All Games</Link>
+      }, {
+
+        key: 'games',
+        label: 'Games',
+        children: [...games].map(([url, { name }]) => ({
+          key: `/${url}`,
+          label: <Link to={`/${url}`}>{name}</Link>
+        }))
+      }, {
+        key: 'settings',
+        label: <Link to='/settings'>Settings</Link>
+      }, {
+        key: 'serviceWorker',
+        label: <Link to='/service-worker'>Service Worker</Link>
+      }, {
+        key: 'gh',
+        icon: <GithubOutlined />,
+        label: <a href={config.ghUrl}>GitHub</a>
+      }]}
+    />
   )
 }
 

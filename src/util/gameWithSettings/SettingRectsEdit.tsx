@@ -13,10 +13,11 @@ import { ObservableMap, action } from 'mobx'
 import CommonParam from '../gameSetting/CommonParam'
 import { Context, Data } from '../booleanGameSettings'
 import { GameSettings } from './useGameSettings'
+import { GameSettingsLoadable } from './useGameWithSettings'
 
 export type OnExit = () => void
 export interface SettingRectsEdit {
-  settings: ReadonlyArray<GameSetting<any, any>>
+  settings: GameSettingsLoadable
   onExit: OnExit
   boundary: Size
   containerRef: RefObject<HTMLDivElement>

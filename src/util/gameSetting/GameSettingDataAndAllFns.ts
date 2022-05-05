@@ -1,7 +1,8 @@
 import { GameSettingAllFns } from '.'
 
 interface GameSettingDataAndAllFns {
-  data: any
+  id: string
+  defaultData: any
   fns: GameSettingAllFns
 }
 

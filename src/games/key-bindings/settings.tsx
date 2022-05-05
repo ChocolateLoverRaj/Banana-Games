@@ -9,15 +9,16 @@ import {
   RightOutlined
 } from '@ant-design/icons'
 import { GameSettingDataAndAllFns } from '../../util/gameSetting'
-import pauseSettingDataAndAllFns from '../../pauseSettingDataAndAllFns'
+import pauseSetting from './pauseSetting'
 
 const arrowSize = 50
 const arrowSpace = 10
 
-const settings: Map<string, GameSettingDataAndAllFns> = new Map([
-  ['pause', pauseSettingDataAndAllFns],
-  ['up', {
-    data: initializeData(
+const settings: readonly GameSettingDataAndAllFns[] = [
+  pauseSetting,
+  {
+    id: 'up',
+    defaultData: initializeData(
       'Up',
       new Set(['ArrowUp', 'KeyW']),
       <UpOutlined />,
@@ -34,9 +35,10 @@ const settings: Map<string, GameSettingDataAndAllFns> = new Map([
         height: arrowSize
       }]),
     fns: allFns
-  }],
-  ['down', {
-    data: initializeData(
+  },
+  {
+    id: 'down',
+    defaultData: initializeData(
       'Down',
       new Set(['ArrowDown', 'KeyS']),
       <DownOutlined />,
@@ -53,9 +55,10 @@ const settings: Map<string, GameSettingDataAndAllFns> = new Map([
         height: arrowSize
       }]),
     fns: allFns
-  }],
-  ['left', {
-    data: initializeData(
+  },
+  {
+    id: 'left',
+    defaultData: initializeData(
       'Left',
       new Set(['ArrowLeft', 'KeyA']),
       <LeftOutlined />,
@@ -72,9 +75,10 @@ const settings: Map<string, GameSettingDataAndAllFns> = new Map([
         height: arrowSize
       }]),
     fns: allFns
-  }],
-  ['right', {
-    data: initializeData(
+  },
+  {
+    id: 'right',
+    defaultData: initializeData(
       'Right',
       new Set(['ArrowRight', 'KeyD']),
       <RightOutlined />,
@@ -92,7 +96,7 @@ const settings: Map<string, GameSettingDataAndAllFns> = new Map([
       }]
     ),
     fns: allFns
-  }]
-])
+  }
+]
 
 export default settings

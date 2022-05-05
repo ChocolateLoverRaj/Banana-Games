@@ -36,7 +36,7 @@ const aspectRatio = { width: 16, height: 9 }
 
 export const Game: GameComponent = observer((_props, ref) => {
   const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
-  const componentSize = useComponentSize(ref as any)
+  const componentSize = useComponentSize(ref)
   const pauseEmitter = usePressEmitter(pauseSetting)
   const screen = useScreen(pauseEmitter)
   const scaledSize = getScaledSize(componentSize, aspectRatio)

@@ -1,10 +1,6 @@
-import { Data } from '../mobxEmitterValue'
-import ScreenEmitter from './ScreenEmitter'
+import { ObservableValue } from '../ObservableValue'
 import ScreenEnum from './ScreenEnum'
 
-interface Screen {
-  emitter: ScreenEmitter
-  mobx: Data<[ScreenEnum]>
-}
+type Screen = ObservableValue<ScreenEnum>
 
 export default Screen

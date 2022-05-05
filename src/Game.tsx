@@ -109,7 +109,7 @@ const Game: FC<GameProps> = props => {
               </div>
               )
             : (
-              <ErrorResult error={error as Error} title='Error Downloading Game' retry={retry} />
+              <ErrorResult error={error} title='Error Downloading Game' retry={retry} />
               )}
       </div>
     </>
