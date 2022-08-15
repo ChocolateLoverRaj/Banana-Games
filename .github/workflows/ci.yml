@@ -115,6 +115,19 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     if: ${{ (github.event_name == 'push') && (github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    # Allow one concurrent deployment
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -154,10 +167,13 @@ jobs:
           pnpm build:webpack
         env:
           NODE_ENV: production
-      - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v2
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          build_dir: dist
-          jekyll: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: "dist"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
