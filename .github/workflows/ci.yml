@@ -114,7 +114,7 @@ jobs:
   deploy:
     needs: install
     runs-on: ubuntu-latest
-    if: ${{ (github.event.type == 'PushEvent') && (github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
+    if: ${{ (github.event_name == 'push') && (github.ref == format('refs/heads/{0}', github.event.repository.default_branch)) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
