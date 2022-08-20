@@ -16,7 +16,7 @@ const IndexPage: FC = () => {
   const downloadedGames = useDownloadedGames(serviceWorker[10])
 
   return (
-    <HashRouter hashType='noslash'>
+    <HashRouter>
       <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
         <div className={css`
             width: 100vw;
