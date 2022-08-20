@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import config from './config.json'
 import Helmet from 'react-helmet'
 
-const serviceWorkerRoute: FC = () => {
+const ServiceWorkerRoute: FC = () => {
   const [,
     error,
     state,
@@ -85,4 +85,4 @@ const serviceWorkerRoute: FC = () => {
   )
 }
 
-export default serviceWorkerRoute
+export default ServiceWorkerRoute

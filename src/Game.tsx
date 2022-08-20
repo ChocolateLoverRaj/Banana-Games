@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FC, useRef, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import usePromise from 'react-use-promise'
 import { Spin, PageHeader, PageHeaderProps, Button, Skeleton, Collapse } from 'antd'
 import useUnique from './util/useUnique'
@@ -24,7 +24,7 @@ export interface GameProps {
 const Game: FC<GameProps> = props => {
   const { id, game } = props
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const [retryAttempt, retry] = useUnique()
   const [gameExports, error, state] = usePromise<GameExports>(
     async () => await import(
@@ -49,7 +49,7 @@ const Game: FC<GameProps> = props => {
     return () => removeEventListener('keydown', handler)
   }, [setFullScreen])
 
-  const handleBack: PageHeaderProps['onBack'] = () => history.push('')
+  const handleBack: PageHeaderProps['onBack'] = () => navigate('/')
 
   const noDescription = gameExports !== undefined && gameExports.description === undefined
 
@@ -80,7 +80,7 @@ const Game: FC<GameProps> = props => {
             <Button type='text' onClick={setFullScreen.bind(undefined, !fullScreen)}>
               {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
             </Button>
-              }
+          }
           tags={<GameTags tags={game.tags} />}
         >
           <Collapse defaultActiveKey={noDescription ? undefined : 'description'} ghost>
@@ -100,17 +100,14 @@ const Game: FC<GameProps> = props => {
             <>
               <WarnLeaveGame />
               <gameExports.Game ref={ref} />
-            </>
-            )
+            </>)
           : state === 'pending'
             ? (
               <div className={css(centerStyles)}>
                 <Spin size='large' tip='Downloading Game' />
-              </div>
-              )
+              </div>)
             : (
-              <ErrorResult error={error as Error} title='Error Downloading Game' retry={retry} />
-              )}
+              <ErrorResult error={error} title='Error Downloading Game' retry={retry} />)}
       </div>
     </>
   )
