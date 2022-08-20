@@ -1,4 +1,10 @@
 {
+  "useGitignore": true,
+  "enableGlobDot": true,
+  "ignorePaths": [
+    ".git",
+    ".vscode/settings.json"
+  ],
   "words": [
     "alstr",
     "antd",
@@ -18,6 +24,7 @@
     "IDBP",
     "Keypoint",
     "keypoints",
+    "mediapipe",
     "movenet",
     "nipplejs",
     "noslash",
@@ -25,6 +32,7 @@
     "pmmmwh",
     "pnpm",
     "Popconfirm",
+    "programmerraj",
     "randomnumber",
     "rehooks",
     "rfdc",
@@ -32,6 +40,7 @@
     "tfjs",
     "tinycolor",
     "unuse",
+    "webgl",
     "wireframes"
   ]
 }
