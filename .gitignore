@@ -114,5 +114,5 @@ src/**/index.js
 
 # Package Manager Lock Files
 pnpm-lock.yaml
-package.json
+package-lock.json
 yarn.lock
