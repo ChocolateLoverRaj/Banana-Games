@@ -4,7 +4,10 @@
     "standard-with-typescript",
     "standard-jsx"
   ],
-  "ignorePatterns": "/dist",
+  "ignorePatterns": [
+    "/dist",
+    "/src/directionalNavigation.js"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },

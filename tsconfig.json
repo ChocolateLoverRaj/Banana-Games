@@ -35,5 +35,8 @@
     "./src/**/*.ts",
     "./src/types.d.ts",
     "./webpack.config.ts"
+  ],
+  "exclude": [
+    "./src/directionalNavigation.js"
   ]
 }
