@@ -8,6 +8,13 @@ import LazyCss from './LazyCss'
 import { autorunCleanup } from 'mobx-autorun-cleanup'
 import theme from './theme'
 import never from 'never'
+import Navigator from 'directional-navigation'
+
+const navigator = new Navigator()
+
+navigator.add({ id: 'app' })
+
+navigator.init()
 
 const themes: Record<DefaultThemes, LazyCss> = { light, dark }
 

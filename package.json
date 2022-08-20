@@ -13,7 +13,7 @@
     "build:index-js": "create-index-js -i \"\" src -c dirs.txt --filesConfig files.txt",
     "build:logo": "node -r ts-node/register src/buildLogo",
     "build:webpack": "webpack --progress",
-    "spelling": "cspell --gitignore \"**\" \".github/**\""
+    "spelling": "cspell --gitignore \"**\""
   },
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
@@ -32,6 +32,7 @@
     "boolean-to-signed": "^1.0.1",
     "classnames": "^2.3.1",
     "detect-touch": "^1.1.2",
+    "directional-navigation": "github:globocom/directional-navigation",
     "emitter2": "^1.0.0",
     "favicons": "^6.2.2",
     "favicons-webpack-plugin": "^5.0.2",
