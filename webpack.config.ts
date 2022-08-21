@@ -14,7 +14,7 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import 'webpack-dev-server'
 
 const isProduction = process.env.NODE_ENV === 'production'
-const isDevServer = Boolean(process.env.WEBPACK_DEV_SERVER)
+const isDevServer = process.env.WEBPACK_SERVE === 'true'
 
 const subRoute = process.env.GITHUB_REPOSITORY !== undefined
   ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
