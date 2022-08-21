@@ -50,7 +50,8 @@ const config: Configuration = {
         version,
         scope: subRoute
       },
-      devMode: 'light'
+      devMode: 'light',
+      mode: 'light'
     }),
     // So the service worker will be different based on file changes
     new BannerPlugin({

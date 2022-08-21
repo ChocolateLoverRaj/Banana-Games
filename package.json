@@ -121,10 +121,10 @@
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5",
     "typescript-plugin-css-modules": "^3.4.0",
-    "webpack": "^5.44.0",
+    "webpack": "^5.74.0",
     "webpack-bundle-analyzer": "^4.4.2",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^4.7.3"
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.10.0"
   },
   "author": {
     "name": "Rajas Paranjpe",
