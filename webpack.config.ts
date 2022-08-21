@@ -14,6 +14,7 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import 'webpack-dev-server'
 
 const isProduction = process.env.NODE_ENV === 'production'
+const isDevServer = Boolean(process.env.WEBPACK_DEV_SERVER)
 
 const subRoute = process.env.GITHUB_REPOSITORY !== undefined
   ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
@@ -50,7 +51,8 @@ const config: Configuration = {
         version,
         scope: subRoute
       },
-      devMode: 'light'
+      devMode: 'light',
+      mode: isDevServer ? 'light' : 'webapp'
     }),
     // So the service worker will be different based on file changes
     new BannerPlugin({
@@ -78,10 +80,13 @@ const config: Configuration = {
           /* new DynamicCdnPlugin(),  */
           new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })
         ]
-      : [
+      : [],
+    ...isDevServer
+      ? [
           new BundleAnalyzerPlugin({ openAnalyzer: false }),
           new ReactRefreshPlugin()
         ]
+      : []
   ],
   output: {
     filename: ({ runtime }) =>
@@ -100,7 +105,7 @@ const config: Configuration = {
             plugins: [
               ['import', { libraryName: 'antd', libraryDirectory: 'es' }],
               'react-require',
-              ...isProduction ? [] : ['react-refresh/babel']
+              ...isDevServer ? ['react-refresh/babel'] : []
             ]
           }
         }],
