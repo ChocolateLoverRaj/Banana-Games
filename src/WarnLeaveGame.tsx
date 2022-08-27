@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { openDb } from './util/indexedDb'
 import { useBeforeunload } from 'react-beforeunload'
 import usePromise from 'react-use-promise'
-import { Prompt } from 'react-router-dom'
+// import { Prompt } from 'react-router-dom'
 import settingsDbOptions from './settingsDbOptions'
 
 const message = 'Are you sure you want to exit the game?'
@@ -20,7 +20,7 @@ const WarnLeaveGame: FC = () => {
 
   return (
     <>
-      {warnBeforeLeavingGame === true && <Prompt message={message} />}
+      {warnBeforeLeavingGame === true/*  && <Prompt message={message} /> */}
     </>
   )
 }
