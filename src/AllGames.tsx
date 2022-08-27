@@ -107,7 +107,7 @@ const AllGames: FC = () => {
                 }
               }]}
               rowKey='0'
-              pagination={{ hideOnSinglePage: true }}
+              pagination={{ hideOnSinglePage: true, pageSize: 100 }}
             />
           : <ErrorResult
               error={downloadedGamesError}
