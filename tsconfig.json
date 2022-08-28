@@ -34,6 +34,7 @@
     "./src/**/*.tsx",
     "./src/**/*.ts",
     "./src/types.d.ts",
-    "./webpack.config.ts"
+    "./webpack.config.ts",
+    "vite/client"
   ]
 }

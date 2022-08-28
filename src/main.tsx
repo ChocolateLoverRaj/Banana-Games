@@ -1,20 +1,20 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import IndexPage from './IndexPage'
-import light from './light.lazy.css'
-import dark from './dark.lazy.css'
+import light from 'antd/dist/antd.css?raw'
+import dark from 'antd/dist/antd.dark.css?raw'
 import { DefaultThemes } from 'mobx-theme'
-import LazyCss from './LazyCss'
-import { autorunCleanup } from 'mobx-autorun-cleanup'
 import theme from './theme'
 import never from 'never'
+import { autorun } from 'mobx'
 
-const themes: Record<DefaultThemes, LazyCss> = { light, dark }
+const themes: Record<DefaultThemes, string> = { light, dark }
 
 createRoot(document.getElementById('app') ?? never()).render(<IndexPage />)
 
-autorunCleanup(() => {
+const themeStyleElement = document.createElement('style')
+document.head.appendChild(themeStyleElement)
+autorun(() => {
   const currentTheme = theme.theme
-  themes[currentTheme].use()
-  return () => themes[currentTheme].unuse()
+  themeStyleElement.innerText = themes[currentTheme]
 })

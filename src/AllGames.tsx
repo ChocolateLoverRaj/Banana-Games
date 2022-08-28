@@ -20,7 +20,7 @@ import { css } from '@emotion/css'
 import { red } from '@ant-design/colors'
 import centerStyles from './centerStyles'
 
-const allTags = new Set([...games.values()].flatMap(({ tags }) => tags ?? []))
+const allTags = new Set(Object.values(games).flatMap(({ tags }) => tags ?? []))
 
 const AllGames: FC = () => {
   const [
@@ -43,8 +43,9 @@ const AllGames: FC = () => {
       <div>
         <h1 className={css(centerStyles)}>All Games</h1>
         {downloadedGamesError === undefined
-          ? <Table
-              dataSource={[...games]}
+          ? (
+            <Table
+              dataSource={Object.entries(games)}
               columns={[{
                 title: 'Name',
                 render: ([url, { name }]: [string, GameMeta]) => <Link to={`./${url}`}>{name}</Link>
@@ -108,12 +109,13 @@ const AllGames: FC = () => {
               }]}
               rowKey='0'
               pagination={{ hideOnSinglePage: true }}
-            />
-          : <ErrorResult
+            />)
+          : (
+            <ErrorResult
               error={downloadedGamesError}
               title='Error Getting Downloaded Games'
               retry={retry}
-            />}
+            />)}
       </div>
     </>
   )
