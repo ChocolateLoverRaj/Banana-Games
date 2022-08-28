@@ -1,3 +1,5 @@
+import 'vite/client'
+
 interface LazyCss {
   use: () => void
   unuse: () => void

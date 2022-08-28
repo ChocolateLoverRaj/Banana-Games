@@ -27,11 +27,14 @@ const Game: FC<GameProps> = props => {
   const navigate = useNavigate()
   const [retryAttempt, retry] = useUnique()
   const [gameExports, error, state] = usePromise<GameExports>(
-    async () => await import(
-      /* webpackInclude: /index.tsx/ */
-      /* webpackChunkName: "games/[request]" */
-      `./games/${id}`
-    ),
+    async () => {
+      throw new Error('disabled')
+      //   await import(
+      //   /* webpackInclude: /index.tsx/ */
+      //   /* webpackChunkName: "games/[request]" */
+      //   `./games/${id}`
+      // )
+    },
     [id, retryAttempt]
   )
   const ref = useRef(null)
