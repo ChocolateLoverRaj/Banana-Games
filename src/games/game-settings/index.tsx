@@ -11,6 +11,7 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
         name: 'Keyboard'
       }]}
       settings={[]}
+      
     />
   )
 })

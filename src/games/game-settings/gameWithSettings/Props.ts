@@ -7,7 +7,9 @@ interface Props {
    */
   id: string
   settings: readonly Setting[]
-  defaultPresets: readonly Preset[]
+  playerInputs: readonly any[]
+  defaultSettingsPresets: readonly Preset[]
+  defaultPlayerInputsPresets: readonly any[]
 }
 
 export default Props
