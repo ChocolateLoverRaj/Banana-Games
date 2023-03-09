@@ -4,9 +4,10 @@ import Content from './Content'
 import Menu from './Menu'
 import GlobalStateContext from './GlobalStateContext'
 import useServiceWorker from './util/useServiceWorker'
-import { message } from 'antd'
+import { message, ConfigProvider, theme } from 'antd'
 import useDownloadedGames from './useDownloadedGames'
 import { css } from '@emotion/css'
+import mobxTheme from './theme'
 
 const IndexPage: FC = () => {
   const serviceWorker = useServiceWorker('./serviceWorker.js', () => {
@@ -17,6 +18,13 @@ const IndexPage: FC = () => {
 
   return (
     <HashRouter>
+    <ConfigProvider
+      theme={{
+        algorithm: mobxTheme.theme === 'dark'
+        ? theme.darkAlgorithm 
+        : theme.defaultAlgorithm
+      }}
+    >
       <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
         <div className={css`
             width: 100vw;
@@ -39,6 +47,7 @@ const IndexPage: FC = () => {
           <Content />
         </div>
       </GlobalStateContext.Provider>
+      </ConfigProvider>
     </HashRouter>
   )
 }

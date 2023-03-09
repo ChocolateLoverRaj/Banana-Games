@@ -103,7 +103,6 @@ const config: Configuration = {
           options: {
             presets: ['@babel/react', '@babel/typescript'],
             plugins: [
-              ['import', { libraryName: 'antd', libraryDirectory: 'es' }],
               'react-require',
               ...isDevServer ? ['react-refresh/babel'] : []
             ]
