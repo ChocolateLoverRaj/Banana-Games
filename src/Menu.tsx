@@ -9,6 +9,7 @@ import { css } from '@emotion/css'
 
 const Menu: FC = () => {
   const { pathname } = useLocation()
+
   return (
     <AntdMenu
       className={css({
@@ -29,10 +30,10 @@ const Menu: FC = () => {
           label: <Link to={`/${url}`}>{name}</Link>
         }))
       }, {
-        key: 'settings',
+        key: '/settings',
         label: <Link to='/settings'>Settings</Link>
       }, {
-        key: 'serviceWorker',
+        key: '/service-worker',
         label: <Link to='/service-worker'>Service Worker</Link>
       }, {
         key: 'gh',
