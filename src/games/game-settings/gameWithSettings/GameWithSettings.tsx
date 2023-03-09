@@ -4,7 +4,7 @@ import { Tabs } from 'antd'
 import { EditText } from 'react-edit-text'
 import 'react-edit-text/dist/index.css'
 
-const GameWithSettings = forwardRef<HTMLDivElement, Props>(({ settings, defaultPresets }, ref) => {
+const GameWithSettings = forwardRef<HTMLDivElement, Props>(({ settings }, ref) => {
   return (
     // TODO: Save and load presets to indexed db
     <div ref={ref}>
