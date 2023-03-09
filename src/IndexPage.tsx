@@ -23,7 +23,10 @@ const IndexPage = observer(() => {
         theme={{
           algorithm: mobxTheme.theme === 'dark'
             ? theme.darkAlgorithm
-            : theme.defaultAlgorithm
+            : theme.defaultAlgorithm,
+          token: {
+            colorPrimary: 'yellow'
+          }
         }}
       >
         <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
