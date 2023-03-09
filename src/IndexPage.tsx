@@ -1,14 +1,16 @@
-import { FC } from 'react'
 import { HashRouter } from 'react-router-dom'
 import Content from './Content'
 import Menu from './Menu'
 import GlobalStateContext from './GlobalStateContext'
 import useServiceWorker from './util/useServiceWorker'
-import { message } from 'antd'
+import { message, ConfigProvider, theme } from 'antd'
 import useDownloadedGames from './useDownloadedGames'
-import { css } from '@emotion/css'
+import { css, cx } from '@emotion/css'
+import mobxTheme from './theme'
+import { observer } from 'mobx-react-lite'
+import './IndexPage.css'
 
-const IndexPage: FC = () => {
+const IndexPage = observer(() => {
   const serviceWorker = useServiceWorker('./serviceWorker.js', () => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     message.info('No updates found')
@@ -17,8 +19,15 @@ const IndexPage: FC = () => {
 
   return (
     <HashRouter>
-      <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
-        <div className={css`
+      <ConfigProvider
+        theme={{
+          algorithm: mobxTheme.theme === 'dark'
+            ? theme.darkAlgorithm
+            : theme.defaultAlgorithm
+        }}
+      >
+        <GlobalStateContext.Provider value={{ serviceWorker, downloadedGames }}>
+          <div className={cx(css`
             width: 100vw;
             height: 100vh;
             display: flex;
@@ -31,16 +40,19 @@ const IndexPage: FC = () => {
           
             > :nth-child(2) {
               flex: 1 1 auto;
-            }`}
-        >
-          <div>
-            <Menu />
+            }`, css({
+            backgroundColor: mobxTheme.theme === 'dark' ? 'black' : 'white'
+          }))}
+          >
+            <div>
+              <Menu />
+            </div>
+            <Content />
           </div>
-          <Content />
-        </div>
-      </GlobalStateContext.Provider>
+        </GlobalStateContext.Provider>
+      </ConfigProvider>
     </HashRouter>
   )
-}
+})
 
 export default IndexPage

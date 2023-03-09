@@ -103,7 +103,6 @@ const config: Configuration = {
           options: {
             presets: ['@babel/react', '@babel/typescript'],
             plugins: [
-              ['import', { libraryName: 'antd', libraryDirectory: 'es' }],
               'react-require',
               ...isDevServer ? ['react-refresh/babel'] : []
             ]
@@ -112,9 +111,9 @@ const config: Configuration = {
         exclude: /node_modules/
       },
       {
-        test: /\.lazy\.css$/i,
+        test: /\.css$/i,
         use: [
-          { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+          'style-loader',
           'css-loader'
         ]
       }
