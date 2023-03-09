@@ -111,9 +111,9 @@ const config: Configuration = {
         exclude: /node_modules/
       },
       {
-        test: /\.lazy\.css$/i,
+        test: /\.css$/i,
         use: [
-          { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+          'style-loader',
           'css-loader'
         ]
       }
