@@ -32,6 +32,8 @@
     "boolean-to-signed": "^1.0.1",
     "classnames": "^2.3.1",
     "detect-touch": "^1.1.2",
+    "dexie": "^3.2.3",
+    "dexie-react-hooks": "^1.1.1",
     "emitter2": "^1.0.0",
     "favicons": "^6.2.2",
     "favicons-webpack-plugin": "^5.0.2",

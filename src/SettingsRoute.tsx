@@ -1,34 +1,23 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useLayoutEffect } from 'react'
 import { Form, Switch, Typography, Spin, FormProps } from 'antd'
-import { openDb } from './util/indexedDb'
-import usePromise from 'react-use-promise'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'
 import config from './config.json'
-import storeToObject from './util/storeToObject'
 import { useMapState } from 'rooks'
 import { NamePath } from 'rc-field-form/lib/interface'
 import ThemeChooser from './ThemeChooser'
-import settingsDbOptions from './settingsDbOptions'
+import settingsDexie from './settingsDexie'
+import { Table } from 'dexie'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 const SettingsRoute: FC = () => {
-  const [settings, error] = usePromise<object>(async () => {
-    const db = await openDb(settingsDbOptions)
-    const settingsPromise = storeToObject(
-      db.transaction(['settings'], 'readonly').objectStore('settings'))
-    db.close()
-    return await settingsPromise
-  }, [])
   const savePromises = useMapState(new Map<string, Promise<void>>())
+  const [form] = Form.useForm()
   const saveErrors = useMapState(new Map<string, Error>())
   const handleChange: FormProps['onFieldsChange'] = ([{ name, value }]) => {
     const key = (name as NamePath)[0]
     savePromises.set(key, (async () => {
-      const db = await openDb(settingsDbOptions)
-      const transaction = db.transaction(['settings'], 'readwrite')
-      const writePromise = transaction.objectStore('settings').put?.(value, key)
-      db.close()
-      await writePromise
+      await (settingsDexie[key] as Table).put(value, '')
     })())
   }
   useEffect(() => {
@@ -36,6 +25,17 @@ const SettingsRoute: FC = () => {
       savePromise.then(() => savePromises.delete(key), e => saveErrors.set(key, e))
     })
   }, [savePromises])
+  const settings = useLiveQuery(async () =>
+    Object.fromEntries(await Promise.all([
+      'pausedWhenNotVisible',
+      'warnBeforeLeavingGame',
+      'touchScreen'].map(async key => [
+      key,
+      await (settingsDexie[key] as Table).get('')
+    ]))))
+  useLayoutEffect(() => {
+    form.setFieldsValue(settings)
+  }, [settings])
 
   return (
     <>
@@ -44,13 +44,13 @@ const SettingsRoute: FC = () => {
       </Helmet>
       <div>
         <Typography.Title>Settings</Typography.Title>
-        {settings !== undefined
-          ? saveErrors.size === 0
+        <Spin tip='Loading settings' spinning={settings === undefined}>
+          {saveErrors.size === 0
             ? (
               // TODO: Show unsaved / unchanged fields
               <Form
-                initialValues={settings}
                 onFieldsChange={handleChange}
+                form={form}
               >
                 <Form.Item
                   name='pausedWhenNotVisible'
@@ -76,10 +76,8 @@ const SettingsRoute: FC = () => {
                   <Switch loading={savePromises.has('touchScreen')} />
                 </Form.Item>
               </Form>)
-            : <ErrorResult title='Error saving settings' error={new Error('not implemented')} />
-          : error === undefined
-            ? <Spin tip='Loading Settings' />
-            : <ErrorResult title='Error loading settings' error={error} />}
+            : <ErrorResult title='Error saving settings' error={new Error('not implemented')} />}
+        </Spin>
         <ThemeChooser />
       </div>
     </>
