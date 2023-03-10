@@ -2,7 +2,8 @@ import * as React from 'react'
 import { FC, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import usePromise from 'react-use-promise'
-import { Spin, PageHeader, PageHeaderProps, Button, Skeleton, Collapse } from 'antd'
+import { Spin, Button, Skeleton, Collapse } from 'antd'
+import PageHeader from './util/pageHeader/PageHeader'
 import useUnique from './util/useUnique'
 import GameType from './types/GameMeta'
 import Helmet from 'react-helmet'
@@ -15,6 +16,7 @@ import WarnLeaveGame from './WarnLeaveGame'
 import { css } from '@emotion/css'
 import GameExports from './types/GameExports'
 import centerStyles from './centerStyles'
+import PageHeaderProps from './util/pageHeader/PageHeaderProps'
 
 export interface GameProps {
   id: string
@@ -82,19 +84,18 @@ const Game: FC<GameProps> = props => {
             </Button>
           }
           tags={<GameTags tags={game.tags} />}
-        >
-          <Collapse defaultActiveKey={noDescription ? undefined : 'description'} ghost>
-            <Collapse.Panel
-              header='Description'
-              key='description'
-              collapsible={noDescription ? 'disabled' : 'header'}
-            >
-              {state === 'pending'
-                ? <Skeleton active title={false} />
-                : gameExports?.description}
-            </Collapse.Panel>
-          </Collapse>
-        </PageHeader>
+        />
+        <Collapse defaultActiveKey={noDescription ? undefined : 'description'} ghost>
+          <Collapse.Panel
+            header='Description'
+            key='description'
+            collapsible={noDescription ? 'disabled' : 'header'}
+          >
+            {state === 'pending'
+              ? <Skeleton active title={false} />
+              : gameExports?.description}
+          </Collapse.Panel>
+        </Collapse>
         {gameExports !== undefined
           ? (
             <>
