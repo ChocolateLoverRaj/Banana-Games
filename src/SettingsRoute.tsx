@@ -9,6 +9,7 @@ import ThemeChooser from './ThemeChooser'
 import settingsDexie from './settingsDexie'
 import { Table } from 'dexie'
 import { useLiveQuery } from 'dexie-react-hooks'
+import PrimaryColorChooser from './PrimaryColorChooser'
 
 const SettingsRoute: FC = () => {
   const savePromises = useMapState(new Map<string, Promise<void>>())
@@ -78,7 +79,8 @@ const SettingsRoute: FC = () => {
               </Form>)
             : <ErrorResult title='Error saving settings' error={new Error('not implemented')} />}
         </Spin>
-        <ThemeChooser />
+        <ThemeChooser /><br />
+        <PrimaryColorChooser />
       </div>
     </>
   )

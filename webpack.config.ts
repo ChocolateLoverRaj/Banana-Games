@@ -112,13 +112,6 @@ const config: Configuration = {
       },
       {
         test: /\.css$/i,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.css$/i,
         exclude: /\.lazy\.css$/i,
         use: ['style-loader', 'css-loader']
       }
