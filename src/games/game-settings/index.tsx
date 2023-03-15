@@ -10,10 +10,12 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
       id='game-settings'
       ref={ref}
       defaultSettingsPresets={[{
-        name: 'Keyboard'
+        name: 'Default Preset'
       }]}
       settings={[]}
-      defaultPlayerInputsPresets={[]}
+      defaultPlayerInputsPresets={[{
+        name: 'Keyboard'
+      }]}
       playerInputs={[PlayerInputType.BOOLEAN]}
     />
   )

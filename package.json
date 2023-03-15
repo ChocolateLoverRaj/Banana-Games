@@ -51,6 +51,7 @@
     "mobx-theme": "^3.0.0",
     "never": "^1.0.3",
     "nipplejs": "^0.9.0",
+    "observables": "github:ChocolateLoverRaj/observables#v4.6.0",
     "process": "^0.11.10",
     "random-boolean": "^1.0.0",
     "react": "^18.2.0",

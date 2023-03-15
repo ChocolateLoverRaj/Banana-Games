@@ -1,5 +1,5 @@
 import PlayerInputType from '../PlayerInputType'
-import Preset from './Preset'
+import Preset from './SettingsPreset'
 
 interface Props {
   /**
