@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import Props from './Props'
 import 'react-edit-text/dist/index.css'
-import PlayerInputsPresets from './PlayerInputsPresets'
+import PlayerInputsPresets from './playerInputsPresets/PlayerInputsPresets'
 
 const GameWithSettings = forwardRef<HTMLDivElement, Props>((props, ref) => {
   return (

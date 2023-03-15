@@ -1,11 +1,12 @@
-import { Input, Spin, Tabs } from 'antd'
+import { Spin, Tabs } from 'antd'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
 import useConstant from 'use-constant'
-import createGameSettingsSyncAsync from './createGameSettingsSyncAsync/createGameSettingsSyncAsync'
+import createGameSettingsSyncAsync from '../createGameSettingsSyncAsync/createGameSettingsSyncAsync'
 import get from 'observables/lib/syncAsync/get/get'
 import set from 'observables/lib/syncAsync/set/set'
 import never from 'never'
-import Props from './Props'
+import Props from '../Props'
+import TabLabel from './tabLabel/TabLabel'
 
 const PlayerInputsPresets = reactObserver<Props>((observe, props) => {
   const syncAsync = useConstant(() => createGameSettingsSyncAsync(props))
@@ -19,10 +20,9 @@ const PlayerInputsPresets = reactObserver<Props>((observe, props) => {
         items={syncAsyncData.data?.playerInputsPresets.map((preset, index) => ({
           key: index.toString(),
           label: (
-            <Input
-              value={preset.name}
-              bordered={false}
-              onChange={({ target: { value } }) => {
+            <TabLabel
+              name={preset.name}
+              onChange={newName => {
                 const data = syncAsyncData.data ?? never()
                 set({
                   syncAsync,
@@ -32,7 +32,7 @@ const PlayerInputsPresets = reactObserver<Props>((observe, props) => {
                       ...data.playerInputsPresets.slice(0, index),
                       {
                         ...preset,
-                        name: value
+                        name: newName
                       },
                       ...data.playerInputsPresets.slice(index + 1)
                     ]
