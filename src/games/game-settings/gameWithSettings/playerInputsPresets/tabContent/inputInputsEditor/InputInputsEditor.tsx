@@ -1,19 +1,47 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
+import { Button, Tooltip } from 'antd'
 import { FC } from 'react'
-import booleanPlayerInputKeyboard from
-  '../../../../booleanPlayerInputKeyboard/booleanPlayerInputKeyboard'
-import PlayerInputId from '../../../PlayerInputId'
+import playerInputs from '../../../../playerInputs'
 import InputInputEditor from './inputInputEditor/InputInputEditor'
 import Props from './Props'
 
-const InputInputsEditor: FC<Props> = ({ playerInput, value, onChange }) => {
+const InputInputsEditor: FC<Props> = ({
+  value,
+  onChange,
+  playerInputsPresetType,
+  playerInputType
+}) => {
+  const defaultPlayerInputToAdd = [...playerInputs].find(
+    ([id, { playerInputsPresetType: currentPlayerInputsPresetType, inputType }]) =>
+      currentPlayerInputsPresetType === playerInputsPresetType &&
+      inputType === playerInputType)
+
+  const addButton = (
+    <Button
+      disabled={defaultPlayerInputToAdd === undefined}
+      onClick={defaultPlayerInputToAdd !== undefined
+        ? () => {
+            onChange([
+              ...value,
+              {
+                id: defaultPlayerInputToAdd[0],
+                data: defaultPlayerInputToAdd[1].getDefaultData()
+              }
+            ])
+          }
+        : undefined}
+      icon={<PlusOutlined />}
+    >
+      Add
+    </Button>
+  )
+
   return (
     <>
-      <h2>{playerInput.name}</h2>
       {value.map((inputInput, index) => (
         <InputInputEditor
           key={index}
+          playerInputsPresetType={playerInputsPresetType}
           value={inputInput}
           onChange={newInputInput => {
             onChange([
@@ -31,20 +59,14 @@ const InputInputsEditor: FC<Props> = ({ playerInput, value, onChange }) => {
         />
       ))}
       {value.length === 0 && <div><i>No inputs</i></div>}
-      <Button
-        onClick={() => {
-          onChange([
-            ...value,
-            {
-              id: PlayerInputId.BOOLEAN_KEYBOARD,
-              data: booleanPlayerInputKeyboard.getDefaultData()
-            }
-          ])
-        }}
-        icon={<PlusOutlined />}
-      >
-        Add
-      </Button>
+      {defaultPlayerInputToAdd !== undefined
+        ? addButton
+        : (
+          <Tooltip
+            title='No inputs available for the selected preset type' color='red'
+          >
+            {addButton}
+          </Tooltip>)}
     </>
   )
 }

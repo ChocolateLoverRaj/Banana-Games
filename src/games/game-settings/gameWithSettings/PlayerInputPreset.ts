@@ -1,9 +1,9 @@
-import PlayerInputPresetType from '../PlayerInputPresetType'
+import PlayerInputsPresetType from '../PlayerInputsPresetType'
 import InputInputs from './InputInputs'
 
 interface PlayerInputPreset {
   name: string
-  playerInputPresetType: PlayerInputPresetType
+  playerInputPresetType: PlayerInputsPresetType
   inputs: readonly InputInputs[]
 }
 

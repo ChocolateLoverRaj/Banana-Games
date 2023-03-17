@@ -1,11 +1,9 @@
 import booleanPlayerInputKeyboard from './booleanPlayerInputKeyboard/booleanPlayerInputKeyboard'
+import PlayerInputId from './gameWithSettings/PlayerInputId'
 import PlayerInput from './playerInput/PlayerInput'
-import PlayerInputType from './PlayerInputType'
 
-const playerInputs: Map<PlayerInputType, readonly PlayerInput[]> = new Map([
-  [PlayerInputType.BOOLEAN, [
-    booleanPlayerInputKeyboard
-  ]]
+const playerInputs: Map<PlayerInputId, PlayerInput<any>> = new Map([
+  [PlayerInputId.BOOLEAN_KEYBOARD, booleanPlayerInputKeyboard]
 ])
 
 export default playerInputs

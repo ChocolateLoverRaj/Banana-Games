@@ -1,11 +1,13 @@
 import OnChange from '../../../../../../util/OnChange'
-import PlayerInputWithInfo from '../../../../PlayerInputWithInfo'
+import PlayerInputsPresetType from '../../../../PlayerInputsPresetType'
+import PlayerInputType from '../../../../PlayerInputType'
 import InputInputs from '../../../InputInputs'
 
 interface Props {
-  playerInput: PlayerInputWithInfo
+  playerInputsPresetType: PlayerInputsPresetType
   value: InputInputs
   onChange: OnChange<InputInputs>
+  playerInputType: PlayerInputType
 }
 
 export default Props

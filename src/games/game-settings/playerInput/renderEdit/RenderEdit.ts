@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
+import Input from './Input'
 
-type RenderEdit<T> = (input: T) => ReactNode
+type RenderEdit<T> = (input: Input<T>) => ReactNode
 
 export default RenderEdit
