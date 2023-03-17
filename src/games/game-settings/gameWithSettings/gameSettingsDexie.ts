@@ -7,7 +7,7 @@ class MySubClassedDexie extends Dexie {
 
   constructor () {
     super(`${config.id}.gameSettings`)
-    this.version(1).stores({
+    this.version(2).stores({
       settings: ''
     })
   }

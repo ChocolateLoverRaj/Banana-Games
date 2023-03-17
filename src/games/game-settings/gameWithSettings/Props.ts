@@ -1,4 +1,5 @@
 import PlayerInputType from '../PlayerInputType'
+import PlayerInputPreset from './PlayerInputPreset'
 import Preset from './SettingsPreset'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
   settings: readonly any[]
   playerInputs: readonly PlayerInputType[]
   defaultSettingsPresets: readonly Preset[]
-  defaultPlayerInputsPresets: readonly any[]
+  defaultPlayerInputsPresets: readonly PlayerInputPreset[]
 }
 
 export default Props

@@ -3,6 +3,7 @@ import { Typography } from 'antd'
 import GameComponent from '../../types/GameComponent'
 import GameWithSettings from './gameWithSettings/GameWithSettings'
 import PlayerInputType from './PlayerInputType'
+import PlayerInputPresetType from './PlayerInputPresetType'
 
 export const Game: GameComponent = React.forwardRef((_props, ref) => {
   return (
@@ -14,7 +15,8 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
       }]}
       settings={[]}
       defaultPlayerInputsPresets={[{
-        name: 'Keyboard'
+        name: 'Keyboard & Mouse',
+        playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE
       }]}
       playerInputs={[PlayerInputType.BOOLEAN]}
     />

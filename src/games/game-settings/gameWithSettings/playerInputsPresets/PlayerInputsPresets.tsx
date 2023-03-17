@@ -1,6 +1,8 @@
 import { Tabs } from 'antd'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
+import PlayerInputPresetType from '../../PlayerInputPresetType'
 import Props from './Props'
+import TabContent from './tabContent/TabContent'
 import TabLabel from './tabLabel/TabLabel'
 
 const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange }) => {
@@ -24,14 +26,26 @@ const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange }) 
             }}
           />
         ),
-        children: 'Content'
+        children: (
+          <TabContent
+            value={preset}
+            onChange={newValue => {
+              onChange([
+                ...value.slice(0, index),
+                newValue,
+                ...value.slice(index + 1)
+              ])
+            }}
+          />
+        )
       }))}
       onEdit={(targetKey, action) => {
         if (action === 'add') {
           onChange([
             ...value,
             {
-              name: 'New Preset'
+              name: 'New Preset',
+              playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE
             }
           ])
         } else {
