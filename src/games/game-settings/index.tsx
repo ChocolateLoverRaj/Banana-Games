@@ -9,6 +9,8 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
   return (
     <GameWithSettings
       id='game-settings'
+      version={0}
+      upgrade={undefined}
       ref={ref}
       defaultSettingsPresets={[{
         name: 'Default Preset'
@@ -16,9 +18,15 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
       settings={[]}
       defaultPlayerInputsPresets={[{
         name: 'Keyboard & Mouse',
-        playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE
+        playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE,
+        inputs: [
+          []
+        ]
       }]}
-      playerInputs={[PlayerInputType.BOOLEAN]}
+      playerInputs={[{
+        name: 'A boolean player input',
+        type: PlayerInputType.BOOLEAN
+      }]}
     />
   )
 })

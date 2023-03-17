@@ -19,6 +19,7 @@ const GameWithSettings = reactObserver<Props, HTMLDivElement>((observe, props, r
       <Spin tip='Loading settings' spinning={!syncAsyncData.loadPromiseData.done}>
         {syncAsyncData.data !== undefined && (
           <PlayerInputsPresets
+            playerInputs={props.playerInputs}
             value={syncAsyncData.data.playerInputsPresets}
             onChange={newData => {
               set({

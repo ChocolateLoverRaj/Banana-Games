@@ -1,9 +1,9 @@
 import Dexie, { Table } from 'dexie'
 import config from '../../../config.json'
-import GameSettingsData from './GameSettingsData'
+import GameSettingsDataWithVersion from './GameSettingsDataWithVersion'
 
 class MySubClassedDexie extends Dexie {
-  settings!: Table<GameSettingsData>;
+  settings!: Table<GameSettingsDataWithVersion>;
 
   constructor () {
     super(`${config.id}.gameSettings`)

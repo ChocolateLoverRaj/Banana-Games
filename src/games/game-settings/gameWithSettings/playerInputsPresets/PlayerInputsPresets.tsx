@@ -5,7 +5,7 @@ import Props from './Props'
 import TabContent from './tabContent/TabContent'
 import TabLabel from './tabLabel/TabLabel'
 
-const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange }) => {
+const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange, playerInputs }) => {
   return (
     <Tabs
       type='editable-card'
@@ -28,6 +28,7 @@ const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange }) 
         ),
         children: (
           <TabContent
+            playerInputs={playerInputs}
             value={preset}
             onChange={newValue => {
               onChange([
@@ -45,7 +46,8 @@ const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange }) 
             ...value,
             {
               name: 'New Preset',
-              playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE
+              playerInputPresetType: PlayerInputPresetType.KEYBOARD_AND_MOUSE,
+              inputs: []
             }
           ])
         } else {
