@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import Props from './Props'
 import 'react-edit-text/dist/index.css'
 import PlayerInputsPresets from './playerInputsPresets/PlayerInputsPresets'
@@ -9,14 +8,14 @@ import useConstant from 'use-constant'
 import createGameSettingsSyncAsync from './createGameSettingsSyncAsync/createGameSettingsSyncAsync'
 import { Spin } from 'antd'
 
-const GameWithSettings = reactObserver<Props>((observe, props) => {
+const GameWithSettings = reactObserver<Props, HTMLDivElement>((observe, props, ref) => {
   const syncAsync = useConstant(() => createGameSettingsSyncAsync(props))
   const syncAsyncData = observe(get(syncAsync))
 
   return (
     // TODO: Save and load presets to indexed db
     // FIXME: Ref
-    <div>
+    <div ref={ref}>
       <Spin tip='Loading settings' spinning={!syncAsyncData.loadPromiseData.done}>
         {syncAsyncData.data !== undefined && (
           <PlayerInputsPresets
