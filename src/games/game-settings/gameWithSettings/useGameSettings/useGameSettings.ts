@@ -4,7 +4,7 @@ import createGameSettingsSyncAsync from '../createGameSettingsSyncAsync/createGa
 import Input from './Input'
 import Output from './Output'
 
-const useGame = (input: Input): Output => {
+const useGameSettings = (input: Input): Output => {
   const { defaultPlayerInputsPresets, defaultSettingsPresets, id, upgrade, version } = input
   const syncAsync = useConstant(() => createGameSettingsSyncAsync({
     defaultPlayerInputsPresets,
@@ -14,10 +14,7 @@ const useGame = (input: Input): Output => {
     version
   }))
 
-  return {
-    input,
-    syncAsync
-  }
+  return syncAsync
 }
 
-export default useGame
+export default useGameSettings

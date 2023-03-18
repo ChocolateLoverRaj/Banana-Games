@@ -1,7 +1,7 @@
-import Output from './useGame/Output'
+import Input from './useGameSettings/Input'
 
 interface Props {
-  game: Output
+  input: Input
 }
 
 export default Props

@@ -5,12 +5,14 @@ import get from 'observables/lib/syncAsync/get/get'
 import set from 'observables/lib/syncAsync/set/set'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
 import { Spin } from 'antd'
+import useGameSettings from './useGameSettings/useGameSettings'
 
 const GameHelper = reactObserver<Props, HTMLDivElement>((
   observe,
-  { game: { input, syncAsync } },
+  { input },
   ref
 ) => {
+  const syncAsync = useGameSettings(input)
   const syncAsyncData = observe(get(syncAsync))
 
   return (
@@ -39,5 +41,5 @@ const GameHelper = reactObserver<Props, HTMLDivElement>((
     </div>
   )
 })
-GameHelper.displayName = 'Helper game component'
+
 export default GameHelper

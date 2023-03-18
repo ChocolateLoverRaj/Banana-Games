@@ -17,6 +17,7 @@ import { css } from '@emotion/css'
 import GameExports from './types/GameExports'
 import centerStyles from './centerStyles'
 import PageHeaderProps from './util/pageHeader/PageHeaderProps'
+import EditSettingsButton from './editSettingsButton/EditSettingsButton'
 
 export interface GameProps {
   id: string
@@ -64,24 +65,20 @@ const Game: FC<GameProps> = props => {
         className={css`
         display: flex;
         flex-direction: column;
-
-        > :nth-child(1) {
-          flex: 0 0 auto;
-          max-height: 50%;
-          overflow: auto;
-        }
-
-        :nth-child(2) {
-          flex: 1 1 auto;
-        }`}
+        `}
       >
         <PageHeader
           title={game.name}
           onBack={handleBack}
           extra={
-            <Button type='text' onClick={setFullScreen.bind(undefined, !fullScreen)}>
-              {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
-            </Button>
+            <>
+              {gameExports?.settings !== undefined && (
+                <EditSettingsButton settings={gameExports.settings} />
+              )}
+              <Button type='text' onClick={setFullScreen.bind(undefined, !fullScreen)}>
+                {fullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+              </Button>
+            </>
           }
           tags={<GameTags tags={game.tags} />}
         />
