@@ -85,7 +85,15 @@ const Game: FC<GameProps> = props => {
           }
           tags={<GameTags tags={game.tags} />}
         />
-        <Collapse defaultActiveKey={noDescription ? undefined : 'description'} ghost>
+        <Collapse
+          defaultActiveKey={noDescription ? undefined : 'description'}
+          ghost
+          className={css`
+            flex: 0 0 auto;
+            max-height: 50%;
+            overflow: auto;
+         `}
+        >
           <Collapse.Panel
             header='Description'
             key='description'
@@ -100,7 +108,14 @@ const Game: FC<GameProps> = props => {
           ? (
             <>
               <WarnLeaveGame />
-              <gameExports.Game ref={ref} />
+              <div
+                className={css`
+                  flex: 1 1 auto;
+                  overflow: auto;
+                `}
+              >
+                <gameExports.Game ref={ref} />
+              </div>
             </>)
           : state === 'pending'
             ? (
