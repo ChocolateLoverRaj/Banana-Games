@@ -4,7 +4,7 @@ import PlayerInputsPresets from './playerInputsPresets/PlayerInputsPresets'
 import get from 'observables/lib/syncAsync/get/get'
 import set from 'observables/lib/syncAsync/set/set'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
-import { Spin } from 'antd'
+import { Spin, Tabs } from 'antd'
 import useGameSettings from './useGameSettings/useGameSettings'
 
 const GameHelper = reactObserver<Props, HTMLDivElement>((
@@ -21,18 +21,31 @@ const GameHelper = reactObserver<Props, HTMLDivElement>((
     <div ref={ref}>
       <Spin tip='Loading settings' spinning={!syncAsyncData.loadPromiseData.done}>
         {syncAsyncData.data !== undefined && (
-          <PlayerInputsPresets
-            playerInputs={input.playerInputs}
-            value={syncAsyncData.data.playerInputsPresets}
-            onChange={newData => {
-              set({
-                syncAsync,
-                newData: {
-                  ...syncAsyncData.data,
-                  playerInputsPresets: newData
-                }
-              })
-            }}
+          <Tabs
+            defaultActiveKey='settings'
+            items={[{
+              key: 'settings',
+              label: 'Settings',
+              children: <>TODO: Settings</>
+            }, {
+              key: 'playerIo',
+              label: 'Player IO',
+              children: (
+                <PlayerInputsPresets
+                  playerInputs={input.playerInputs}
+                  value={syncAsyncData.data.playerInputsPresets}
+                  onChange={newData => {
+                    set({
+                      syncAsync,
+                      newData: {
+                        ...syncAsyncData.data,
+                        playerInputsPresets: newData
+                      }
+                    })
+                  }}
+                />
+              )
+            }]}
           />
         )}
         {syncAsyncData.loadPromiseData.done && !syncAsyncData.loadPromiseData.result.success &&
