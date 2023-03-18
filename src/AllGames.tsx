@@ -40,7 +40,11 @@ const AllGames: FC = () => {
       <Helmet>
         <title>{config.appName}</title>
       </Helmet>
-      <div>
+      <div
+        className={css({
+          overflow: 'auto'
+        })}
+      >
         <h1 className={css(centerStyles)}>All Games</h1>
         {downloadedGamesError === undefined
           ? <Table
