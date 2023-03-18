@@ -1,5 +1,5 @@
 import Preset from '../SettingsPreset'
-import Upgrade from '../upgrade/Upgrde'
+import Upgrade from '../upgrade/Upgrade'
 
 interface Input {
   /**

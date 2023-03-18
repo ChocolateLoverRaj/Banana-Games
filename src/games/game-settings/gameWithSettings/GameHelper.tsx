@@ -4,12 +4,13 @@ import PlayerInputsPresets from './playerInputsPresets/PlayerInputsPresets'
 import get from 'observables/lib/syncAsync/get/get'
 import set from 'observables/lib/syncAsync/set/set'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
-import useConstant from 'use-constant'
-import createGameSettingsSyncAsync from './createGameSettingsSyncAsync/createGameSettingsSyncAsync'
 import { Spin } from 'antd'
 
-const GameWithSettings = reactObserver<Props, HTMLDivElement>((observe, props, ref) => {
-  const syncAsync = useConstant(() => createGameSettingsSyncAsync(props))
+const GameHelper = reactObserver<Props, HTMLDivElement>((
+  observe,
+  { game: { input, syncAsync } },
+  ref
+) => {
   const syncAsyncData = observe(get(syncAsync))
 
   return (
@@ -19,7 +20,7 @@ const GameWithSettings = reactObserver<Props, HTMLDivElement>((observe, props, r
       <Spin tip='Loading settings' spinning={!syncAsyncData.loadPromiseData.done}>
         {syncAsyncData.data !== undefined && (
           <PlayerInputsPresets
-            playerInputs={props.playerInputs}
+            playerInputs={input.playerInputs}
             value={syncAsyncData.data.playerInputsPresets}
             onChange={newData => {
               set({
@@ -38,5 +39,5 @@ const GameWithSettings = reactObserver<Props, HTMLDivElement>((observe, props, r
     </div>
   )
 })
-
-export default GameWithSettings
+GameHelper.displayName = 'Helper game component'
+export default GameHelper
