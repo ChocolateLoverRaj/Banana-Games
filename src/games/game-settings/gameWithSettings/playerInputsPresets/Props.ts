@@ -1,9 +1,9 @@
 import PlayerInputPreset from '../PlayerInputPreset'
 import OnChange from '../../../../util/OnChange'
-import PlayerInputWithInfo from '../../PlayerInputWithInfo'
+import PlayerIoWithInfo from '../../PlayerIoWithInfo'
 
 interface Props {
-  playerInputs: readonly PlayerInputWithInfo[]
+  playerInputs: readonly PlayerIoWithInfo[]
   value: readonly PlayerInputPreset[]
   onChange: OnChange<readonly PlayerInputPreset[]>
 }

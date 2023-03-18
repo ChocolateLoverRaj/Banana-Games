@@ -1,4 +1,4 @@
-import PlayerInputWithInfo from '../../PlayerInputWithInfo'
+import PlayerIoWithInfo from '../../PlayerIoWithInfo'
 import PlayerInputPreset from '../PlayerInputPreset'
 import Preset from '../SettingsPreset'
 import Upgrade from '../upgrade/Upgrade'
@@ -17,7 +17,7 @@ interface Input {
    */
   upgrade: Upgrade | undefined
   settings: readonly any[]
-  playerInputs: readonly PlayerInputWithInfo[]
+  playerInputs: readonly PlayerIoWithInfo[]
   defaultSettingsPresets: readonly Preset[]
   defaultPlayerInputsPresets: readonly PlayerInputPreset[]
 }

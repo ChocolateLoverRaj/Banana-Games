@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Typography } from 'antd'
 import GameComponent from '../../types/GameComponent'
-import PlayerInputType from './PlayerInputType'
-import PlayerInputsPresetType from './PlayerInputsPresetType'
+import PlayerIoType from './PlayerIoType'
+import PlayerIosPresetType from './PlayerIosPresetType'
 import Input from './gameWithSettings/useGameSettings/Input'
 
 export const Game: GameComponent = React.forwardRef((_props, ref) => {
@@ -25,14 +25,18 @@ export const settings: Input = {
   settings: [],
   defaultPlayerInputsPresets: [{
     name: 'Keyboard & Mouse',
-    playerInputPresetType: PlayerInputsPresetType.KEYBOARD_AND_MOUSE,
+    playerInputPresetType: PlayerIosPresetType.KEYBOARD_AND_MOUSE,
     inputs: [
+      [],
       []
     ]
   }],
   playerInputs: [{
     name: 'A boolean player input',
-    type: PlayerInputType.BOOLEAN
+    type: PlayerIoType.BOOLEAN
+  }, {
+    name: 'Action',
+    type: PlayerIoType.ACTION
   }]
 }
 

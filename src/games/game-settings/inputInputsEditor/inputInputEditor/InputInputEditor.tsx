@@ -2,11 +2,18 @@ import { FC } from 'react'
 import Props from './Props'
 import { Button, Select } from 'antd'
 import { DeleteOutlined } from '@ant-design/icons'
-import playerInputs from '../../../../../playerInputs'
+import playerIos from '../../playerIos'
 import never from 'never'
+import filterPlayerIos from '../filterPlayerIos/filterPlayerIos'
 
-const InputInputEditor: FC<Props> = ({ value, onChange, onDelete, playerInputsPresetType }) => {
-  const inputFns = playerInputs.get(value.id) ?? never()
+const InputInputEditor: FC<Props> = ({
+  value,
+  onChange,
+  onDelete,
+  playerIosPresetType,
+  playerIoType
+}) => {
+  const inputFns = playerIos.get(value.id) ?? never()
 
   return (
     <div>
@@ -14,11 +21,10 @@ const InputInputEditor: FC<Props> = ({ value, onChange, onDelete, playerInputsPr
         value={value.id}
         onChange={newId => onChange({
           id: newId,
-          data: (playerInputs.get(newId) ?? never()).getDefaultData()
+          data: (playerIos.get(newId) ?? never()).getDefaultData()
         })}
-        options={[...playerInputs]
-          .filter(([id, { playerInputsPresetType: currentPlayerInputsPresetType }]) =>
-            currentPlayerInputsPresetType === playerInputsPresetType)
+        options={[...playerIos]
+          .filter(filterPlayerIos({ playerIosPresetType, playerIoType }))
           .map(([id, { name }]) => ({
             value: id,
             label: name
@@ -35,7 +41,8 @@ const InputInputEditor: FC<Props> = ({ value, onChange, onDelete, playerInputsPr
         onChange: newData => onChange({
           ...value,
           data: newData
-        })
+        }),
+        playerIosPresetType
       })}
     </div>
   )

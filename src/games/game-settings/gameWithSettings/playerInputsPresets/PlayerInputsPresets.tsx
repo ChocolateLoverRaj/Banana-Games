@@ -1,6 +1,6 @@
 import { Tabs } from 'antd'
 import reactObserver from 'observables/lib/reactObserver/reactObserver'
-import PlayerInputsPresetType from '../../PlayerInputsPresetType'
+import PlayerIosPresetType from '../../PlayerIosPresetType'
 import Props from './Props'
 import TabContent from './tabContent/TabContent'
 import TabLabel from './tabLabel/TabLabel'
@@ -46,7 +46,7 @@ const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange, pl
             ...value,
             {
               name: 'New Preset',
-              playerInputPresetType: PlayerInputsPresetType.KEYBOARD_AND_MOUSE,
+              playerInputPresetType: PlayerIosPresetType.KEYBOARD_AND_MOUSE,
               inputs: playerInputs.map(() => [])
             }
           ])

@@ -1,8 +1,8 @@
 import { Select, Table } from 'antd'
 import { FC } from 'react'
 import playerInputPresetNames from '../../../playerInputPresetNames'
-import PlayerInputWithInfo from '../../../PlayerInputWithInfo'
-import InputInputsEditor from './inputInputsEditor/InputInputsEditor'
+import PlayerIoWithInfo from '../../../PlayerIoWithInfo'
+import InputInputsEditor from '../../../inputInputsEditor/InputInputsEditor'
 import Props from './Props'
 
 const TabContent: FC<Props> = ({ value, onChange, playerInputs }) => {
@@ -27,15 +27,15 @@ const TabContent: FC<Props> = ({ value, onChange, playerInputs }) => {
         dataSource={playerInputs}
         columns={[{
           title: 'Name',
-          render: ({ name }: PlayerInputWithInfo) => (
+          render: ({ name }: PlayerIoWithInfo) => (
             <>{name}</>
           )
         }, {
           title: 'Inputs',
-          render: ({ type }: PlayerInputWithInfo, record, index) => (
+          render: ({ type }: PlayerIoWithInfo, record, index) => (
             <InputInputsEditor
-              playerInputType={playerInputs[index].type}
-              playerInputsPresetType={value.playerInputPresetType}
+              playerIoType={playerInputs[index].type}
+              playerIosPresetType={value.playerInputPresetType}
               value={value.inputs[index]}
               onChange={newValue => {
                 onChange({

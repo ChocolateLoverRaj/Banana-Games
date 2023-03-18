@@ -1,14 +1,14 @@
 import wrapGetObservable from 'observables/lib/wrapGetObservable/wrapGetObservable'
 import BooleanTypeSpecific from '../BooleanTypeSpecific'
-import PlayerInput from '../playerInput/PlayerInput'
-import PlayerInputsPresetType from '../PlayerInputsPresetType'
-import PlayerInputType from '../PlayerInputType'
+import PlayerIo from '../playerInput/PlayerIo'
+import PlayerIosPresetType from '../PlayerIosPresetType'
+import PlayerIoType from '../PlayerIoType'
 import Edit from './Edit'
 
-const booleanPlayerInputKeyboard: PlayerInput<string, BooleanTypeSpecific<string>> = {
+const booleanPlayerInputKeyboard: PlayerIo<string, BooleanTypeSpecific<string>> = {
   name: 'Key Pressed',
-  playerInputsPresetType: PlayerInputsPresetType.KEYBOARD_AND_MOUSE,
-  inputType: PlayerInputType.BOOLEAN,
+  playerIosPresetType: PlayerIosPresetType.KEYBOARD_AND_MOUSE,
+  ioType: PlayerIoType.BOOLEAN,
   renderEdit: ({ value, onChange }) => (
     <Edit
       value={value}

@@ -1,7 +1,7 @@
-import PlayerInputId from './PlayerInputId'
+import PlayerIoId from './PlayerIoId'
 
 interface InputInput {
-  id: PlayerInputId
+  id: PlayerIoId
   data: any
 }
 

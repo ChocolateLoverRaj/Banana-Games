@@ -1,9 +1,8 @@
-import OnChange from '../../../../util/OnChange'
 import PlayerIosPresetType from '../../PlayerIosPresetType'
+import PlayerIoType from '../../PlayerIoType'
 
-interface Input<T> {
-  value: T
-  onChange: OnChange<T>
+interface Input {
+  playerIoType: PlayerIoType
   playerIosPresetType: PlayerIosPresetType
 }
 

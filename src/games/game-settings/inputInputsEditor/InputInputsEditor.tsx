@@ -1,20 +1,21 @@
 import { PlusOutlined } from '@ant-design/icons'
 import { Button, Tooltip } from 'antd'
 import { FC } from 'react'
-import playerInputs from '../../../../playerInputs'
+import playerIos from '../playerIos'
+import filterPlayerIos from './filterPlayerIos/filterPlayerIos'
 import InputInputEditor from './inputInputEditor/InputInputEditor'
 import Props from './Props'
 
 const InputInputsEditor: FC<Props> = ({
   value,
   onChange,
-  playerInputsPresetType,
-  playerInputType
+  playerIosPresetType,
+  playerIoType
 }) => {
-  const defaultPlayerInputToAdd = [...playerInputs].find(
-    ([id, { playerInputsPresetType: currentPlayerInputsPresetType, inputType }]) =>
-      currentPlayerInputsPresetType === playerInputsPresetType &&
-      inputType === playerInputType)
+  const defaultPlayerInputToAdd = [...playerIos].find(filterPlayerIos({
+    playerIosPresetType,
+    playerIoType
+  }))
 
   const addButton = (
     <Button
@@ -41,7 +42,7 @@ const InputInputsEditor: FC<Props> = ({
       {value.map((inputInput, index) => (
         <InputInputEditor
           key={index}
-          playerInputsPresetType={playerInputsPresetType}
+          playerIosPresetType={playerIosPresetType}
           value={inputInput}
           onChange={newInputInput => {
             onChange([
@@ -56,6 +57,7 @@ const InputInputsEditor: FC<Props> = ({
               ...value.slice(index + 1)
             ])
           }}
+          playerIoType={playerIoType}
         />
       ))}
       {value.length === 0 && <div><i>No inputs</i></div>}

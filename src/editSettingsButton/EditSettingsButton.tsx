@@ -5,7 +5,7 @@ import GameSettings from '../games/game-settings/gameWithSettings/GameSettings'
 import Props from './Props'
 
 const EditSettingsButton: FC<Props> = ({ settings }) => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   return (
     <>
