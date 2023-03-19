@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Typography } from 'antd'
+import { Tag, Typography } from 'antd'
 import GameComponent from '../../types/GameComponent'
 import PlayerIoType from './PlayerIoType'
 import PlayerIosPresetType from './PlayerIosPresetType'
@@ -10,7 +10,11 @@ export const Game: GameComponent = React.forwardRef((_props, ref) => {
     <div
       ref={ref}
     >
-      TODO: Put inputs here
+      <Tag.CheckableTag
+        checked
+      >
+        Boolean Input Pressed
+      </Tag.CheckableTag>
     </div>
   )
 })
