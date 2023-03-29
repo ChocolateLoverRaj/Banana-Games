@@ -1,6 +1,6 @@
 import { Select, Table } from 'antd'
 import { FC } from 'react'
-import playerInputPresetNames from '../../../playerInputPresetNames'
+import playerIoPresetNames from '../../../playerIoPresetNames'
 import PlayerIoWithInfo from '../../../PlayerIoWithInfo'
 import InputInputsEditor from '../../../inputInputsEditor/InputInputsEditor'
 import Props from './Props'
@@ -17,7 +17,7 @@ const TabContent: FC<Props> = ({ value, onChange, playerInputs }) => {
             inputs: value.inputs.map(() => [])
           })
         }}
-        options={[...playerInputPresetNames].map(([type, name]) => ({
+        options={[...playerIoPresetNames].map(([type, name]) => ({
           value: type,
           label: name
         }))}

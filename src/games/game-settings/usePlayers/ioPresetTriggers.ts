@@ -1,36 +1,46 @@
-import PlayerIosPresetType from "../PlayerIosPresetType"
+import PlayerIosPresetType from '../PlayerIosPresetType'
 import { GamepadListener } from 'gamepad.js'
+import Listenable2 from './listenable2/Listenable2'
+import create from './listenable2/create/create'
 
-interface Listenable {
-
-}
-
-const gamepadListener = new GamepadListener()
-const ioPresetTrigger = new Map<PlayerIosPresetType, Get<Listenable<readonly [number]>>>([
-  [PlayerIosPresetType.KEYBOARD_AND_MOUSE, {
-    add: listener => {
-      window.addEventListener('keydown', listener)
-      window.addEventListener('keyup', listener)
-      window.addEventListener('keypress', listener)
-    },
-    remove: listener => {
-      window.removeEventListener('keydown', listener)
-      window.removeEventListener('keyup', listener)
-      window.removeEventListener('keypress', listener)
-    }
-  }],
-  [PlayerIosPresetType.GAMEPAD, () => {
-    const gamepadListenerEventHandler: any = ({index}) => {
-      
-    }
+const ioPresetTriggers = new Map<PlayerIosPresetType, Listenable2<readonly [number]>>([
+  [PlayerIosPresetType.KEYBOARD_AND_MOUSE, create(emit => {
+    const internalListener = (): void => emit(0)
+    const events: string[] = [
+      'keydown',
+      'keyup',
+      'keypress',
+      'mousemove',
+      'mousedown',
+      'mouseup'
+    ]
     return {
-    add: listener => {
-      gamepadListener.on('gamepad:connected', gamepadListenerEventHandler)
-      gamepadListener.on('gamepad:axis', gamepadListenerEventHandler)
-      gamepadListener.on('gamepad:button', gamepadListenerEventHandler)
+      subscribe: () => {
+        events.forEach(event => window.addEventListener(event, internalListener))
+      },
+      unsubscribe: () => {
+        events.forEach(event => window.removeEventListener(event, internalListener))
+      }
     }
-  }
-}]
+  })],
+  [PlayerIosPresetType.GAMEPAD, create(emit => {
+    const internalListener = (): void => emit(0)
+    const events: string[] = [
+      'gamepad:connected',
+      'gamepad:axis',
+      'gamepad:button'
+    ]
+    const gamepadListener = new GamepadListener()
+    events.forEach(event => gamepadListener.on(event, internalListener))
+    return {
+      subscribe: () => {
+        gamepadListener.start()
+      },
+      unsubscribe: () => {
+        gamepadListener.stop()
+      }
+    }
+  })]
 ])
 
 export default ioPresetTriggers

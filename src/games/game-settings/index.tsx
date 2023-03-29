@@ -4,17 +4,23 @@ import GameComponent from '../../types/GameComponent'
 import PlayerIoType from './PlayerIoType'
 import PlayerIosPresetType from './PlayerIosPresetType'
 import Input from './gameWithSettings/useGameSettings/Input'
+import usePlayers from './usePlayers/usePlayers'
+import Players from './usePlayers/players/Players'
 
 export const Game: GameComponent = React.forwardRef((_props, ref) => {
+  const players = usePlayers({ useGameSettingsInput: settings, maxPlayers: Infinity })
+
   return (
     <div
       ref={ref}
     >
-      <Tag.CheckableTag
-        checked
-      >
-        Boolean Input Pressed
-      </Tag.CheckableTag>
+      <Players players={players} useGameSettingsInput={settings}>
+        <Tag.CheckableTag
+          checked
+        >
+          Boolean Input Pressed
+        </Tag.CheckableTag>
+      </Players>
     </div>
   )
 })
