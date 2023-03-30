@@ -1,10 +1,10 @@
 import PlayerIosPresetType from '../PlayerIosPresetType'
 import InputInputs from './InputInputs'
 
-interface PlayerInputPreset {
+interface PlayerIoPreset {
   name: string
   playerInputPresetType: PlayerIosPresetType
   inputs: readonly InputInputs[]
 }
 
-export default PlayerInputPreset
+export default PlayerIoPreset

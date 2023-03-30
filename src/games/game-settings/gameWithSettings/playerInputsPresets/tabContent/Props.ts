@@ -1,11 +1,11 @@
 import OnChange from '../../../../../util/OnChange'
 import PlayerIoWithInfo from '../../../PlayerIoWithInfo'
-import PlayerInputPreset from '../../PlayerInputPreset'
+import PlayerIoPreset from '../../PlayerIoPreset'
 
 interface Props {
   playerInputs: readonly PlayerIoWithInfo[]
-  value: PlayerInputPreset
-  onChange: OnChange<PlayerInputPreset>
+  value: PlayerIoPreset
+  onChange: OnChange<PlayerIoPreset>
 }
 
 export default Props

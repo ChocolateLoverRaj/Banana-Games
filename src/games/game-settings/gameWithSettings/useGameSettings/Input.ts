@@ -1,5 +1,5 @@
 import PlayerIoWithInfo from '../../PlayerIoWithInfo'
-import PlayerInputPreset from '../PlayerInputPreset'
+import PlayerIoPreset from '../PlayerIoPreset'
 import Preset from '../SettingsPreset'
 import Upgrade from '../upgrade/Upgrade'
 
@@ -19,7 +19,7 @@ interface Input {
   settings: readonly any[]
   playerInputs: readonly PlayerIoWithInfo[]
   defaultSettingsPresets: readonly Preset[]
-  defaultPlayerInputsPresets: readonly PlayerInputPreset[]
+  defaultPlayerInputsPresets: readonly PlayerIoPreset[]
 }
 
 export default Input

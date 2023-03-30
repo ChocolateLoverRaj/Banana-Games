@@ -39,9 +39,13 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
       const listeners: Array<Listener<readonly [number]>> = triggers.map(({ type }) => (id) => {
         const state = getObservableValue(stateObservableValue)
         if (
+          // This input wasn't already detected
           !state.newInputs.some(
             ({ type: currentType, id: currentId }) => currentType === type && currentId === id) &&
-          state.players.length < maxPlayers) {
+          // There isn't a player with this input already
+          !state.players.some(({ selectedPreset, ioId }) =>
+            data.playerInputsPresets[selectedPreset].playerInputPresetType === type &&
+            ioId === id)) {
           set(stateObservableValue, {
             ...state,
             newInputs: [
@@ -60,6 +64,8 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
         remove({ listenable, listener: listeners[index] }))
     }
   }, [data])
+
+  console.log(stateObservableValue)
 
   return stateObservableValue
 }
