@@ -13,7 +13,8 @@ const addPlayer = ({
       ...players,
       {
         selectedPreset: presetIndex,
-        ioId: newInputs[newInputIndex].id
+        ioId: newInputs[newInputIndex].id,
+        type: newInputs[newInputIndex].type
       }
     ],
     newInputs: [

@@ -4,7 +4,7 @@ interface Input {
   playersObservableValue: Output
   newInputIndex: number
   playerIndex: number
-  presetIndex: number
+  presetId: string
 }
 
 export default Input

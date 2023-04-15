@@ -6,6 +6,7 @@ interface NewInput {
 }
 interface Player {
   selectedPreset: string
+  type: PlayerIosPresetType
   ioId: number
 }
 interface State {

@@ -6,7 +6,7 @@ const switchIo = ({
   playersObservableValue,
   newInputIndex,
   playerIndex,
-  presetIndex
+  presetId
 }: Input): void => {
   const { players, newInputs } = get(playersObservableValue)
   set(playersObservableValue, {
@@ -14,7 +14,7 @@ const switchIo = ({
       ...players.slice(0, playerIndex),
       {
         ...players[playerIndex],
-        selectedPreset: presetIndex,
+        selectedPreset: presetId,
         ioId: newInputs[newInputIndex].id
       },
       ...players.slice(playerIndex + 1)

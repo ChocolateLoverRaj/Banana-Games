@@ -56,11 +56,11 @@ const SwitchPlayer = reactObserver<Props>((
             extra={
               <PresetChooser
                 presets={presets}
-                onChoose={presetIndex => switchIo({
+                onChoose={presetId => switchIo({
                   playersObservableValue,
                   newInputIndex: 0,
                   playerIndex: selectedPlayer,
-                  presetIndex
+                  presetId: presetId
                 })}
               />
             }

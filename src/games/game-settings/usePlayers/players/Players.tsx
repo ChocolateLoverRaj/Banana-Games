@@ -11,10 +11,15 @@ import AddPlayer from './addPlayerComponent/AddPlayer'
 import getPresetOptions from './getPresetOptions'
 import Props from './Props'
 import SwitchOrAdd from './switchOrAdd/SwitchOrAdd'
+import PresetDeleted from './presetDeleted/PresetDeleted'
 
 const Players = reactObserver<Props>((observe, { players, children, useGameSettingsInput }) => {
   const data = observe(getObserve(players))
   const { data: settings } = observe(get(useGameSettings(useGameSettingsInput)))
+
+  const playerWithDeletedPreset = data.players
+    .map(({ selectedPreset, type }, index) => ({ selectedPreset, type, index }))
+    .find(({ selectedPreset }) => !(settings?.playerInputsPresets.has(selectedPreset) ?? false))
 
   return (
     <div>
@@ -45,6 +50,13 @@ const Players = reactObserver<Props>((observe, { players, children, useGameSetti
               presets={getPresetOptions(settings?.playerInputsPresets, data.newInputs[0].type)}
               players={players}
             />))}
+      {playerWithDeletedPreset !== undefined && (
+        <PresetDeleted
+          index={playerWithDeletedPreset.index}
+          players={players}
+          presets={getPresetOptions(settings?.playerInputsPresets, playerWithDeletedPreset.type)}
+        />
+      )}
       {children}
     </div>
   )

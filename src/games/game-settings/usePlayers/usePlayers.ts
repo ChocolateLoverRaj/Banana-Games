@@ -43,9 +43,8 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
           !state.newInputs.some(
             ({ type: currentType, id: currentId }) => currentType === type && currentId === id) &&
           // There isn't a player with this input already
-          !state.players.some(({ selectedPreset, ioId }) =>
-            (data.playerInputsPresets.get(selectedPreset) ?? never()).playerInputPresetType ===
-              type &&
+          !state.players.some(({ type: currentType, ioId }) =>
+            currentType === type &&
             ioId === id)) {
           set(stateObservableValue, {
             ...state,

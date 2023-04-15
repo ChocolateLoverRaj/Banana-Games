@@ -1,8 +1,10 @@
+import Output from '../../Output'
 import PresetOption from '../PresetOption'
 
 interface Props {
+  players: Output
+  index: number
   presets: readonly PresetOption[] | undefined
-  onChoose: (presetId: string) => void
 }
 
 export default Props
