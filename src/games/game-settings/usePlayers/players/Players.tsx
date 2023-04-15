@@ -31,10 +31,10 @@ const Players = reactObserver<Props>((observe, { players, children, useGameSetti
               ioName={playerIoPresetNames.get(data.newInputs[0].type) ?? never()}
               id={data.newInputs[0].id}
               presets={getPresetOptions(settings?.playerInputsPresets, data.newInputs[0].type)}
-              onAdd={presetIndex => addPlayer({
+              onAdd={presetId => addPlayer({
                 playersObservableValue: players,
                 newInputIndex: 0,
-                presetIndex
+                presetId
               })}
             />
             )

@@ -5,7 +5,7 @@ interface NewInput {
   id: number
 }
 interface Player {
-  selectedPreset: number
+  selectedPreset: string
   ioId: number
 }
 interface State {

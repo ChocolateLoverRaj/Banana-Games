@@ -65,7 +65,7 @@ const SwitchOrAdd: FC<Props> = ({ id, name, presets, players }) => {
               onChoose={index => addPlayer({
                 playersObservableValue: players,
                 newInputIndex: 0,
-                presetIndex: index
+                presetId: index
               })}
             />
           }

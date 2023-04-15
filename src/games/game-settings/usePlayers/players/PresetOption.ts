@@ -1,6 +1,6 @@
 interface PresetOption {
   name: string
-  index: number
+  id: string
 }
 
 export default PresetOption

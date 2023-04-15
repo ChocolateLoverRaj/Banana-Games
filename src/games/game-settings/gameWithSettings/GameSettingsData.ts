@@ -3,7 +3,7 @@ import Preset from './SettingsPreset'
 
 interface GameSettingsData {
   settingsPresets: readonly Preset[]
-  playerInputsPresets: readonly PlayerIoPreset[]
+  playerInputsPresets: ReadonlyMap<string, PlayerIoPreset>
 }
 
 export default GameSettingsData

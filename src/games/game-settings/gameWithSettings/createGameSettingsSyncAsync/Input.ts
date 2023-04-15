@@ -1,3 +1,4 @@
+import PlayerIoPreset from '../PlayerIoPreset'
 import Preset from '../SettingsPreset'
 import Upgrade from '../upgrade/Upgrade'
 
@@ -7,7 +8,7 @@ interface Input {
    */
   id: string
   defaultSettingsPresets: readonly Preset[]
-  defaultPlayerInputsPresets: readonly any[]
+  defaultPlayerIoPresets: readonly PlayerIoPreset[]
   version: number
   upgrade: Upgrade | undefined
 }

@@ -17,11 +17,11 @@ const AddPlayer: FC<Props> = ({ ioName, id, presets, onAdd }) => {
       extra={
         <>
           {presets !== undefined
-            ? presets.map(({ name, index }) => (
+            ? presets.map(({ name, id }) => (
               <Button
-                key={index}
+                key={id}
                 size='large'
-                onClick={() => onAdd(index)}
+                onClick={() => onAdd(id)}
               >
                 {name}
               </Button>

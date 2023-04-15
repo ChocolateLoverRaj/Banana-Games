@@ -4,8 +4,8 @@ import PlayerIoWithInfo from '../../PlayerIoWithInfo'
 
 interface Props {
   playerInputs: readonly PlayerIoWithInfo[]
-  value: readonly PlayerIoPreset[]
-  onChange: OnChange<readonly PlayerIoPreset[]>
+  value: ReadonlyMap<string, PlayerIoPreset>
+  onChange: OnChange<ReadonlyMap<string, PlayerIoPreset>>
 }
 
 export default Props

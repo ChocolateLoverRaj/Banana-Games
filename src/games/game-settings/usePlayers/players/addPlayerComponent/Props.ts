@@ -4,7 +4,7 @@ interface Props {
   ioName: string
   id: number
   presets: PresetOption[] | undefined
-  onAdd: (presetIndex: number) => void
+  onAdd: (presetId: string) => void
 }
 
 export default Props

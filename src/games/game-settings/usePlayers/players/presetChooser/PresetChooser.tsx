@@ -5,7 +5,7 @@ import Props from './Props'
 const PresetChooser: FC<Props> = ({ presets, onChoose }) => {
   return (
     <>
-      {presets?.map(({ name, index }) => (
+      {presets?.map(({ name, id: index }) => (
         <Button
           key={index}
           size='large'

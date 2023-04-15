@@ -4,10 +4,11 @@ import createDexieSyncAsync from 'observables/lib/createDexieSyncAsync/createDex
 import SyncAsync from 'observables/lib/syncAsync/SyncAsync'
 import Input from './Input'
 import never from 'never'
+import { v4 as uuid4 } from 'uuid'
 
 const createGameSettingsSyncAsync = ({
   id,
-  defaultPlayerInputsPresets,
+  defaultPlayerIoPresets: defaultPlayerInputsPresets,
   defaultSettingsPresets,
   version,
   upgrade
@@ -17,7 +18,7 @@ const createGameSettingsSyncAsync = ({
     if (dataWithVersion === undefined) {
       const defaultData = {
         settingsPresets: defaultSettingsPresets,
-        playerInputsPresets: defaultPlayerInputsPresets
+        playerInputsPresets: new Map(defaultPlayerInputsPresets.map(preset => [uuid4(), preset]))
       }
       await gameSettingsDexie.settings.put({
         version,

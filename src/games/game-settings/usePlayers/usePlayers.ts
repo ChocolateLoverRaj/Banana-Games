@@ -30,7 +30,7 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
         type: PlayerIosPresetType
         listenable: Listenable2<readonly [number]>
       }
-      const triggers = data.playerInputsPresets
+      const triggers = [...data.playerInputsPresets.values()]
         .flatMap<Trigger>(({ playerInputPresetType }) => ({
         type: playerInputPresetType,
         listenable: ioPresetTriggers.get(playerInputPresetType) ?? never()
@@ -44,7 +44,8 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
             ({ type: currentType, id: currentId }) => currentType === type && currentId === id) &&
           // There isn't a player with this input already
           !state.players.some(({ selectedPreset, ioId }) =>
-            data.playerInputsPresets[selectedPreset].playerInputPresetType === type &&
+            (data.playerInputsPresets.get(selectedPreset) ?? never()).playerInputPresetType ===
+              type &&
             ioId === id)) {
           set(stateObservableValue, {
             ...state,
@@ -56,7 +57,6 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
               }
             ]
           })
-          console.log('new')
         }
       })
       triggers.forEach(({ listenable }, index) => add({ listenable, listener: listeners[index] }))
@@ -64,8 +64,6 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
         remove({ listenable, listener: listeners[index] }))
     }
   }, [data])
-
-  console.log(stateObservableValue)
 
   return stateObservableValue
 }

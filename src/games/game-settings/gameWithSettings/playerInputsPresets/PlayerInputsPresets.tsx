@@ -4,25 +4,26 @@ import PlayerIosPresetType from '../../PlayerIosPresetType'
 import Props from './Props'
 import TabContent from './tabContent/TabContent'
 import TabLabel from './tabLabel/TabLabel'
+import { v4 as uuid4 } from 'uuid'
+import readOnlyMapRemove from '../../../../util/readOnlyMapRemove/readOnlyMapRemove'
 
 const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange, playerInputs }) => {
   return (
     <Tabs
       type='editable-card'
-      items={value.map((preset, index) => ({
-        key: index.toString(),
+      items={[...value].map(([id, preset]) => ({
+        key: id,
         label: (
           <TabLabel
             name={preset.name}
             onChange={newName => {
-              onChange([
-                ...value.slice(0, index),
-                {
+              onChange(new Map([
+                ...value,
+                [id, {
                   ...preset,
                   name: newName
-                },
-                ...value.slice(index + 1)
-              ])
+                }]
+              ]))
             }}
           />
         ),
@@ -31,31 +32,26 @@ const PlayerInputsPresets = reactObserver<Props>((observe, { value, onChange, pl
             playerInputs={playerInputs}
             value={preset}
             onChange={newValue => {
-              onChange([
-                ...value.slice(0, index),
-                newValue,
-                ...value.slice(index + 1)
-              ])
+              onChange(new Map([
+                ...value,
+                [id, newValue]
+              ]))
             }}
           />
         )
       }))}
       onEdit={(targetKey, action) => {
         if (action === 'add') {
-          onChange([
+          onChange(new Map([
             ...value,
-            {
+            [uuid4(), {
               name: 'New Preset',
               playerInputPresetType: PlayerIosPresetType.KEYBOARD_AND_MOUSE,
               inputs: playerInputs.map(() => [])
-            }
-          ])
+            }]
+          ]))
         } else {
-          const index = parseInt(targetKey as string)
-          onChange([
-            ...value.slice(0, index),
-            ...value.slice(index + 1)
-          ])
+          onChange(readOnlyMapRemove({ map: value, key: targetKey as string }))
         }
       }}
     />

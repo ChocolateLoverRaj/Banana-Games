@@ -5,7 +5,7 @@ import Input from './Input'
 const addPlayer = ({
   playersObservableValue,
   newInputIndex,
-  presetIndex
+  presetId: presetIndex
 }: Input): void => {
   const { players, newInputs } = get(playersObservableValue)
   set(playersObservableValue, {
