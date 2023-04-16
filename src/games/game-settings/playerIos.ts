@@ -3,7 +3,7 @@ import booleanPlayerInputKeyboard from './booleanPlayerInputKeyboard/booleanPlay
 import PlayerIoId from './gameWithSettings/PlayerIoId'
 import PlayerIo from './playerInput/PlayerIo'
 
-const playerIos: Map<PlayerIoId, PlayerIo<any, any>> = new Map([
+const playerIos = new Map<PlayerIoId, PlayerIo<any, any>>([
   [PlayerIoId.BOOLEAN_KEYBOARD, booleanPlayerInputKeyboard],
   [PlayerIoId.ACTION_FROM_BOOLEAN_INPUT, actionFromBooleanInput]
 ])
