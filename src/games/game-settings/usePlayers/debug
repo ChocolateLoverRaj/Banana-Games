@@ -1,0 +1,68 @@
+import { liveQuery, Subscription } from 'dexie'
+import wrapGetObservable from 'observables/lib/wrapGetObservable/wrapGetObservable'
+import getObserve from 'observables/lib/observableValue/getObserve'
+import SyncAsync from 'observables/lib/syncAsync/SyncAsync'
+import createPendingPromise from 'observables/lib/observablePromise/createPendingPromise'
+import createSyncAsync from 'observables/lib/syncAsync/create/create'
+import set from 'observables/lib/observableValue/set'
+import get from 'observables/lib/observableValue/get'
+import Input from 'observables/lib/createDexieSyncAsync/Input'
+
+const createDexieSyncAsync = <T>({ save, load }: Input<T>): SyncAsync<T> => {
+  const observableValue = createPendingPromise<T>()
+
+  return createSyncAsync({
+    load: wrapGetObservable({
+      getValue: () => get(observableValue),
+      getInternalObserve: triggerUpdate => {
+        const dexieObservable = liveQuery(load)
+        let subscription: Subscription
+        const internalObservable = getObserve(observableValue)
+
+        return {
+          add: () => {
+            console.log('add')
+            subscription = dexieObservable.subscribe(
+              value => {
+                console.log('dexie update!')
+                set(observableValue, {
+                  done: true,
+                  result: {
+                    success: true,
+                    result: value
+                  }
+                })
+              },
+              error => {
+                set(observableValue, {
+                  done: true,
+                  result: {
+                    success: false,
+                    result: error
+                  }
+                })
+              })
+            internalObservable.addRemove.add(triggerUpdate)
+          },
+          remove: () => {
+            console.log('remove')
+            subscription.unsubscribe()
+            internalObservable.addRemove.remove(triggerUpdate)
+          }
+        }
+      }
+    }),
+    set: newData => {
+      set(observableValue, {
+        done: true,
+        result: {
+          success: true,
+          result: newData
+        }
+      })
+    },
+    save
+  })
+}
+
+export default createDexieSyncAsync

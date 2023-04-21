@@ -22,9 +22,12 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
     players: [],
     newInputs: []
   }))
-  const { data } = useObserve(getSyncAsync(useGameSettings(useGameSettingsInput)))
+  const useGameSettingsOutput = useGameSettings(useGameSettingsInput)
+  const { data } = useObserve(getSyncAsync(useGameSettingsOutput))
+  useObserve(useGameSettingsOutput.load, true)
 
   useEffect(() => {
+    console.log('effect')
     if (data !== undefined) {
       interface Trigger {
         type: PlayerIosPresetType

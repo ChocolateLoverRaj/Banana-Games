@@ -8,11 +8,16 @@ import createConstantObservable from '../../util/createConstantObservable'
 const combineBooleanInputs = (
   inputInputs: Observable<InputInputs>,
   deviceId: number
-): Observable<boolean> =>
-  createComputedObservable(observe =>
-    observe(inputInputs).some(({ id, data }) => {
-      const isActivated = playerIos.get(id)?.typeSpecific as BooleanTypeSpecific<any>
-      return observe(isActivated(createConstantObservable(data), deviceId))
-    }))
+): Observable<boolean> => {
+  // FIXME: observe
+  const isActivatedObservables = inputInputs.getValue().map(({ id, data }) => {
+    const isActivated = playerIos.get(id)?.typeSpecific as BooleanTypeSpecific<any>
+    const isActivatedObservable = isActivated(createConstantObservable(data), deviceId)
+    return isActivatedObservable
+  })
+
+  return createComputedObservable(observe =>
+    isActivatedObservables.some(observable => observe(observable)))
+}
 
 export default combineBooleanInputs

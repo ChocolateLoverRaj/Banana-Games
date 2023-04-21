@@ -19,8 +19,9 @@ const booleanPlayerInputKeyboard: PlayerIo<string, BooleanTypeSpecific<string>> 
   typeSpecific: data => {
     // TODO: Consider only storing boolean instead of all keys pressed
     const keysPressed: Set<string> = new Set()
+    console.trace('get booleanPlayerInputKeyboard observable')
     return wrapGetObservable({
-      getValue: () => console.log(keysPressed, data.getValue(), keysPressed.has(data.getValue())) || keysPressed.has(data.getValue()),
+      getValue: () => keysPressed.has(data.getValue()),
       getInternalObserve: triggerUpdate => {
         const keydownListener = (e: KeyboardEvent): void => {
           keysPressed.add(e.code)
@@ -28,16 +29,19 @@ const booleanPlayerInputKeyboard: PlayerIo<string, BooleanTypeSpecific<string>> 
           console.log('update', e.code, data.getValue())
         }
         const keyupListener = (e: KeyboardEvent): void => {
-          keysPressed.add(e.code)
+          keysPressed.delete(e.code)
           triggerUpdate()
         }
+        const debugId = Math.random()
         return {
           add: () => {
+            console.log('add', debugId)
             data.addRemove.add(triggerUpdate)
             window.addEventListener('keydown', keydownListener)
             window.addEventListener('keyup', keyupListener)
           },
           remove: () => {
+            console.log('remove', debugId)
             data.addRemove.remove(triggerUpdate)
             window.removeEventListener('keydown', keydownListener)
             window.removeEventListener('keyup', keyupListener)
