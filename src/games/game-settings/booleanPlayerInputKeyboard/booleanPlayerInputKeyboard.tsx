@@ -1,9 +1,11 @@
-import wrapGetObservable from 'observables/lib/wrapGetObservable/wrapGetObservable'
 import BooleanTypeSpecific from '../BooleanTypeSpecific'
 import PlayerIo from '../playerInput/PlayerIo'
 import PlayerIosPresetType from '../PlayerIosPresetType'
 import PlayerIoType from '../PlayerIoType'
 import Edit from './Edit'
+import observableKeysPressed from '../../../util/observableKeysPressed'
+import createComputedObservable from 'observables/lib/computedObservable/createComputedObservable'
+import has from 'observables/lib/observableSet/getObservable/has'
 
 const booleanPlayerInputKeyboard: PlayerIo<string, BooleanTypeSpecific<string>> = {
   name: 'Key Pressed',
@@ -16,40 +18,8 @@ const booleanPlayerInputKeyboard: PlayerIo<string, BooleanTypeSpecific<string>> 
     />
   ),
   getDefaultData: () => '',
-  typeSpecific: data => {
-    // TODO: Consider only storing boolean instead of all keys pressed
-    const keysPressed: Set<string> = new Set()
-    console.trace('get booleanPlayerInputKeyboard observable')
-    return wrapGetObservable({
-      getValue: () => keysPressed.has(data.getValue()),
-      getInternalObserve: triggerUpdate => {
-        const keydownListener = (e: KeyboardEvent): void => {
-          keysPressed.add(e.code)
-          triggerUpdate()
-          console.log('update', e.code, data.getValue())
-        }
-        const keyupListener = (e: KeyboardEvent): void => {
-          keysPressed.delete(e.code)
-          triggerUpdate()
-        }
-        const debugId = Math.random()
-        return {
-          add: () => {
-            console.log('add', debugId)
-            data.addRemove.add(triggerUpdate)
-            window.addEventListener('keydown', keydownListener)
-            window.addEventListener('keyup', keyupListener)
-          },
-          remove: () => {
-            console.log('remove', debugId)
-            data.addRemove.remove(triggerUpdate)
-            window.removeEventListener('keydown', keydownListener)
-            window.removeEventListener('keyup', keyupListener)
-          }
-        }
-      }
-    })
-  }
+  typeSpecific: data =>
+    createComputedObservable(observe => observe(has(observe(observableKeysPressed), observe(data))))
 }
 
 export default booleanPlayerInputKeyboard

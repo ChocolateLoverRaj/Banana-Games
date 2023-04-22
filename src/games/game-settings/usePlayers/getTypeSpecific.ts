@@ -22,14 +22,10 @@ const getTypeSpecific = <TypeSpecific>(
   ioIndex: number,
   gameSettings: UseGameSettingsOutput,
   type: PlayerIoType
-): Observable<TypeSpecific | undefined> => {
-  const playersObservable = getObserve(playersObservableValue)
-  const gameSettingsObservable = get(gameSettings)
-
-  return createComputedObservable(observe => {
-    const { players } = observe(playersObservable)
+): Observable<TypeSpecific | undefined> => createComputedObservable(observe => {
+    const { players } = observe(getObserve(playersObservableValue))
     const { selectedPreset, ioId } = players[playerIndex]
-    const settings = observe(gameSettingsObservable).data
+    const settings = observe(get(gameSettings)).data
     if (settings === undefined) return
     const { inputs } =
       (settings.playerInputsPresets.get(selectedPreset) ?? never())
@@ -38,6 +34,5 @@ const getTypeSpecific = <TypeSpecific>(
       ioId)
     return combinedTypeSpecific
   })
-}
 
 export default getTypeSpecific

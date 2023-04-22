@@ -22,6 +22,7 @@ const InputInputsEditor: FC<Props> = ({
       disabled={defaultPlayerInputToAdd === undefined}
       onClick={defaultPlayerInputToAdd !== undefined
         ? () => {
+            // debugger
             onChange([
               ...value,
               {
