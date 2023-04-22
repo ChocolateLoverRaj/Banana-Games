@@ -1,20 +1,14 @@
 import { FC } from 'react'
-import { openDb } from './util/indexedDb'
 import { useBeforeunload } from 'react-beforeunload'
-import usePromise from 'react-use-promise'
 // import { Prompt } from 'react-router-dom'
-import settingsDbOptions from './settingsDbOptions'
+import settingsDexie from './settingsDexie'
+import { useLiveQuery } from 'dexie-react-hooks'
 
 const message = 'Are you sure you want to exit the game?'
 
 const WarnLeaveGame: FC = () => {
-  const [warnBeforeLeavingGame] = usePromise<boolean>(async () => {
-    const db = (await openDb(settingsDbOptions))
-    const settingPromise = db.transaction(['settings'], 'readonly').objectStore('settings')
-      .get('warnBeforeLeavingGame')
-    db.close()
-    return await settingPromise
-  }, [])
+  const warnBeforeLeavingGame = useLiveQuery(async () =>
+    await settingsDexie.warnBeforeLeavingGame.get(''), [])
 
   useBeforeunload(() => warnBeforeLeavingGame === true ? message : undefined)
 

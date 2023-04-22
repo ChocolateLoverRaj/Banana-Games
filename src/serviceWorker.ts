@@ -91,8 +91,8 @@ self.addEventListener('install', (e: any) => {
 
 self.addEventListener('fetch', (e: any) => {
   e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response ?? fetch(e.request)
+    caches.match(e.request).then(async (response) => {
+      return await (response ?? fetch(e.request))
     })
   )
 })

@@ -1,7 +1,6 @@
-import { openDb } from '../indexedDb'
 import usePromise from 'react-use-promise'
 import PromiseState from '../../types/PromiseState'
-import settingsDbOptions from '../../settingsDbOptions'
+import settingsDexie from '../../settingsDexie'
 
 export interface GameSettings {
   pausedWhenNotVisible: boolean
@@ -13,13 +12,10 @@ export type UsePausedWhenNotVisibleResult =
 
 const usePausedWhenNotVisible = (): UsePausedWhenNotVisibleResult => {
   return usePromise<GameSettings>(async () => {
-    const db = await openDb(settingsDbOptions)
-    const store = db.transaction(['settings'], 'readonly').objectStore('settings')
     const settingsPromise = Promise.all([
-      store.get('pausedWhenNotVisible'),
-      store.get('touchScreen')
+      settingsDexie.pausedWhenNotVisible.get('') as Promise<boolean>,
+      settingsDexie.touchScreen.get('') as Promise<boolean>
     ])
-    db.close()
     const [
       pausedWhenNotVisible,
       touchScreen

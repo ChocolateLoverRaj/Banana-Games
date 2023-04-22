@@ -31,7 +31,7 @@ class MobxKeysPressed extends KeysPressed {
   }
 
   get keysPressed (): ReadonlySet<string> {
-    if (this.atom.reportObserved() as boolean) {
+    if (this.atom.reportObserved()) {
       return this._keysPressed
     } else {
       return new Set()

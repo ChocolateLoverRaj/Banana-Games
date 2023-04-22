@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
-import { ProvidePlugin, BannerPlugin, Configuration } from 'webpack'
+import { ProvidePlugin, BannerPlugin, Configuration, RuleSetUse } from 'webpack'
 import FaviconsWebpackPlugin from 'favicons-webpack-plugin'
 import { appName } from './src/config.json'
 import { version } from './package.json'
@@ -19,6 +19,17 @@ const isDevServer = process.env.WEBPACK_SERVE === 'true'
 const subRoute = process.env.GITHUB_REPOSITORY !== undefined
   ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}`
   : '/'
+
+const tsxUse: RuleSetUse = [{
+  loader: 'babel-loader',
+  options: {
+    presets: ['@babel/react', '@babel/typescript'],
+    plugins: [
+      'react-require',
+      ...isDevServer ? ['react-refresh/babel'] : []
+    ]
+  }
+}]
 
 const config: Configuration = {
   mode: isProduction ? 'production' : 'development',
@@ -98,24 +109,18 @@ const config: Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/react', '@babel/typescript'],
-            plugins: [
-              'react-require',
-              ...isDevServer ? ['react-refresh/babel'] : []
-            ]
-          }
-        }],
+        use: tsxUse,
         exclude: /node_modules/
       },
       {
+        test: /\.tsx?$/,
+        use: tsxUse,
+        include: /node_modules\/observables/
+      },
+      {
         test: /\.css$/i,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        exclude: /\.lazy\.css$/i,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
