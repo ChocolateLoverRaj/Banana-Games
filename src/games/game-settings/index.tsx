@@ -12,7 +12,6 @@ import getObserve from 'observables/lib/observableValue/getObserve'
 import Player from './player/Player'
 
 export const Game: GameComponent = reactObserver((observe, _props, ref) => {
-  console.log('render')
   const players = usePlayers({ useGameSettingsInput: settings, maxPlayers: Infinity })
   const useGameSettingsOutput = useGameSettings(settings)
 

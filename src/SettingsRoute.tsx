@@ -3,8 +3,7 @@ import { Form, Switch, Typography, Spin, FormProps } from 'antd'
 import ErrorResult from './ErrorResult'
 import Helmet from 'react-helmet'
 import config from './config.json'
-import { useMapState } from 'rooks'
-import { NamePath } from 'rc-field-form/lib/interface'
+import { useNativeMapState } from 'rooks'
 import ThemeChooser from './ThemeChooser'
 import settingsDexie from './settingsDexie'
 import { Table } from 'dexie'
@@ -12,18 +11,18 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import PrimaryColorChooser from './PrimaryColorChooser'
 
 const SettingsRoute: FC = () => {
-  const savePromises = useMapState(new Map<string, Promise<void>>())
+  const [savePromises, savePromisesControls] = useNativeMapState(new Map<string, Promise<void>>())
   const [form] = Form.useForm()
-  const saveErrors = useMapState(new Map<string, Error>())
+  const [saveErrors, saveErrorsControls] = useNativeMapState(new Map<string, Error>())
   const handleChange: FormProps['onFieldsChange'] = ([{ name, value }]) => {
-    const key = (name as NamePath)[0]
-    savePromises.set(key, (async () => {
+    const key = (name)[0]
+    savePromisesControls.set(key, (async () => {
       await (settingsDexie[key] as Table).put(value, '')
     })())
   }
   useEffect(() => {
     [...savePromises].forEach(([key, savePromise]) => {
-      savePromise.then(() => savePromises.delete(key), e => saveErrors.set(key, e))
+      savePromise.then(() => savePromisesControls.remove(key), e => saveErrorsControls.set(key, e))
     })
   }, [savePromises])
   const settings = useLiveQuery(async () =>
@@ -48,7 +47,6 @@ const SettingsRoute: FC = () => {
         <Spin tip='Loading settings' spinning={settings === undefined}>
           {saveErrors.size === 0
             ? (
-              // TODO: Show unsaved / unchanged fields
               <Form
                 onFieldsChange={handleChange}
                 form={form}

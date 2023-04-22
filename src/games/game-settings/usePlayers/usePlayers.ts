@@ -27,7 +27,6 @@ const usePlayers = ({ useGameSettingsInput, maxPlayers }: Input): Output => {
   useObserve(useGameSettingsOutput.load, true)
 
   useEffect(() => {
-    console.log('effect')
     if (data !== undefined) {
       interface Trigger {
         type: PlayerIosPresetType
