@@ -14,9 +14,9 @@ import createComputedObservable from 'observables/lib/computedObservable/createC
 const actionFromBooleanInput: PlayerIo<Data, ActionTypeSpecific<Data>> = {
   name: 'Action From Boolean Input',
   ioType: PlayerIoType.ACTION,
-  typeSpecific: (observableData) => createWrappedListenable(emit => {
+  typeSpecific: ({ data: observableData, deviceId }) => createWrappedListenable(emit => {
     const isActivatedObservable = combineBooleanInputs(createComputedObservable(observe =>
-      observe(observableData).inputInputs))
+      observe(observableData).inputInputs), deviceId)
     let wasActivated = isActivatedObservable.getValue()
     const listener: Listener<[]> = () => {
       const isActivatedNow = isActivatedObservable.getValue()

@@ -6,14 +6,14 @@ import UseGameSettingsOutput from '../gameWithSettings/useGameSettings/Output'
 import get from 'observables/lib/syncAsync/get/get'
 import never from 'never'
 import PlayerIoType from '../PlayerIoType'
-import InputInputs from '../gameWithSettings/InputInputs'
 import combineBooleanInputs from '../combineBooleanInputs'
 import createConstantObservable from '../../../util/createConstantObservable'
-
-type Combiner<T> = (inputInputs: Observable<InputInputs>, deviceId: number) => T
+import Combiner from './Combiner'
+import combineActionInputs from '../combineActionInputs'
 
 const combiners = new Map<PlayerIoType, Combiner<any>>([
-  [PlayerIoType.BOOLEAN, combineBooleanInputs]
+  [PlayerIoType.BOOLEAN, combineBooleanInputs],
+  [PlayerIoType.ACTION, combineActionInputs]
 ])
 
 const getTypeSpecific = <TypeSpecific>(
