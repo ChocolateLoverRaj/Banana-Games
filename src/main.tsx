@@ -4,5 +4,6 @@ import IndexPage from './IndexPage'
 import { DefaultThemes } from 'mobx-theme'
 import theme from './theme'
 import never from 'never'
+import './directionalNavigation'
 
 createRoot(document.getElementById('app') ?? never()).render(<IndexPage />)
